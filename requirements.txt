@@ -1,0 +1,31 @@
+# Requirements for local development and testing
+
+# MCP SDK
+mcp>=1.0.0
+
+# QuickBooks Online SDK
+intuit-oauth==1.2.4
+python-quickbooks>=0.9.5
+
+# AWS SDK
+boto3>=1.34.0
+
+# Environment management
+python-dotenv==1.0.0
+
+# API and HTTP
+requests==2.31.0
+
+# Configuration
+pydantic>=2.5.3
+
+# AI Support - Claude Agent SDK
+anthropic>=0.25.0
+claude-agent-sdk>=0.1.4
+
+# Web framework for EC2 deployment
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# CLI enhancements for local tool
+rich>=13.0.0

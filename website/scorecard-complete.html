@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scorecard 2025 Q4 - TotalCareIT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .scorecard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .scorecard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .scorecard-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .scorecard-header p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .pbr-section {
+            margin: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e1e8ed;
+        }
+
+        .pbr-section h2 {
+            margin: 0 0 1.5rem 0;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .pbr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pbr-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pbr-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .pbr-card h3 {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pbr-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .pbr-positive { color: #28a745; }
+        .pbr-negative { color: #dc3545; }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid #e1e8ed;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th.metric-col { width: 280px; background: #2c3e50; }
+        th.owner-col { width: 120px; }
+        th.goal-col { width: 90px; }
+        th.week-col {
+            width: 100px;
+            text-align: center;
+            background: #667eea;
+        }
+
+        td.metric-name {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+
+        td.section-header {
+            background: #e9ecef;
+            font-weight: 700;
+            font-size: 15px;
+            color: #495057;
+            padding: 15px 10px;
+        }
+
+        td.week-value {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .good {
+            background: #d4edda !important;
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: #fff3cd !important;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .bad {
+            background: #f8d7da !important;
+            color: #721c24;
+            font-weight: 600;
+        }
+
+        .empty {
+            background: #fafafa;
+            color: #999;
+        }
+
+        .neutral {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="scorecard-container">
+        <div class="scorecard-header">
+            <h1>🎯 TotalCareIT Scorecard 2025</h1>
+            <p>Q4 October Performance Dashboard</p>
+        </div>
+
+        <div class="pbr-section">
+            <h2>💼 Pro Service PBR - Q4 2025</h2>
+            <div class="pbr-grid">
+
+                <div class="pbr-card">
+                    <h3>PS Team Goal</h3>
+                    <div class="pbr-value">$45,000</div>
+                </div>
+                <div class="pbr-card">
+                    <h3>PS Team Actual</h3>
+                    <div class="pbr-value">$31,023.13</div>
+                </div>
+                <div class="pbr-card">
+                    <h3>(+/-) Variance</h3>
+                    <div class="pbr-value ">
+                        TBD
+                    </div>
+                </div>
+                <div class="pbr-card">
+                    <h3>Goal Achievement</h3>
+                    <div class="pbr-value pbr-negative">
+                        17.2%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="metric-col">Metric / KPI</th>
+                        <th class="owner-col">Owner</th>
+                        <th class="goal-col">Goal</th>
+                        <th class="week-col">10/03</th>
+                        <th class="week-col">10/10</th>
+                        <th class="week-col">10/17</th>
+                        <th class="week-col">10/24</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="metric-name">Inside Sales Activity</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Inside Sales 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Dials</td>
+                        <td>Jason</td>
+                        <td>125</td>
+
+                        <td class="week-value bad">101</td>
+
+                        <td class="week-value bad">70</td>
+
+                        <td class="week-value bad">102</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Conversations with DM</td>
+                        <td>Jason</td>
+                        <td>13</td>
+
+                        <td class="week-value good">21</td>
+
+                        <td class="week-value good">16</td>
+
+                        <td class="week-value warning">13</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">FTA's set</td>
+                        <td>Jason</td>
+                        <td>1</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value warning">1</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Outside Sales Activity</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Sales 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">FTA Attended</td>
+                        <td>Jason/Charles</td>
+                        <td>1</td>
+
+                        <td class="week-value warning">1</td>
+
+                        <td class="week-value warning">1</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">COI Attended</td>
+                        <td>Jason/Charles</td>
+                        <td>1</td>
+
+                        <td class="week-value good">2</td>
+
+                        <td class="week-value good">3</td>
+
+                        <td class="week-value good">2</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Networking Events</td>
+                        <td>Jason/Charles</td>
+                        <td>1</td>
+
+                        <td class="week-value good">3</td>
+
+                        <td class="week-value good">7</td>
+
+                        <td class="week-value good">2</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">MRR Closed</td>
+                        <td>Jason/Charles</td>
+                        <td>500</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Hybrid Sales Activity</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Hybrid Sales Activity 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">COI Created</td>
+                        <td>Josh</td>
+                        <td>2</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">COI Attended</td>
+                        <td>Josh</td>
+                        <td>2</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Networking Events</td>
+                        <td>Josh</td>
+                        <td>3</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Warm 250 Activity</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Inside Sales Jason/Charles Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">W250 Dials</td>
+                        <td>Charles</td>
+                        <td>25</td>
+
+                        <td class="week-value bad">1</td>
+
+                        <td class="week-value bad">14</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">W250 Conversations with DM</td>
+                        <td>Charles</td>
+                        <td>6</td>
+
+                        <td class="week-value warning">6</td>
+
+                        <td class="week-value bad">4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">W250 FTA's set</td>
+                        <td>Charles</td>
+                        <td>1</td>
+
+                        <td class="week-value good">3</td>
+
+                        <td class="week-value warning">1</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Reactive Operations</td>
+                        <td>Calculated</td>
+                        <td> </td>
+
+                        <td class="week-value neutral">Reactive Operations 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Reactive Tickets Opened</td>
+                        <td>Scott</td>
+                        <td> </td>
+
+                        <td class="week-value neutral">69</td>
+
+                        <td class="week-value neutral">78</td>
+
+                        <td class="week-value neutral">75</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Reactive Tickets Closed</td>
+                        <td>Scott</td>
+                        <td> </td>
+
+                        <td class="week-value neutral">79</td>
+
+                        <td class="week-value neutral">59</td>
+
+                        <td class="week-value neutral">93</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Same day Close</td>
+                        <td>Scott</td>
+                        <td>0.70</td>
+
+                        <td class="week-value bad">0.53</td>
+
+                        <td class="week-value bad">0.49</td>
+
+                        <td class="week-value good">0.73</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Utilization</td>
+                        <td>Scott</td>
+                        <td>0.60</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value good">1</td>
+
+                        <td class="week-value good">1</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Tickets >7 days old (ROC)</td>
+                        <td>Scott</td>
+                        <td>2</td>
+
+                        <td class="week-value bad">38</td>
+
+                        <td class="week-value neutral"></td>
+
+                        <td class="week-value bad">34</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Tickets Opened/IT 360 endpoint/month (Service)</td>
+                        <td>Scott</td>
+                        <td>0.50</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value bad">0.49</td>
+
+                        <td class="week-value bad">0.47</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">RHEM (Service Noise)  </td>
+                        <td>Scott</td>
+                        <td>0.25</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value good">0.29</td>
+
+                        <td class="week-value good">0.39</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Avg Response Time/Ticket (Service)</td>
+                        <td>Scott</td>
+                        <td>0.50</td>
+
+                        <td class="week-value bad">2</td>
+
+                        <td class="week-value bad">1</td>
+
+                        <td class="week-value bad">1</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Avg Resolution Time/Ticket (Service)</td>
+                        <td>Scott</td>
+                        <td>0.50</td>
+
+                        <td class="week-value bad">0.72</td>
+
+                        <td class="week-value good">0.49</td>
+
+                        <td class="week-value bad">0.76</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Centralized Services</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Centralized Services 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Failed Backups > 48 Hours (50)</td>
+                        <td>Calculated</td>
+                        <td>0</td>
+
+                        <td class="week-value bad">0.10</td>
+
+                        <td class="week-value warning">0</td>
+
+                        <td class="week-value bad">0.20</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Failed Backups on Continuity > 7 Days</td>
+                        <td>Calculated</td>
+                        <td>0.20</td>
+
+                        <td class="week-value good">0</td>
+
+                        <td class="week-value good">0</td>
+
+                        <td class="week-value warning">0.20</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Failed Backups on SAAS > 48 Hours</td>
+                        <td>Calculated</td>
+                        <td>0.02</td>
+
+                        <td class="week-value good">0</td>
+
+                        <td class="week-value good">0</td>
+
+                        <td class="week-value good">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Missing > 5 Patches</td>
+                        <td>Calculated</td>
+                        <td>0.05</td>
+
+                        <td class="week-value bad">0.05</td>
+
+                        <td class="week-value bad">0.05</td>
+
+                        <td class="week-value bad">0.06</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Total Windows 7 Devices</td>
+                        <td>Charles</td>
+                        <td>0</td>
+
+                        <td class="week-value bad">2</td>
+
+                        <td class="week-value bad">2</td>
+
+                        <td class="week-value bad">2</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Total Windows 10 Devices </td>
+                        <td>Calculated</td>
+                        <td>0</td>
+
+                        <td class="week-value good">128</td>
+
+                        <td class="week-value good">127</td>
+
+                        <td class="week-value good">126</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Total Windows 11 EOL Devices </td>
+                        <td>Calculated</td>
+                        <td>0</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value bad">0.02</td>
+
+                        <td class="week-value bad">0.01</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Missing Hosted AV</td>
+                        <td>Calculated</td>
+                        <td>0.02</td>
+
+                        <td class="week-value good">0.01</td>
+
+                        <td class="week-value good">0.01</td>
+
+                        <td class="week-value good">0.01</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">TotalCareIT Microsoft Security Score</td>
+                        <td>Joe</td>
+                        <td>0.60</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value good">0.60</td>
+
+                        <td class="week-value good">0.60</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Professional Services</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">Professional Services 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Professional Services Tickets Opened</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">4</td>
+
+                        <td class="week-value empty">3</td>
+
+                        <td class="week-value empty">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Professional Services Tickets Closed</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">4</td>
+
+                        <td class="week-value empty">2</td>
+
+                        <td class="week-value empty">4</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Tickets Over 30 Days Old</td>
+                        <td>Calculated</td>
+                        <td>7</td>
+
+                        <td class="week-value bad">12</td>
+
+                        <td class="week-value bad">13</td>
+
+                        <td class="week-value bad">14</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">TAM</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">TAM 2025 Q4</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name"># of Questions Answered</td>
+                        <td>Joe</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">55</td>
+
+                        <td class="week-value empty">29</td>
+
+                        <td class="week-value empty">131</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">TAM Tickets Opened</td>
+                        <td>Joe</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">19</td>
+
+                        <td class="week-value empty">10</td>
+
+                        <td class="week-value empty">15</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">TAM Tickets Closed</td>
+                        <td>Joe</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">23</td>
+
+                        <td class="week-value empty">12</td>
+
+                        <td class="week-value empty">27</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">vCIO</td>
+                        <td>Calculated</td>
+                        <td>-</td>
+
+                        <td class="week-value empty">vCIO 2024 Q1</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="metric-name">Reviews Complete</td>
+                        <td>Charles</td>
+                        <td>1</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value bad">0</td>
+
+                        <td class="week-value empty">-</td>
+
+                        <td class="week-value empty">-</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

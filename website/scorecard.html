@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Scorecard - TotalCare IT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/8752461.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+        }
+        .scorecard-main {
+            margin-left: 280px;
+            padding: 2rem;
+            background: #f5f7fa;
+            min-height: 100vh;
+            width: calc(100% - 280px);
+        }
+        @media (max-width: 768px) {
+            .scorecard-main {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+        }
+        .last-updated {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .container {
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .scorecard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        .scorecard-table th,
+        .scorecard-table td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .scorecard-table th {
+            background: #34495e;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-weight: 600;
+        }
+        .kpi-column {
+            text-align: left;
+            font-weight: 600;
+            background: #ecf0f1;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            min-width: 200px;
+        }
+        .accountable-column {
+            background: #ecf0f1;
+            position: sticky;
+            left: 200px;
+            z-index: 5;
+            min-width: 100px;
+        }
+        .goal-column {
+            background: #fff3cd;
+            position: sticky;
+            left: 300px;
+            z-index: 5;
+            min-width: 60px;
+        }
+        .section-header {
+            background: #3498db !important;
+            color: white !important;
+            font-weight: bold;
+            text-align: left !important;
+            font-size: 12px;
+        }
+        .quarter-header {
+            background: #2c3e50;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 600;
+        }
+        .quarter-header:hover {
+            background: #34495e;
+        }
+        .quarter-collapsed {
+            display: none;
+        }
+        .toggle-icon {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .week-header {
+            font-size: 10px;
+            min-width: 50px;
+        }
+        .data-cell {
+            font-size: 11px;
+        }
+        @media (max-width: 768px) {
+            .scorecard-table {
+                font-size: 10px;
+            }
+            .kpi-column {
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-White-1024x189.png" alt="TotalCare IT Logo" class="sidebar-logo">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="sales-report.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                    <span>Sales Report</span>
+                </a>
+                <a href="linkedin-performance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                    <span>LinkedIn Performance</span>
+                </a>
+                <a href="scorecard.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Scorecard</span>
+                </a>
+                <a href="quickbooks.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>QuickBooks</span>
+                </a>
+                <a href="prospective-business.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Prospective Business</span>
+                </a>
+                <a href="finance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Finance</span>
+                </a>
+                <a href="trumethods-qbr.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <span>TruMethods QBR</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p id="user-email"></p>
+                <button id="signout-button" class="signout-btn">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="scorecard-main">
+            <div class="header">
+                <h1>TotalCare IT - 2025 Scorecard</h1>
+                <div class="last-updated">Last updated: October 27, 2025 at 04:43 PM ET</div>
+            </div>
+
+            <div class="container">
+        <table class="scorecard-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="kpi-column">KPI</th>
+                    <th rowspan="2" class="accountable-column">Accountable</th>
+                    <th rowspan="2" class="goal-column">Goal</th>
+                    <th colspan="13" class="quarter-header" onclick="toggleQuarter('Q1')"><span class="toggle-icon" id="icon-Q1">▼</span> Q1 2025 (February, January, March)</th>
+                    <th colspan="13" class="quarter-header" onclick="toggleQuarter('Q2')"><span class="toggle-icon" id="icon-Q2">▼</span> Q2 2025 (April, June, May)</th>
+                    <th colspan="13" class="quarter-header" onclick="toggleQuarter('Q3')"><span class="toggle-icon" id="icon-Q3">▼</span> Q3 2025 (August, July, September)</th>
+                    <th colspan="13" class="quarter-header" onclick="toggleQuarter('Q4')"><span class="toggle-icon" id="icon-Q4">▼</span> Q4 2025 (December, November, October)</th>
+                </tr>
+                <tr>
+                    <th class="week-header week-Q1">01/03</th>
+                    <th class="week-header week-Q1">01/10</th>
+                    <th class="week-header week-Q1">01/17</th>
+                    <th class="week-header week-Q1">01/24</th>
+                    <th class="week-header week-Q1">01/31</th>
+                    <th class="week-header week-Q1">02/07</th>
+                    <th class="week-header week-Q1">02/14</th>
+                    <th class="week-header week-Q1">02/21</th>
+                    <th class="week-header week-Q1">02/28</th>
+                    <th class="week-header week-Q1">03/07</th>
+                    <th class="week-header week-Q1">03/14</th>
+                    <th class="week-header week-Q1">03/21</th>
+                    <th class="week-header week-Q1">03/31</th>
+                    <th class="week-header week-Q2">04/04</th>
+                    <th class="week-header week-Q2">04/11</th>
+                    <th class="week-header week-Q2">04/18</th>
+                    <th class="week-header week-Q2">04/25</th>
+                    <th class="week-header week-Q2">05/02</th>
+                    <th class="week-header week-Q2">05/09</th>
+                    <th class="week-header week-Q2">05/16</th>
+                    <th class="week-header week-Q2">05/23</th>
+                    <th class="week-header week-Q2">05/30</th>
+                    <th class="week-header week-Q2">06/06</th>
+                    <th class="week-header week-Q2">06/13</th>
+                    <th class="week-header week-Q2">06/20</th>
+                    <th class="week-header week-Q2">06/27</th>
+                    <th class="week-header week-Q3">07/04</th>
+                    <th class="week-header week-Q3">07/11</th>
+                    <th class="week-header week-Q3">07/18</th>
+                    <th class="week-header week-Q3">07/25</th>
+                    <th class="week-header week-Q3">08/01</th>
+                    <th class="week-header week-Q3">08/08</th>
+                    <th class="week-header week-Q3">08/15</th>
+                    <th class="week-header week-Q3">08/22</th>
+                    <th class="week-header week-Q3">08/29</th>
+                    <th class="week-header week-Q3">09/05</th>
+                    <th class="week-header week-Q3">09/12</th>
+                    <th class="week-header week-Q3">09/19</th>
+                    <th class="week-header week-Q3">09/26</th>
+                    <th class="week-header week-Q4">10/03</th>
+                    <th class="week-header week-Q4">10/10</th>
+                    <th class="week-header week-Q4">10/17</th>
+                    <th class="week-header week-Q4">10/24</th>
+                    <th class="week-header week-Q4">10/31</th>
+                    <th class="week-header week-Q4">11/07</th>
+                    <th class="week-header week-Q4">11/14</th>
+                    <th class="week-header week-Q4">11/21</th>
+                    <th class="week-header week-Q4">11/28</th>
+                    <th class="week-header week-Q4">12/05</th>
+                    <th class="week-header week-Q4">12/12</th>
+                    <th class="week-header week-Q4">12/19</th>
+                    <th class="week-header week-Q4">12/26</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="55" class="section-header">Inside Sales Activity</td></tr>
+                <tr>
+                    <td class="kpi-column">Dials</td>
+                    <td class="accountable-column">Jason</td>
+                    <td class="goal-column">125</td>
+                    <td class="data-cell week-Q1">55</td>
+                    <td class="data-cell week-Q1">104</td>
+                    <td class="data-cell week-Q1">122</td>
+                    <td class="data-cell week-Q1">109</td>
+                    <td class="data-cell week-Q1">133</td>
+                    <td class="data-cell week-Q1">112</td>
+                    <td class="data-cell week-Q1">105</td>
+                    <td class="data-cell week-Q1">135</td>
+                    <td class="data-cell week-Q1">204</td>
+                    <td class="data-cell week-Q1">95</td>
+                    <td class="data-cell week-Q1">186</td>
+                    <td class="data-cell week-Q1">318</td>
+                    <td class="data-cell week-Q1">341</td>
+                    <td class="data-cell week-Q2">252</td>
+                    <td class="data-cell week-Q2">248</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">95</td>
+                    <td class="data-cell week-Q3">96</td>
+                    <td class="data-cell week-Q3">93</td>
+                    <td class="data-cell week-Q3">111</td>
+                    <td class="data-cell week-Q3">77</td>
+                    <td class="data-cell week-Q3">82</td>
+                    <td class="data-cell week-Q3">93</td>
+                    <td class="data-cell week-Q3">98</td>
+                    <td class="data-cell week-Q4">101</td>
+                    <td class="data-cell week-Q4">70</td>
+                    <td class="data-cell week-Q4">102</td>
+                    <td class="data-cell week-Q4">76</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Conversations with DM</td>
+                    <td class="accountable-column">Jason</td>
+                    <td class="goal-column">13</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">13</td>
+                    <td class="data-cell week-Q1">17</td>
+                    <td class="data-cell week-Q1">13</td>
+                    <td class="data-cell week-Q1">25</td>
+                    <td class="data-cell week-Q1">14</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">16</td>
+                    <td class="data-cell week-Q1">23</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">5</td>
+                    <td class="data-cell week-Q1">23</td>
+                    <td class="data-cell week-Q1">33</td>
+                    <td class="data-cell week-Q2">20</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">23</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">36</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">25</td>
+                    <td class="data-cell week-Q3">25</td>
+                    <td class="data-cell week-Q3">27</td>
+                    <td class="data-cell week-Q4">21</td>
+                    <td class="data-cell week-Q4">16</td>
+                    <td class="data-cell week-Q4">13</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">FTA's set</td>
+                    <td class="accountable-column">Jason</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">1</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">16</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Outside Sales Activity</td></tr>
+                <tr>
+                    <td class="kpi-column">FTA Attended</td>
+                    <td class="accountable-column">Jason/Charles</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q4">1</td>
+                    <td class="data-cell week-Q4">1</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">16</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">COI Attended</td>
+                    <td class="accountable-column">Jason/Charles</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">10</td>
+                    <td class="data-cell week-Q3">8</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4">3</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Networking Events</td>
+                    <td class="accountable-column">Jason/Charles</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">5</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">6</td>
+                    <td class="data-cell week-Q4">3</td>
+                    <td class="data-cell week-Q4">7</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">MRR Closed</td>
+                    <td class="accountable-column">Jason/Charles</td>
+                    <td class="goal-column">500</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">2250</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Hybrid Sales Activity</td></tr>
+                <tr>
+                    <td class="kpi-column">COI Created</td>
+                    <td class="accountable-column">Josh</td>
+                    <td class="goal-column">2</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">COI Attended</td>
+                    <td class="accountable-column">Josh</td>
+                    <td class="goal-column">2</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">5</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Networking Events</td>
+                    <td class="accountable-column">Josh</td>
+                    <td class="goal-column">3</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">5</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Warm 250 Activity</td></tr>
+                <tr>
+                    <td class="kpi-column">W250 Dials</td>
+                    <td class="accountable-column">Charles</td>
+                    <td class="goal-column">25</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">21</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">20</td>
+                    <td class="data-cell week-Q1">4</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">37</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">21</td>
+                    <td class="data-cell week-Q2">9</td>
+                    <td class="data-cell week-Q2">14</td>
+                    <td class="data-cell week-Q2">7</td>
+                    <td class="data-cell week-Q2">10</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">26</td>
+                    <td class="data-cell week-Q2">30</td>
+                    <td class="data-cell week-Q2">24</td>
+                    <td class="data-cell week-Q2">25</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">12</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">8</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q4">1</td>
+                    <td class="data-cell week-Q4">14</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">3</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">W250 Conversations with DM</td>
+                    <td class="accountable-column">Charles</td>
+                    <td class="goal-column">6</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">5</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">9</td>
+                    <td class="data-cell week-Q2">6</td>
+                    <td class="data-cell week-Q2">5</td>
+                    <td class="data-cell week-Q2">5</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">5</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">5</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">6</td>
+                    <td class="data-cell week-Q4">4</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">W250 FTA's set</td>
+                    <td class="accountable-column">Charles</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">3</td>
+                    <td class="data-cell week-Q4">1</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Reactive Operations</td></tr>
+                <tr>
+                    <td class="kpi-column">Reactive Tickets Opened</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column"> </td>
+                    <td class="data-cell week-Q1">37</td>
+                    <td class="data-cell week-Q1">73</td>
+                    <td class="data-cell week-Q1">74</td>
+                    <td class="data-cell week-Q1">50</td>
+                    <td class="data-cell week-Q1">68</td>
+                    <td class="data-cell week-Q1">68</td>
+                    <td class="data-cell week-Q1">84</td>
+                    <td class="data-cell week-Q1">72</td>
+                    <td class="data-cell week-Q1">55</td>
+                    <td class="data-cell week-Q1">97</td>
+                    <td class="data-cell week-Q1">79</td>
+                    <td class="data-cell week-Q1">71</td>
+                    <td class="data-cell week-Q1">75</td>
+                    <td class="data-cell week-Q2">56</td>
+                    <td class="data-cell week-Q2">68</td>
+                    <td class="data-cell week-Q2">60</td>
+                    <td class="data-cell week-Q2">61</td>
+                    <td class="data-cell week-Q2">68</td>
+                    <td class="data-cell week-Q2">90</td>
+                    <td class="data-cell week-Q2">82</td>
+                    <td class="data-cell week-Q2">77</td>
+                    <td class="data-cell week-Q2">51</td>
+                    <td class="data-cell week-Q2">65</td>
+                    <td class="data-cell week-Q2">73</td>
+                    <td class="data-cell week-Q2">70</td>
+                    <td class="data-cell week-Q2">66</td>
+                    <td class="data-cell week-Q3">63</td>
+                    <td class="data-cell week-Q3">60</td>
+                    <td class="data-cell week-Q3">63</td>
+                    <td class="data-cell week-Q3">51</td>
+                    <td class="data-cell week-Q3">71</td>
+                    <td class="data-cell week-Q3">55</td>
+                    <td class="data-cell week-Q3">66</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">93</td>
+                    <td class="data-cell week-Q3">77</td>
+                    <td class="data-cell week-Q3">78</td>
+                    <td class="data-cell week-Q3">93</td>
+                    <td class="data-cell week-Q3">71</td>
+                    <td class="data-cell week-Q4">69</td>
+                    <td class="data-cell week-Q4">78</td>
+                    <td class="data-cell week-Q4">75</td>
+                    <td class="data-cell week-Q4">66</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Reactive Tickets Closed</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column"> </td>
+                    <td class="data-cell week-Q1">33</td>
+                    <td class="data-cell week-Q1">57</td>
+                    <td class="data-cell week-Q1">73</td>
+                    <td class="data-cell week-Q1">52</td>
+                    <td class="data-cell week-Q1">69</td>
+                    <td class="data-cell week-Q1">65</td>
+                    <td class="data-cell week-Q1">94</td>
+                    <td class="data-cell week-Q1">59</td>
+                    <td class="data-cell week-Q1">56</td>
+                    <td class="data-cell week-Q1">103</td>
+                    <td class="data-cell week-Q1">73</td>
+                    <td class="data-cell week-Q1">76</td>
+                    <td class="data-cell week-Q1">70</td>
+                    <td class="data-cell week-Q2">62</td>
+                    <td class="data-cell week-Q2">71</td>
+                    <td class="data-cell week-Q2">54</td>
+                    <td class="data-cell week-Q2">63</td>
+                    <td class="data-cell week-Q2">60</td>
+                    <td class="data-cell week-Q2">92</td>
+                    <td class="data-cell week-Q2">68</td>
+                    <td class="data-cell week-Q2">81</td>
+                    <td class="data-cell week-Q2">57</td>
+                    <td class="data-cell week-Q2">63</td>
+                    <td class="data-cell week-Q2">59</td>
+                    <td class="data-cell week-Q2">85</td>
+                    <td class="data-cell week-Q2">66</td>
+                    <td class="data-cell week-Q3">63</td>
+                    <td class="data-cell week-Q3">67</td>
+                    <td class="data-cell week-Q3">74</td>
+                    <td class="data-cell week-Q3">44</td>
+                    <td class="data-cell week-Q3">57</td>
+                    <td class="data-cell week-Q3">62</td>
+                    <td class="data-cell week-Q3">67</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">95</td>
+                    <td class="data-cell week-Q3">74</td>
+                    <td class="data-cell week-Q3">69</td>
+                    <td class="data-cell week-Q3">79</td>
+                    <td class="data-cell week-Q3">64</td>
+                    <td class="data-cell week-Q4">79</td>
+                    <td class="data-cell week-Q4">59</td>
+                    <td class="data-cell week-Q4">93</td>
+                    <td class="data-cell week-Q4">51</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Same day Close</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.7</td>
+                    <td class="data-cell week-Q1">0.697</td>
+                    <td class="data-cell week-Q1">0.63</td>
+                    <td class="data-cell week-Q1">0.57</td>
+                    <td class="data-cell week-Q1">0.42</td>
+                    <td class="data-cell week-Q1">0.563</td>
+                    <td class="data-cell week-Q1">0.49</td>
+                    <td class="data-cell week-Q1">0.617</td>
+                    <td class="data-cell week-Q1">0.644</td>
+                    <td class="data-cell week-Q1">0.518</td>
+                    <td class="data-cell week-Q1">0.73</td>
+                    <td class="data-cell week-Q1">0.671</td>
+                    <td class="data-cell week-Q1">0.5263</td>
+                    <td class="data-cell week-Q1">0.6143</td>
+                    <td class="data-cell week-Q2">0.5806</td>
+                    <td class="data-cell week-Q2">0.662</td>
+                    <td class="data-cell week-Q2">0.6667</td>
+                    <td class="data-cell week-Q2">0.5397</td>
+                    <td class="data-cell week-Q2">0.6667</td>
+                    <td class="data-cell week-Q2">0.5978</td>
+                    <td class="data-cell week-Q2">0.6618</td>
+                    <td class="data-cell week-Q2">0.6296</td>
+                    <td class="data-cell week-Q2">0.56</td>
+                    <td class="data-cell week-Q2">0.7</td>
+                    <td class="data-cell week-Q2">0.661</td>
+                    <td class="data-cell week-Q2">0.5529</td>
+                    <td class="data-cell week-Q2">0.56</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.597</td>
+                    <td class="data-cell week-Q3">0.5811</td>
+                    <td class="data-cell week-Q3">0.7955</td>
+                    <td class="data-cell week-Q3">0.6842</td>
+                    <td class="data-cell week-Q3">0.629</td>
+                    <td class="data-cell week-Q3">0.627</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.5368421052631579</td>
+                    <td class="data-cell week-Q3">0.688</td>
+                    <td class="data-cell week-Q3">0.6956521739130435</td>
+                    <td class="data-cell week-Q3">0.501</td>
+                    <td class="data-cell week-Q3">0.59</td>
+                    <td class="data-cell week-Q4">0.53</td>
+                    <td class="data-cell week-Q4">0.49</td>
+                    <td class="data-cell week-Q4">0.733</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Utilization</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.6</td>
+                    <td class="data-cell week-Q1">0.32</td>
+                    <td class="data-cell week-Q1">0.59</td>
+                    <td class="data-cell week-Q1">0.5753</td>
+                    <td class="data-cell week-Q1">0.58</td>
+                    <td class="data-cell week-Q1">0.81</td>
+                    <td class="data-cell week-Q1">0.59</td>
+                    <td class="data-cell week-Q1">0.53</td>
+                    <td class="data-cell week-Q1">0.36</td>
+                    <td class="data-cell week-Q1">0.6</td>
+                    <td class="data-cell week-Q1">0.5</td>
+                    <td class="data-cell week-Q1">0.5</td>
+                    <td class="data-cell week-Q1">0.89</td>
+                    <td class="data-cell week-Q1">0.43</td>
+                    <td class="data-cell week-Q2">0.38</td>
+                    <td class="data-cell week-Q2">0.47</td>
+                    <td class="data-cell week-Q2">0.44</td>
+                    <td class="data-cell week-Q2">0.44</td>
+                    <td class="data-cell week-Q2">0.43</td>
+                    <td class="data-cell week-Q2">0.41</td>
+                    <td class="data-cell week-Q2">0.38</td>
+                    <td class="data-cell week-Q2">0.82</td>
+                    <td class="data-cell week-Q2">0.74</td>
+                    <td class="data-cell week-Q2">0.76</td>
+                    <td class="data-cell week-Q2">0.91</td>
+                    <td class="data-cell week-Q2">0.82</td>
+                    <td class="data-cell week-Q2">0.82</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.38</td>
+                    <td class="data-cell week-Q3">0.63</td>
+                    <td class="data-cell week-Q3">1.09</td>
+                    <td class="data-cell week-Q3">1.02</td>
+                    <td class="data-cell week-Q3">0.93</td>
+                    <td class="data-cell week-Q3">1.03</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.9623</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.65</td>
+                    <td class="data-cell week-Q3">0.79</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">1.1771</td>
+                    <td class="data-cell week-Q4">1.0922</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Tickets >7 days old (ROC)</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">2</td>
+                    <td class="data-cell week-Q1">19</td>
+                    <td class="data-cell week-Q1">18</td>
+                    <td class="data-cell week-Q1">24</td>
+                    <td class="data-cell week-Q1">25</td>
+                    <td class="data-cell week-Q1">22</td>
+                    <td class="data-cell week-Q1">25</td>
+                    <td class="data-cell week-Q1">16</td>
+                    <td class="data-cell week-Q1">21</td>
+                    <td class="data-cell week-Q1">22</td>
+                    <td class="data-cell week-Q1">21</td>
+                    <td class="data-cell week-Q1">17</td>
+                    <td class="data-cell week-Q1">17</td>
+                    <td class="data-cell week-Q1">18</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q2">22</td>
+                    <td class="data-cell week-Q2">22</td>
+                    <td class="data-cell week-Q2">21</td>
+                    <td class="data-cell week-Q2">27</td>
+                    <td class="data-cell week-Q2">21</td>
+                    <td class="data-cell week-Q2">34</td>
+                    <td class="data-cell week-Q2">27</td>
+                    <td class="data-cell week-Q2">27</td>
+                    <td class="data-cell week-Q2">26</td>
+                    <td class="data-cell week-Q2">34</td>
+                    <td class="data-cell week-Q2">30</td>
+                    <td class="data-cell week-Q2">30</td>
+                    <td class="data-cell week-Q3">32</td>
+                    <td class="data-cell week-Q3">22</td>
+                    <td class="data-cell week-Q3">20</td>
+                    <td class="data-cell week-Q3">20</td>
+                    <td class="data-cell week-Q3">22</td>
+                    <td class="data-cell week-Q3">23</td>
+                    <td class="data-cell week-Q3">20</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">38</td>
+                    <td class="data-cell week-Q3">39</td>
+                    <td class="data-cell week-Q4">38</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">34</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Tickets Opened/IT 360 endpoint/month (Service)</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.5</td>
+                    <td class="data-cell week-Q1">0.32780269058295963</td>
+                    <td class="data-cell week-Q1">0.6391891891891892</td>
+                    <td class="data-cell week-Q1">0.7016317016317016</td>
+                    <td class="data-cell week-Q1">0.46</td>
+                    <td class="data-cell week-Q1">0.64</td>
+                    <td class="data-cell week-Q1">0.636322869955157</td>
+                    <td class="data-cell week-Q1">0.788646288209607</td>
+                    <td class="data-cell week-Q1">0.5956709956709957</td>
+                    <td class="data-cell week-Q1">0.47365010799136065</td>
+                    <td class="data-cell week-Q1">0.828693790149893</td>
+                    <td class="data-cell week-Q1">0.6750537634408602</td>
+                    <td class="data-cell week-Q1">0.6454545454545455</td>
+                    <td class="data-cell week-Q1">0.6832627118644067</td>
+                    <td class="data-cell week-Q2">0.5145299145299145</td>
+                    <td class="data-cell week-Q2">0.6</td>
+                    <td class="data-cell week-Q2">0.52</td>
+                    <td class="data-cell week-Q2">0.53</td>
+                    <td class="data-cell week-Q2">0.565</td>
+                    <td class="data-cell week-Q2">0.74</td>
+                    <td class="data-cell week-Q2">0.68</td>
+                    <td class="data-cell week-Q2">0.61</td>
+                    <td class="data-cell week-Q2">0.41</td>
+                    <td class="data-cell week-Q2">0.52</td>
+                    <td class="data-cell week-Q2">0.6</td>
+                    <td class="data-cell week-Q2">0.64</td>
+                    <td class="data-cell week-Q2">0.6</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.54</td>
+                    <td class="data-cell week-Q3">0.56</td>
+                    <td class="data-cell week-Q3">0.46</td>
+                    <td class="data-cell week-Q3">0.64</td>
+                    <td class="data-cell week-Q3">0.5</td>
+                    <td class="data-cell week-Q3">0.6</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.58</td>
+                    <td class="data-cell week-Q3">0.48</td>
+                    <td class="data-cell week-Q3">0.497</td>
+                    <td class="data-cell week-Q3">0.591776798825257</td>
+                    <td class="data-cell week-Q3">0.45</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">0.49</td>
+                    <td class="data-cell week-Q4">0.47</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">RHEM (Service Noise)</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.25</td>
+                    <td class="data-cell week-Q1">0.15734529147982063</td>
+                    <td class="data-cell week-Q1">0.4602162162162162</td>
+                    <td class="data-cell week-Q1">0.32976689976689977</td>
+                    <td class="data-cell week-Q1">0.16</td>
+                    <td class="data-cell week-Q1">0.24</td>
+                    <td class="data-cell week-Q1">0.3563408071748879</td>
+                    <td class="data-cell week-Q1">0.44164192139737996</td>
+                    <td class="data-cell week-Q1">0.25613852813852817</td>
+                    <td class="data-cell week-Q1">0.20366954643628507</td>
+                    <td class="data-cell week-Q1">0.36462526766595293</td>
+                    <td class="data-cell week-Q1">0.3577784946236559</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0.71</td>
+                    <td class="data-cell week-Q2">0.45</td>
+                    <td class="data-cell week-Q2">0.51</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0.42</td>
+                    <td class="data-cell week-Q2">0.34</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.39</td>
+                    <td class="data-cell week-Q3">0.5</td>
+                    <td class="data-cell week-Q3">0.35</td>
+                    <td class="data-cell week-Q3">0.38</td>
+                    <td class="data-cell week-Q3">0.36</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.22915465898174833</td>
+                    <td class="data-cell week-Q3">0.291</td>
+                    <td class="data-cell week-Q3">0.31</td>
+                    <td class="data-cell week-Q3">0.21634850709740575</td>
+                    <td class="data-cell week-Q3">0.34</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">0.29</td>
+                    <td class="data-cell week-Q4">0.386</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Avg Response Time/Ticket (Service)</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.5</td>
+                    <td class="data-cell week-Q1">1.6916666666666667</td>
+                    <td class="data-cell week-Q1">0.5</td>
+                    <td class="data-cell week-Q1">0.455</td>
+                    <td class="data-cell week-Q1">0.56</td>
+                    <td class="data-cell week-Q1">0.74</td>
+                    <td class="data-cell week-Q1">0.5</td>
+                    <td class="data-cell week-Q1">0.36</td>
+                    <td class="data-cell week-Q1">0.9983333333333333</td>
+                    <td class="data-cell week-Q1">1.0533333333333335</td>
+                    <td class="data-cell week-Q1">0.4633333333333333</td>
+                    <td class="data-cell week-Q1">0.46</td>
+                    <td class="data-cell week-Q1">0.59</td>
+                    <td class="data-cell week-Q1">0.30333333333333334</td>
+                    <td class="data-cell week-Q2">0.38</td>
+                    <td class="data-cell week-Q2">0.48</td>
+                    <td class="data-cell week-Q2">0.25</td>
+                    <td class="data-cell week-Q2">0.81</td>
+                    <td class="data-cell week-Q2">0.74</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0.66</td>
+                    <td class="data-cell week-Q2">0.43</td>
+                    <td class="data-cell week-Q2">0.44</td>
+                    <td class="data-cell week-Q2">0.44</td>
+                    <td class="data-cell week-Q2">0.71</td>
+                    <td class="data-cell week-Q2">0.67</td>
+                    <td class="data-cell week-Q2">0.75</td>
+                    <td class="data-cell week-Q3">0.83</td>
+                    <td class="data-cell week-Q3">0.5</td>
+                    <td class="data-cell week-Q3">0.81</td>
+                    <td class="data-cell week-Q3">0.542</td>
+                    <td class="data-cell week-Q3">0.85</td>
+                    <td class="data-cell week-Q3">0.38</td>
+                    <td class="data-cell week-Q3">0.46</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.91</td>
+                    <td class="data-cell week-Q3">0.58</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">1.53</td>
+                    <td class="data-cell week-Q3">1.48</td>
+                    <td class="data-cell week-Q4">2.38</td>
+                    <td class="data-cell week-Q4">1.1</td>
+                    <td class="data-cell week-Q4">1.19</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Avg Resolution Time/Ticket (Service)</td>
+                    <td class="accountable-column">Scott</td>
+                    <td class="goal-column">0.5</td>
+                    <td class="data-cell week-Q1">0.48</td>
+                    <td class="data-cell week-Q1">0.81</td>
+                    <td class="data-cell week-Q1">0.49</td>
+                    <td class="data-cell week-Q1">0.51</td>
+                    <td class="data-cell week-Q1">0.44</td>
+                    <td class="data-cell week-Q1">0.55</td>
+                    <td class="data-cell week-Q1">0.43</td>
+                    <td class="data-cell week-Q1">0.49</td>
+                    <td class="data-cell week-Q1">0.6</td>
+                    <td class="data-cell week-Q1">0.44</td>
+                    <td class="data-cell week-Q1">0.53</td>
+                    <td class="data-cell week-Q1">0.67</td>
+                    <td class="data-cell week-Q1">0.56</td>
+                    <td class="data-cell week-Q2">0.64</td>
+                    <td class="data-cell week-Q2">0.6</td>
+                    <td class="data-cell week-Q2">0.5</td>
+                    <td class="data-cell week-Q2">0.52</td>
+                    <td class="data-cell week-Q2">0.6</td>
+                    <td class="data-cell week-Q2">0.48</td>
+                    <td class="data-cell week-Q2">0.47</td>
+                    <td class="data-cell week-Q2">0.37</td>
+                    <td class="data-cell week-Q2">0.54</td>
+                    <td class="data-cell week-Q2">0.45</td>
+                    <td class="data-cell week-Q2">0.97</td>
+                    <td class="data-cell week-Q2">0.46</td>
+                    <td class="data-cell week-Q2">0.56</td>
+                    <td class="data-cell week-Q3">0.36</td>
+                    <td class="data-cell week-Q3">0.64</td>
+                    <td class="data-cell week-Q3">0.49</td>
+                    <td class="data-cell week-Q3">0.51</td>
+                    <td class="data-cell week-Q3">0.57</td>
+                    <td class="data-cell week-Q3">0.45</td>
+                    <td class="data-cell week-Q3">0.46</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">1.12</td>
+                    <td class="data-cell week-Q3">0.54</td>
+                    <td class="data-cell week-Q3">0.52</td>
+                    <td class="data-cell week-Q3">0.76</td>
+                    <td class="data-cell week-Q3">0.65</td>
+                    <td class="data-cell week-Q4">0.72</td>
+                    <td class="data-cell week-Q4">0.49</td>
+                    <td class="data-cell week-Q4">0.76</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Centralized Services</td></tr>
+                <tr>
+                    <td class="kpi-column">Failed Backups > 48 Hours (50)</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0.1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0.09</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0.1</td>
+                    <td class="data-cell week-Q3">0.1</td>
+                    <td class="data-cell week-Q4">0.1</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0.2</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Failed Backups on Continuity > 7 Days</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0.2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0.17</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0.2</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Failed Backups on SAAS > 48 Hours</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0.02</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0.08</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Missing > 5 Patches</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0.05</td>
+                    <td class="data-cell week-Q1">0.0803</td>
+                    <td class="data-cell week-Q1">0.078</td>
+                    <td class="data-cell week-Q1">0.076</td>
+                    <td class="data-cell week-Q1">0.0473</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.0541</td>
+                    <td class="data-cell week-Q1">0.0472</td>
+                    <td class="data-cell week-Q1">0.06</td>
+                    <td class="data-cell week-Q1">0.0644</td>
+                    <td class="data-cell week-Q1">0.0751</td>
+                    <td class="data-cell week-Q1">0.0684</td>
+                    <td class="data-cell week-Q1">0.0808</td>
+                    <td class="data-cell week-Q1">0.0832</td>
+                    <td class="data-cell week-Q2">0.0875</td>
+                    <td class="data-cell week-Q2">0.0841</td>
+                    <td class="data-cell week-Q2">0.0724</td>
+                    <td class="data-cell week-Q2">0.0803</td>
+                    <td class="data-cell week-Q2">0.0771</td>
+                    <td class="data-cell week-Q2">0.0879</td>
+                    <td class="data-cell week-Q2">0.089</td>
+                    <td class="data-cell week-Q2">0.0818</td>
+                    <td class="data-cell week-Q2">0.088</td>
+                    <td class="data-cell week-Q2">0.095</td>
+                    <td class="data-cell week-Q2">0.099</td>
+                    <td class="data-cell week-Q2">0.083</td>
+                    <td class="data-cell week-Q2">0.0828</td>
+                    <td class="data-cell week-Q3">0.083</td>
+                    <td class="data-cell week-Q3">0.0853</td>
+                    <td class="data-cell week-Q3">0.0712</td>
+                    <td class="data-cell week-Q3">0.0691</td>
+                    <td class="data-cell week-Q3">0.0671</td>
+                    <td class="data-cell week-Q3">0.0715</td>
+                    <td class="data-cell week-Q3">0.0763</td>
+                    <td class="data-cell week-Q3">0.0713</td>
+                    <td class="data-cell week-Q3">0.0641</td>
+                    <td class="data-cell week-Q3">0.0662</td>
+                    <td class="data-cell week-Q3">0.0511</td>
+                    <td class="data-cell week-Q3">0.047</td>
+                    <td class="data-cell week-Q3">0.0529</td>
+                    <td class="data-cell week-Q4">0.054</td>
+                    <td class="data-cell week-Q4">0.0509</td>
+                    <td class="data-cell week-Q4">0.0597</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Total Windows 7 Devices</td>
+                    <td class="accountable-column">Charles</td>
+                    <td class="goal-column">0</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Total Windows 10 Devices</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0</td>
+                    <td class="data-cell week-Q1">0.0017</td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1">0.0016</td>
+                    <td class="data-cell week-Q1">0.0015</td>
+                    <td class="data-cell week-Q1">0.0015</td>
+                    <td class="data-cell week-Q1">0.0015</td>
+                    <td class="data-cell week-Q1">0.0015</td>
+                    <td class="data-cell week-Q1">0.0015</td>
+                    <td class="data-cell week-Q2">0.0015</td>
+                    <td class="data-cell week-Q2">0.0015</td>
+                    <td class="data-cell week-Q2">177</td>
+                    <td class="data-cell week-Q2">176</td>
+                    <td class="data-cell week-Q2">185</td>
+                    <td class="data-cell week-Q2">189</td>
+                    <td class="data-cell week-Q2">189</td>
+                    <td class="data-cell week-Q2">189</td>
+                    <td class="data-cell week-Q2">189</td>
+                    <td class="data-cell week-Q2">187</td>
+                    <td class="data-cell week-Q2">187</td>
+                    <td class="data-cell week-Q2">188</td>
+                    <td class="data-cell week-Q2">188</td>
+                    <td class="data-cell week-Q3">189</td>
+                    <td class="data-cell week-Q3">188</td>
+                    <td class="data-cell week-Q3">188</td>
+                    <td class="data-cell week-Q3">188</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">169</td>
+                    <td class="data-cell week-Q3">167</td>
+                    <td class="data-cell week-Q3">165</td>
+                    <td class="data-cell week-Q3">161</td>
+                    <td class="data-cell week-Q3">139</td>
+                    <td class="data-cell week-Q3">132</td>
+                    <td class="data-cell week-Q3">132</td>
+                    <td class="data-cell week-Q3">129</td>
+                    <td class="data-cell week-Q4">128</td>
+                    <td class="data-cell week-Q4">127</td>
+                    <td class="data-cell week-Q4">126</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Total Windows 11 EOL Devices</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0</td>
+                    <td class="data-cell week-Q1">0.0231</td>
+                    <td class="data-cell week-Q1">0.0246</td>
+                    <td class="data-cell week-Q1">0.0245</td>
+                    <td class="data-cell week-Q1">0.0245</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.0248</td>
+                    <td class="data-cell week-Q1">0.0247</td>
+                    <td class="data-cell week-Q1">0.0247</td>
+                    <td class="data-cell week-Q1">0.0259</td>
+                    <td class="data-cell week-Q1">0.0257</td>
+                    <td class="data-cell week-Q1">0.0271</td>
+                    <td class="data-cell week-Q1">0.0255</td>
+                    <td class="data-cell week-Q1">0.0311</td>
+                    <td class="data-cell week-Q2">0.0325</td>
+                    <td class="data-cell week-Q2">0.0324</td>
+                    <td class="data-cell week-Q2">406</td>
+                    <td class="data-cell week-Q2">409</td>
+                    <td class="data-cell week-Q2">414</td>
+                    <td class="data-cell week-Q2">420</td>
+                    <td class="data-cell week-Q2">423</td>
+                    <td class="data-cell week-Q2">22</td>
+                    <td class="data-cell week-Q2">0.0306</td>
+                    <td class="data-cell week-Q2">0.0291</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0.029</td>
+                    <td class="data-cell week-Q2">0.029</td>
+                    <td class="data-cell week-Q3">0.029</td>
+                    <td class="data-cell week-Q3">0.029</td>
+                    <td class="data-cell week-Q3">0.029</td>
+                    <td class="data-cell week-Q3">0.029</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">%</td>
+                    <td class="data-cell week-Q3">0.0241</td>
+                    <td class="data-cell week-Q3">0.0245</td>
+                    <td class="data-cell week-Q3">0.0246</td>
+                    <td class="data-cell week-Q3">0.0243</td>
+                    <td class="data-cell week-Q3">0.025</td>
+                    <td class="data-cell week-Q3">0.0235</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">0.0247</td>
+                    <td class="data-cell week-Q4">0.0131</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Missing Hosted AV</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">0.02</td>
+                    <td class="data-cell week-Q1">0.0354</td>
+                    <td class="data-cell week-Q1">0.0368</td>
+                    <td class="data-cell week-Q1">0.0117</td>
+                    <td class="data-cell week-Q1">0.0179</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.0142</td>
+                    <td class="data-cell week-Q1">0.0252</td>
+                    <td class="data-cell week-Q1">0.0125</td>
+                    <td class="data-cell week-Q1">0.0124</td>
+                    <td class="data-cell week-Q1">0.0139</td>
+                    <td class="data-cell week-Q1">0.0168</td>
+                    <td class="data-cell week-Q1">0.0183</td>
+                    <td class="data-cell week-Q1">0.0181</td>
+                    <td class="data-cell week-Q2">0.0166</td>
+                    <td class="data-cell week-Q2">0.0135</td>
+                    <td class="data-cell week-Q2">0.0134</td>
+                    <td class="data-cell week-Q2">0.0119</td>
+                    <td class="data-cell week-Q2">0.0117</td>
+                    <td class="data-cell week-Q2">0.0115</td>
+                    <td class="data-cell week-Q2">0.0129</td>
+                    <td class="data-cell week-Q2">0.0127</td>
+                    <td class="data-cell week-Q2">0.0113</td>
+                    <td class="data-cell week-Q2">0.0125</td>
+                    <td class="data-cell week-Q2">0.014</td>
+                    <td class="data-cell week-Q2">0.014</td>
+                    <td class="data-cell week-Q2">0.0154</td>
+                    <td class="data-cell week-Q3">0.0154</td>
+                    <td class="data-cell week-Q3">0.0155</td>
+                    <td class="data-cell week-Q3">0.0182</td>
+                    <td class="data-cell week-Q3">0.0072</td>
+                    <td class="data-cell week-Q3">0.0288</td>
+                    <td class="data-cell week-Q3">0.0288</td>
+                    <td class="data-cell week-Q3">0.0289</td>
+                    <td class="data-cell week-Q3">0.0293</td>
+                    <td class="data-cell week-Q3">0.038</td>
+                    <td class="data-cell week-Q3">0.0116</td>
+                    <td class="data-cell week-Q3">0.0119</td>
+                    <td class="data-cell week-Q3">0.0075</td>
+                    <td class="data-cell week-Q3">0.0105</td>
+                    <td class="data-cell week-Q4">0.0119</td>
+                    <td class="data-cell week-Q4">0.0133</td>
+                    <td class="data-cell week-Q4">0.0148</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">TotalCareIT Microsoft Security Score</td>
+                    <td class="accountable-column">Joe</td>
+                    <td class="goal-column">0.6</td>
+                    <td class="data-cell week-Q1">0.5887</td>
+                    <td class="data-cell week-Q1">0.5882</td>
+                    <td class="data-cell week-Q1">0.5878</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.5959</td>
+                    <td class="data-cell week-Q1">0.5987</td>
+                    <td class="data-cell week-Q1">0.5945</td>
+                    <td class="data-cell week-Q1"></td>
+                    <td class="data-cell week-Q1">0.5989</td>
+                    <td class="data-cell week-Q1">0.5927</td>
+                    <td class="data-cell week-Q1">0.6009</td>
+                    <td class="data-cell week-Q1">0.5899</td>
+                    <td class="data-cell week-Q2">0.5878</td>
+                    <td class="data-cell week-Q2">0.5862</td>
+                    <td class="data-cell week-Q2">0.6003</td>
+                    <td class="data-cell week-Q2">0.5845</td>
+                    <td class="data-cell week-Q2">0.5759</td>
+                    <td class="data-cell week-Q2">0.5708</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0.5942</td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2"></td>
+                    <td class="data-cell week-Q2">0.5779</td>
+                    <td class="data-cell week-Q2">0.573</td>
+                    <td class="data-cell week-Q3">0.5851</td>
+                    <td class="data-cell week-Q3">0.586</td>
+                    <td class="data-cell week-Q3">0.5859</td>
+                    <td class="data-cell week-Q3">0.5863</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.5906</td>
+                    <td class="data-cell week-Q3">0.5781</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q3">0.5886</td>
+                    <td class="data-cell week-Q3">0.6001</td>
+                    <td class="data-cell week-Q3">0.6073</td>
+                    <td class="data-cell week-Q3">0.605</td>
+                    <td class="data-cell week-Q3"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4">0.6024</td>
+                    <td class="data-cell week-Q4">0.6009</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">Professional Services</td></tr>
+                <tr>
+                    <td class="kpi-column">Professional Services Tickets Opened</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column"></td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">4</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">7</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">5</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">4</td>
+                    <td class="data-cell week-Q4">3</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Professional Services Tickets Closed</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column"></td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">14</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">3</td>
+                    <td class="data-cell week-Q1">8</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">10</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">3</td>
+                    <td class="data-cell week-Q2">7</td>
+                    <td class="data-cell week-Q2">7</td>
+                    <td class="data-cell week-Q2">5</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">4</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">2</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">4</td>
+                    <td class="data-cell week-Q3">3</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q4">4</td>
+                    <td class="data-cell week-Q4">2</td>
+                    <td class="data-cell week-Q4">4</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">Tickets Over 30 Days Old</td>
+                    <td class="accountable-column"></td>
+                    <td class="goal-column">7</td>
+                    <td class="data-cell week-Q1">9</td>
+                    <td class="data-cell week-Q1">9</td>
+                    <td class="data-cell week-Q1">8</td>
+                    <td class="data-cell week-Q1">8</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">8</td>
+                    <td class="data-cell week-Q1">7</td>
+                    <td class="data-cell week-Q1">6</td>
+                    <td class="data-cell week-Q2">6</td>
+                    <td class="data-cell week-Q2">6</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">7</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">10</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">13</td>
+                    <td class="data-cell week-Q3">11</td>
+                    <td class="data-cell week-Q3">13</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">13</td>
+                    <td class="data-cell week-Q4">12</td>
+                    <td class="data-cell week-Q4">13</td>
+                    <td class="data-cell week-Q4">14</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">TAM</td></tr>
+                <tr>
+                    <td class="kpi-column"># of Questions Answered</td>
+                    <td class="accountable-column">Joe</td>
+                    <td class="goal-column"></td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">73</td>
+                    <td class="data-cell week-Q1">82</td>
+                    <td class="data-cell week-Q1">67</td>
+                    <td class="data-cell week-Q1">56</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">52</td>
+                    <td class="data-cell week-Q1">238</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">32</td>
+                    <td class="data-cell week-Q1">88</td>
+                    <td class="data-cell week-Q1">61</td>
+                    <td class="data-cell week-Q1">62</td>
+                    <td class="data-cell week-Q2">49</td>
+                    <td class="data-cell week-Q2">124</td>
+                    <td class="data-cell week-Q2">107</td>
+                    <td class="data-cell week-Q2">88</td>
+                    <td class="data-cell week-Q2">47</td>
+                    <td class="data-cell week-Q2">24</td>
+                    <td class="data-cell week-Q2">62</td>
+                    <td class="data-cell week-Q2">42</td>
+                    <td class="data-cell week-Q2">44</td>
+                    <td class="data-cell week-Q2">60</td>
+                    <td class="data-cell week-Q2">105</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">64</td>
+                    <td class="data-cell week-Q3">11</td>
+                    <td class="data-cell week-Q3">66</td>
+                    <td class="data-cell week-Q3">75</td>
+                    <td class="data-cell week-Q3">69</td>
+                    <td class="data-cell week-Q3">36</td>
+                    <td class="data-cell week-Q3">52</td>
+                    <td class="data-cell week-Q3">86</td>
+                    <td class="data-cell week-Q3">84</td>
+                    <td class="data-cell week-Q3">68</td>
+                    <td class="data-cell week-Q3">49</td>
+                    <td class="data-cell week-Q3">226</td>
+                    <td class="data-cell week-Q3">135</td>
+                    <td class="data-cell week-Q3">71</td>
+                    <td class="data-cell week-Q4">55</td>
+                    <td class="data-cell week-Q4">29</td>
+                    <td class="data-cell week-Q4">131</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">TAM Tickets Opened</td>
+                    <td class="accountable-column">Joe</td>
+                    <td class="goal-column"></td>
+                    <td class="data-cell week-Q1">13</td>
+                    <td class="data-cell week-Q1">12</td>
+                    <td class="data-cell week-Q1">12</td>
+                    <td class="data-cell week-Q1">10</td>
+                    <td class="data-cell week-Q1">9</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">13</td>
+                    <td class="data-cell week-Q1">22</td>
+                    <td class="data-cell week-Q1">23</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">18</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">20</td>
+                    <td class="data-cell week-Q2">15</td>
+                    <td class="data-cell week-Q2">10</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">19</td>
+                    <td class="data-cell week-Q2">19</td>
+                    <td class="data-cell week-Q2">14</td>
+                    <td class="data-cell week-Q2">21</td>
+                    <td class="data-cell week-Q2">13</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q2">24</td>
+                    <td class="data-cell week-Q2">8</td>
+                    <td class="data-cell week-Q2">23</td>
+                    <td class="data-cell week-Q3">9</td>
+                    <td class="data-cell week-Q3">9</td>
+                    <td class="data-cell week-Q3">12</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">8</td>
+                    <td class="data-cell week-Q3">7</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">13</td>
+                    <td class="data-cell week-Q3">9</td>
+                    <td class="data-cell week-Q3">6</td>
+                    <td class="data-cell week-Q3">15</td>
+                    <td class="data-cell week-Q3">9</td>
+                    <td class="data-cell week-Q3">12</td>
+                    <td class="data-cell week-Q4">19</td>
+                    <td class="data-cell week-Q4">10</td>
+                    <td class="data-cell week-Q4">15</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr>
+                    <td class="kpi-column">TAM Tickets Closed</td>
+                    <td class="accountable-column">Joe</td>
+                    <td class="goal-column"></td>
+                    <td class="data-cell week-Q1">16</td>
+                    <td class="data-cell week-Q1">31</td>
+                    <td class="data-cell week-Q1">18</td>
+                    <td class="data-cell week-Q1">11</td>
+                    <td class="data-cell week-Q1">13</td>
+                    <td class="data-cell week-Q1">15</td>
+                    <td class="data-cell week-Q1">19</td>
+                    <td class="data-cell week-Q1">18</td>
+                    <td class="data-cell week-Q1">20</td>
+                    <td class="data-cell week-Q1">23</td>
+                    <td class="data-cell week-Q1">14</td>
+                    <td class="data-cell week-Q1">22</td>
+                    <td class="data-cell week-Q1">25</td>
+                    <td class="data-cell week-Q2">23</td>
+                    <td class="data-cell week-Q2">19</td>
+                    <td class="data-cell week-Q2">33</td>
+                    <td class="data-cell week-Q2">20</td>
+                    <td class="data-cell week-Q2">17</td>
+                    <td class="data-cell week-Q2">20</td>
+                    <td class="data-cell week-Q2">29</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">20</td>
+                    <td class="data-cell week-Q2">18</td>
+                    <td class="data-cell week-Q2">15</td>
+                    <td class="data-cell week-Q2">19</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">14</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">25</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">17</td>
+                    <td class="data-cell week-Q3">21</td>
+                    <td class="data-cell week-Q3">8</td>
+                    <td class="data-cell week-Q3">8</td>
+                    <td class="data-cell week-Q3">16</td>
+                    <td class="data-cell week-Q3">21</td>
+                    <td class="data-cell week-Q3">11</td>
+                    <td class="data-cell week-Q4">23</td>
+                    <td class="data-cell week-Q4">12</td>
+                    <td class="data-cell week-Q4">27</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+                <tr><td colspan="55" class="section-header">vCIO</td></tr>
+                <tr>
+                    <td class="kpi-column">Reviews Complete</td>
+                    <td class="accountable-column">Charles</td>
+                    <td class="goal-column">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">1</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">2</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q1">0</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">1</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q2">2</td>
+                    <td class="data-cell week-Q2">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">1</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q3">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4">0</td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                    <td class="data-cell week-Q4"></td>
+                </tr>
+            </tbody>
+        </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://alcdn.msauth.net/browser/2.14.2/js/msal-browser.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        function toggleQuarter(quarter) {
+            const cells = document.querySelectorAll('.week-' + quarter);
+            const icon = document.getElementById('icon-' + quarter);
+
+            if (!cells.length) return;
+
+            const isCollapsed = cells[0].classList.contains('quarter-collapsed');
+
+            cells.forEach(cell => {
+                if (isCollapsed) {
+                    cell.classList.remove('quarter-collapsed');
+                } else {
+                    cell.classList.add('quarter-collapsed');
+                }
+            });
+
+            icon.textContent = isCollapsed ? '▼' : '▶';
+        }
+
+        // Collapse Q1, Q2, Q3 by default (show Q4 - current quarter)
+        window.addEventListener('DOMContentLoaded', () => {
+            // Collapse past quarters, keep current quarter (Q4) expanded
+            ['Q1', 'Q2', 'Q3'].forEach(q => toggleQuarter(q));
+        });
+    </script>
+</body>
+</html>

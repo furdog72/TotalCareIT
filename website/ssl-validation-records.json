@@ -1,0 +1,31 @@
+{
+  "Comment": "SSL certificate validation records",
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "_58af80b8aba95c3ff5d4531d0eb6cb33.totalcareit.ai.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "_8fee8ed757023e9c73ed7040b2ef352c.xlfgrmvvlj.acm-validations.aws."
+          }
+        ]
+      }
+    },
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "_63c279880b47f61654def180afec7b84.www.totalcareit.ai.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "_dec343e06f94088142522bcf3b7dac33.xlfgrmvvlj.acm-validations.aws."
+          }
+        ]
+      }
+    }
+  ]
+}

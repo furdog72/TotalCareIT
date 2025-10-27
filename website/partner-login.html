@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Portal - TotalCare AI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="login-logo">
+                <h1>Partner Portal</h1>
+                <p>Access internal partner resources and company information</p>
+            </div>
+
+            <div class="login-content">
+                <button id="ms365LoginBtn" class="btn-ms365" style="position: relative; z-index: 1000; pointer-events: auto;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M11.5 0L0 2.5v8.75c0 7.344 5.063 14.219 11.5 15.75C17.937 25.469 23 18.594 23 11.25V2.5L11.5 0z" fill="#0078D4"/>
+                        <path d="M11.5 2.5v23c5.125-1.25 9.5-6.875 9.5-13.75V4.375L11.5 2.5z" fill="#0078D4" opacity="0.8"/>
+                    </svg>
+                    Sign in with Microsoft 365
+                </button>
+
+                <div class="login-help">
+                    <p>Need help accessing your account?</p>
+                    <a href="mailto:support@totalcareit.com">Contact Support</a>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <a href="index.html" class="back-link">← Back to Home</a>
+            </div>
+        </div>
+
+        <div class="login-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+    <script src="js/partner-auth.js"></script>
+</body>
+</html>

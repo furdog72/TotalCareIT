@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Auth Test - TotalCare AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0078D4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #005a9e;
+        }
+        #log {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🔐 Simple Authentication Test</h1>
+        <p>This is a minimal test to diagnose the authentication issue.</p>
+
+        <div id="statusBox"></div>
+
+        <button id="testBtn" onclick="testAuth()">Click to Test Microsoft 365 Login</button>
+    </div>
+
+    <div class="box">
+        <h2>Debug Log:</h2>
+        <div id="log"></div>
+    </div>
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+    <script>
+        const logDiv = document.getElementById('log');
+        const statusBox = document.getElementById('statusBox');
+
+        function log(msg, type = 'info') {
+            console.log(msg);
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${msg}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function showStatus(msg, type) {
+            statusBox.innerHTML = `<div class="status ${type}">${msg}</div>`;
+        }
+
+        // Log page load
+        log('Page loaded successfully');
+        log('Current URL: ' + window.location.href);
+
+        // Check if MSAL loaded
+        if (typeof msal === 'undefined') {
+            log('❌ ERROR: MSAL library did not load!', 'error');
+            showStatus('❌ Authentication library failed to load. Check your internet connection.', 'error');
+        } else {
+            log('✅ MSAL library loaded successfully');
+            showStatus('✅ Ready to test authentication', 'success');
+        }
+
+        // Configuration
+        const msalConfig = {
+            auth: {
+                clientId: "60f36a5b-4fb3-4723-a5e3-cffb61fc4015",
+                authority: "https://login.microsoftonline.com/ebdb5fce-7ff2-4680-9436-04ae800fd041",
+                redirectUri: "https://totalcareit.ai/test-simple.html"
+            },
+            cache: {
+                cacheLocation: "sessionStorage",
+                storeAuthStateInCookie: false
+            }
+        };
+
+        log('Configuration:');
+        log('  Client ID: ' + msalConfig.auth.clientId);
+        log('  Tenant ID: ' + msalConfig.auth.authority.split('/').pop());
+        log('  Redirect URI: ' + msalConfig.auth.redirectUri);
+
+        let myMSALObj;
+
+        // Initialize MSAL
+        try {
+            log('Initializing MSAL...');
+            myMSALObj = new msal.PublicClientApplication(msalConfig);
+            log('✅ MSAL initialized');
+
+            // Handle redirect
+            myMSALObj.handleRedirectPromise()
+                .then(response => {
+                    if (response) {
+                        log('✅ Authentication successful!');
+                        log('User: ' + response.account.username);
+                        log('Name: ' + response.account.name);
+                        showStatus('✅ Successfully authenticated as ' + response.account.username, 'success');
+                    } else {
+                        log('No authentication response (not returned from login)');
+                    }
+                })
+                .catch(error => {
+                    log('❌ Redirect error: ' + error.message);
+                    showStatus('❌ Authentication error: ' + error.message, 'error');
+                });
+
+        } catch (error) {
+            log('❌ Failed to initialize MSAL: ' + error.message);
+            showStatus('❌ Failed to initialize authentication: ' + error.message, 'error');
+        }
+
+        // Test function
+        function testAuth() {
+            log('----------------------------------------');
+            log('🔵 Test button clicked!');
+
+            if (!myMSALObj) {
+                log('❌ MSAL not initialized!');
+                showStatus('❌ Authentication not initialized', 'error');
+                return;
+            }
+
+            try {
+                log('Calling loginRedirect...');
+                showStatus('🔄 Redirecting to Microsoft login...', 'info');
+
+                const loginRequest = {
+                    scopes: ["User.Read", "profile", "openid", "email"]
+                };
+
+                log('Login request scopes: ' + loginRequest.scopes.join(', '));
+
+                myMSALObj.loginRedirect(loginRequest)
+                    .then(() => {
+                        log('✅ loginRedirect called successfully');
+                    })
+                    .catch(error => {
+                        log('❌ Login error: ' + error.message);
+                        log('Error details: ' + JSON.stringify(error));
+                        showStatus('❌ Login failed: ' + error.message, 'error');
+                        alert('Login failed: ' + error.message);
+                    });
+
+            } catch (error) {
+                log('❌ Exception during login: ' + error.message);
+                showStatus('❌ Exception: ' + error.message, 'error');
+                alert('Exception: ' + error.message);
+            }
+        }
+
+        log('✅ Script loaded and ready');
+        log('Click the button to test login');
+    </script>
+</body>
+</html>

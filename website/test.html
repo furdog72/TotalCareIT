@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft 365 Authentication Test - TotalCare AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .status-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-box h2 {
+            color: #2d3748;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #status {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        #userInfo {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        #userInfo p {
+            color: #4a5568;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #0078D4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #005a9e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .instructions {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h3 {
+            color: #e67e22;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: #7f6d54;
+        }
+
+        .instructions li {
+            margin: 0.25rem 0;
+            font-size: 0.85rem;
+        }
+
+        .console-note {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        .console-note strong {
+            color: #68d391;
+        }
+
+        .logo {
+            width: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .spinner {
+            display: none;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0078D4;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="logo">
+
+        <h1>Microsoft 365 SSO Test</h1>
+        <p class="subtitle">Partner Portal Authentication Testing</p>
+
+        <div class="instructions">
+            <h3>📋 Test Instructions:</h3>
+            <ol>
+                <li>Press F12 to open browser Developer Tools (Console tab)</li>
+                <li>Click the "Test Login" button below</li>
+                <li>You'll be redirected to Microsoft login</li>
+                <li>Sign in with charles@totalcareit.com</li>
+                <li>You'll be redirected back to this page</li>
+            </ol>
+        </div>
+
+        <div class="status-box">
+            <h2>Status:</h2>
+            <div id="status">Ready to test</div>
+            <div id="userInfo"></div>
+        </div>
+
+        <button id="ms365LoginBtn" class="btn btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M11.5 0L0 2.5v8.75c0 7.344 5.063 14.219 11.5 15.75C17.937 25.469 23 18.594 23 11.25V2.5L11.5 0z" fill="currentColor"/>
+            </svg>
+            <span>Test Login with Microsoft 365</span>
+            <div class="spinner"></div>
+        </button>
+
+        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+
+        <div class="console-note">
+            <strong>💡 Tip:</strong> Check the browser console (F12) for detailed debug logs showing each step of the authentication process.
+        </div>
+    </div>
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

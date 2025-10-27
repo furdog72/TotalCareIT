@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Performance - TotalCare AI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/8752461.js"></script>
+
+    <!-- HubSpot Chat Widget -->
+    <script type="text/javascript">
+        // Load HubSpot Conversations widget only on authenticated pages
+        window.hsConversationsSettings = {
+            loadImmediately: true,
+            inlineEmbedSelector: '#hubspot-chat-widget'
+        };
+    </script>
+
+    <style>
+        .performance-main {
+            margin-left: 280px;
+            padding: 2rem;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .performance-header {
+            background: linear-gradient(135deg, #0077B5 0%, #00A0DC 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,119,181,0.3);
+        }
+
+        .performance-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .linkedin-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #657786;
+            transition: all 0.3s;
+        }
+
+        .tab-button:hover {
+            color: #0077B5;
+        }
+
+        .tab-button.active {
+            color: #0077B5;
+            border-bottom-color: #0077B5;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e1e8ed;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #657786;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0077B5;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .change-positive {
+            color: #10B981;
+        }
+
+        .change-negative {
+            color: #EF4444;
+        }
+
+        .person-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .person-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0077B5 0%, #00A0DC 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .person-info h2 {
+            margin: 0;
+            color: #0077B5;
+            font-size: 1.5rem;
+        }
+
+        .person-info p {
+            margin: 0.25rem 0 0 0;
+            color: #657786;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .comparison-section h3 {
+            margin: 0 0 1.5rem 0;
+            color: #0077B5;
+            font-size: 1.25rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #f5f7fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #657786;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f7fa;
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: 700;
+            color: white;
+        }
+
+        .rank-1 { background: #FFD700; }
+        .rank-2 { background: #C0C0C0; }
+        .rank-3 { background: #CD7F32; }
+        .rank-other { background: #94A3B8; }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #657786;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0077B5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Historical Comparison Styles */
+        .historical-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .historical-section h3 {
+            margin: 0 0 1.5rem 0;
+            color: #0077B5;
+            font-size: 1.25rem;
+        }
+
+        .historical-table-container {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .historical-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .historical-table th {
+            background: #f5f7fa;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #657786;
+            border-bottom: 2px solid #e1e8ed;
+            white-space: nowrap;
+        }
+
+        .historical-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .historical-table tr:hover {
+            background: #f5f7fa;
+        }
+
+        .real-time-row {
+            background: #e6f7ff;
+        }
+
+        .real-time-row:hover {
+            background: #d6edff;
+        }
+
+        .real-time-badge {
+            display: inline-block;
+            background: #0077B5;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+
+        .cell-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .cell-change {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .cell-change.change-positive {
+            color: #10B981;
+        }
+
+        .cell-change.change-negative {
+            color: #EF4444;
+        }
+
+        .cell-change.change-neutral {
+            color: #6B7280;
+        }
+
+        .update-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f5f7fa;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #657786;
+        }
+
+        .update-note svg {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-White-1024x189.png" alt="TotalCare IT Logo" class="sidebar-logo">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="sales-report.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                    <span>Sales Report</span>
+                </a>
+                <a href="linkedin-performance.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                    <span>LinkedIn Performance</span>
+                </a>
+                <a href="scorecard-complete.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Scorecard</span>
+                </a>
+                <a href="quickbooks.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>QuickBooks</span>
+                </a>
+                <a href="prospective-business.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Prospective Business</span>
+                </a>
+                <a href="finance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Finance</span>
+                </a>
+                <a href="trumethods-qbr.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <span>TruMethods QBR</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail"></div>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="performance-main">
+            <div class="performance-header">
+                <h1>
+                    <div class="linkedin-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077B5">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </div>
+                    LinkedIn Performance Dashboard
+                </h1>
+                <p>Track performance metrics • Updated weekly</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-button active" onclick="switchTab('charles')">Charles</button>
+                <button class="tab-button" onclick="switchTab('jason')">Jason Snow</button>
+                <button class="tab-button" onclick="switchTab('company')">TotalCareIT</button>
+            </div>
+
+            <!-- Charles Tab -->
+            <div id="charles-tab" class="tab-content active">
+                <div class="person-section">
+                    <div class="person-header">
+                        <div class="person-avatar">CR</div>
+                        <div class="person-info">
+                            <h2>Charles R. Berry, II</h2>
+                            <p>President & CEO, TotalCareIT</p>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Post Impressions</div>
+                            <div class="metric-value" id="charles-impressions">1,861</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 223% vs Sep 2025</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Profile Views</div>
+                            <div class="metric-value" id="charles-profile-views">335</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 3% vs Sep 2025</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">LinkedIn Followers</div>
+                            <div class="metric-value" id="charles-followers">2,163</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 48 new followers</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Search Appearances</div>
+                            <div class="metric-value" id="charles-search">68</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 66% vs Sep 2025</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Connections</div>
+                            <div class="metric-value" id="charles-connections">1,864</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 22 new connections</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jason Snow Tab -->
+            <div id="jason-tab" class="tab-content">
+                <div class="person-section">
+                    <div class="person-header">
+                        <div class="person-avatar">JS</div>
+                        <div class="person-info">
+                            <h2>Jason Snow</h2>
+                            <p>VP of Sales, TotalCareIT</p>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Post Impressions</div>
+                            <div class="metric-value" id="jason-impressions">3,542</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 9% vs last week</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Profile Views</div>
+                            <div class="metric-value" id="jason-profile-views">624</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 11% vs last week</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">LinkedIn Followers</div>
+                            <div class="metric-value" id="jason-followers">1,456</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 12 new followers</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Search Appearances</div>
+                            <div class="metric-value" id="jason-search">342</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 7% vs last week</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Connections</div>
+                            <div class="metric-value" id="jason-connections">1,987</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 18 new connections</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Tab -->
+            <div id="company-tab" class="tab-content">
+                <div class="person-section">
+                    <div class="person-header">
+                        <div class="person-avatar">TC</div>
+                        <div class="person-info">
+                            <h2>TotalCareIT</h2>
+                            <p>Company Page Performance</p>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Competitor Rank</div>
+                            <div class="metric-value" id="company-rank">3</div>
+                            <div class="metric-change change-negative">
+                                <span>↓ From #2 in Sep 2025</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Posts vs Competitor</div>
+                            <div class="metric-value" id="company-posts">27</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 13% vs Sep 2025</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">vs Competitor</div>
+                            <div class="metric-value" id="company-vs-competitor">1,057.10%</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ From 116.70% in Sep</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Engagement</div>
+                            <div class="metric-value" id="company-engagement">6.60%</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ From 1.30% in Sep</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Followers</div>
+                            <div class="metric-value" id="company-followers">879</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 34 new followers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitor Comparison -->
+                <div class="comparison-section">
+                    <h3>Top 10 LinkedIn Competitors</h3>
+                    <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 15px;">
+                        <strong>Note:</strong> Please update competitor names and metrics from
+                        <a href="https://www.linkedin.com/company/744036/admin/analytics/competitors/" target="_blank" style="color: #0077B5;">LinkedIn Analytics</a>
+                    </p>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Company</th>
+                                <th>Followers</th>
+                                <th>Posts (7d)</th>
+                                <th>Engagement Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="competitor-table">
+                            <tr>
+                                <td><span class="rank-badge rank-1">1</span></td>
+                                <td><strong>TotalCareIT</strong></td>
+                                <td>879</td>
+                                <td>27</td>
+                                <td>6.60%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-2">2</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-3">3</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">4</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">5</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">6</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">7</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">8</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">9</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank-badge rank-other">10</span></td>
+                                <td><em>[Update from LinkedIn]</em></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- HubSpot Chat Widget Container -->
+            <div id="hubspot-chat-widget"></div>
+        </main>
+    </div>
+
+    <!-- MSAL Authentication -->
+    <script src="https://alcdn.msauth.net/browser/2.14.2/js/msal-browser.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/linkedin-dashboard.js"></script>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Auto-refresh data every 5 minutes
+        setInterval(() => {
+            console.log('Refreshing LinkedIn metrics...');
+            // TODO: Fetch real data from API
+        }, 300000);
+    </script>
+</body>
+</html>

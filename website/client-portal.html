@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal - TotalCare AI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .client-card {
+            text-decoration: none;
+            display: block;
+            position: relative;
+            z-index: 10;
+        }
+
+        .client-card-inner {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .client-card:hover .client-card-inner {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102,126,234,0.2);
+        }
+
+        .client-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        .client-name {
+            text-align: center;
+            color: #1f2937;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .client-type {
+            text-align: center;
+            color: #6b7280;
+            margin: 0 0 1rem 0;
+        }
+
+        .client-stats {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="client-portal-page">
+    <div class="client-portal-container">
+        <div class="client-portal-content">
+            <div class="portal-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="portal-logo">
+            </div>
+
+            <div class="portal-main">
+                <div class="coming-soon-box">
+                    <h1>Client Portal</h1>
+                    <p class="subtitle">Select Your Account</p>
+
+                    <div class="description">
+                        <p style="text-align: center; margin-bottom: 2rem;">Welcome to the TotalCare AI Client Portal. Select your business below to access your dashboard.</p>
+                    </div>
+
+                    <!-- Client Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                        <!-- Resale Robby -->
+                        <a href="clients/resale-robby.html" class="client-card">
+                            <div class="client-card-inner">
+                                <div class="client-icon">
+                                    🛍️
+                                </div>
+                                <h3 class="client-name">Resale Robby</h3>
+                                <p class="client-type">Dropshipping Store</p>
+                                <div class="client-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value">24</div>
+                                        <div class="stat-label">Products</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">187</div>
+                                        <div class="stat-label">Orders</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value" style="color: #10b981;">$12.4K</div>
+                                        <div class="stat-label">Revenue</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Coming Soon Card -->
+                        <div style="background: #f9fafb; border-radius: 12px; padding: 2rem; border: 2px dashed #d1d5db; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="width: 80px; height: 80px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem;">
+                                ➕
+                            </div>
+                            <h3 style="text-align: center; color: #6b7280; margin: 0 0 0.5rem 0; font-size: 1.5rem;">Your Business</h3>
+                            <p style="text-align: center; color: #9ca3af; margin: 0;">Coming Soon</p>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        <div>
+                            <strong>Are you a TotalCare IT partner?</strong>
+                            <p>Access the <a href="partner-login.html">Partner Portal</a> using your Microsoft 365 credentials.</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info">
+                        <p>Need help? Contact us at:</p>
+                        <p><a href="mailto:ai@totalcareit.com">ai@totalcareit.com</a></p>
+                        <p><a href="https://totalcareit.com" target="_blank">totalcareit.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-footer">
+                <p>&copy; 2025 TotalCare IT. All rights reserved.</p>
+            </div>
+        </div>
+
+        <div class="portal-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

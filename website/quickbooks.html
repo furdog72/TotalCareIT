@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLU - QuickBooks AI - TotalCareIT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/8752461.js"></script>
+
+    <style>
+        .clu-header {
+            background: linear-gradient(135deg, #2ca01c 0%, #1f7a14 100%);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .clu-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .clu-header-content h1 {
+            margin: 0 0 5px 0;
+            font-size: 28px;
+        }
+
+        .clu-header-content p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-message.assistant {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .chat-message.user .message-avatar {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .chat-message.assistant .message-avatar {
+            background: linear-gradient(135deg, #2ca01c 0%, #1f7a14 100%);
+            color: white;
+        }
+
+        .message-bubble {
+            background: #f3f4f6;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+
+        .chat-message.user .message-bubble {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #2ca01c;
+            box-shadow: 0 0 0 3px rgba(44, 160, 28, 0.1);
+        }
+
+        .chat-send-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2ca01c 0%, #1f7a14 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .example-queries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .example-query {
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .example-query:hover {
+            border-color: #2ca01c;
+            background: #f0fdf4;
+        }
+
+        .critical-alerts {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .critical-alerts h2 {
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .alert-card {
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .alert-card.warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .alert-card.error {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .alert-card.success {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .alert-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .alert-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .alert-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="sidebar-logo">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="sales-report.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                    <span>Sales Report</span>
+                </a>
+                <a href="linkedin-performance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                    <span>LinkedIn Performance</span>
+                </a>
+                <a href="scorecard-complete.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Scorecard</span>
+                </a>
+                <a href="quickbooks.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>QuickBooks</span>
+                </a>
+                <a href="prospective-business.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Prospective Business</span>
+                </a>
+                <a href="finance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Finance</span>
+                </a>
+                <a href="trumethods-qbr.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <span>TruMethods QBR</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="clu-header">
+                <div class="clu-logo">CLU</div>
+                <div class="clu-header-content">
+                    <h1>Care Logic Unit</h1>
+                    <p>Your AI assistant for QuickBooks analysis and reporting</p>
+                </div>
+            </div>
+
+            <!-- Example Queries -->
+            <div class="example-queries">
+                <button class="example-query" onclick="askCLU('What is my total revenue this month?')">
+                    What is my total revenue this month?
+                </button>
+                <button class="example-query" onclick="askCLU('Show me my top 5 customers by revenue')">
+                    Show me my top 5 customers by revenue
+                </button>
+                <button class="example-query" onclick="askCLU('What are my overdue invoices?')">
+                    What are my overdue invoices?
+                </button>
+                <button class="example-query" onclick="askCLU('Generate a profit and loss report for this quarter')">
+                    Generate a profit and loss report for this quarter
+                </button>
+            </div>
+
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message assistant">
+                        <div class="message-avatar">CLU</div>
+                        <div class="message-bubble">
+                            Hello! I'm CLU, your Care Logic Unit. I can help you analyze your QuickBooks data, generate reports, and provide insights into your financial performance. What would you like to know?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input
+                        type="text"
+                        class="chat-input"
+                        id="chatInput"
+                        placeholder="Ask CLU anything about your QuickBooks data..."
+                        onkeypress="handleKeyPress(event)"
+                    />
+                    <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
+            <!-- Critical Alerts -->
+            <div class="critical-alerts">
+                <h2>Critical Alerts</h2>
+                <div class="alerts-grid" id="alertsGrid">
+                    <div class="alert-card warning">
+                        <h3>Overdue Invoices</h3>
+                        <div class="alert-value" id="overdueCount">Loading...</div>
+                        <p>Invoices past due date</p>
+                    </div>
+                    <div class="alert-card error">
+                        <h3>Cash Balance</h3>
+                        <div class="alert-value" id="cashBalance">Loading...</div>
+                        <p>Current available cash</p>
+                    </div>
+                    <div class="alert-card success">
+                        <h3>QuickBooks Status</h3>
+                        <div class="alert-value">Connected</div>
+                        <p>Last sync: <span id="lastSync">Just now</span></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Conversation history for context retention
+        let conversationHistory = [];
+
+        // Initialize critical alerts
+        async function loadCriticalAlerts() {
+            try {
+                const response = await fetch('/api/clu/alerts');
+                const data = await response.json();
+
+                document.getElementById('overdueCount').textContent = data.overdue_invoices || '0';
+                document.getElementById('cashBalance').textContent = '$' + (data.cash_balance || '0').toLocaleString();
+                document.getElementById('lastSync').textContent = data.last_sync || 'Just now';
+            } catch (error) {
+                console.error('Error loading alerts:', error);
+                document.getElementById('overdueCount').textContent = '--';
+                document.getElementById('cashBalance').textContent = '$--';
+            }
+        }
+
+        function askCLU(query) {
+            document.getElementById('chatInput').value = query;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message to chat
+            addMessage('user', message);
+            input.value = '';
+
+            // Add to conversation history
+            conversationHistory.push({ role: 'user', content: message });
+
+            // Disable input while processing
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Thinking...';
+
+            try {
+                // Send to CLU API with conversation history
+                const response = await fetch('/api/clu/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: message,
+                        conversation_history: conversationHistory
+                    })
+                });
+
+                const data = await response.json();
+
+                // Add CLU response to chat
+                addMessage('assistant', data.response || 'I apologize, but I encountered an error processing your request.');
+
+                // Add to conversation history
+                conversationHistory.push({ role: 'assistant', content: data.response });
+
+                // Reload alerts in case data changed
+                loadCriticalAlerts();
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('assistant', 'I apologize, but I encountered a connection error. Please try again.');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+            }
+        }
+
+        function addMessage(type, content) {
+            const messagesContainer = document.getElementById('chatMessages');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = type === 'user' ? 'You' : 'CLU';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = content;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            messagesContainer.appendChild(messageDiv);
+
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Load alerts on page load
+        loadCriticalAlerts();
+    </script>
+</body>
+</html>
