@@ -1,7 +1,8 @@
 # Requirements for local development and testing
 
-# MCP SDK
-mcp>=1.0.0
+# MCP SDK (Model Context Protocol)
+# Install from GitHub: pip install git+https://github.com/modelcontextprotocol/python-sdk.git
+# mcp>=1.0.0  # Commented out - install separately if needed
 
 # QuickBooks Online SDK
 intuit-oauth==1.2.4
@@ -19,9 +20,9 @@ requests==2.31.0
 # Configuration
 pydantic>=2.5.3
 
-# AI Support - Claude Agent SDK
+# AI Support
 anthropic>=0.25.0
-claude-agent-sdk>=0.1.4
+# claude-agent-sdk>=0.1.4  # Requires Python 3.10+ - commented out for Python 3.9 compatibility
 
 # Web framework for EC2 deployment
 fastapi>=0.104.0
