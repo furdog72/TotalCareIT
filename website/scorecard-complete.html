@@ -12,8 +12,8 @@
         .scorecard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; text-align: center; }
         .scorecard-header h1 { margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; }
         .scorecard-header p { margin: 0; font-size: 1.1rem; opacity: 0.95; }
-        .table-wrapper { overflow-x: auto; padding: 2rem; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .table-wrapper { overflow-x: auto; overflow-y: visible; padding: 2rem; max-width: 100%; }
+        table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 14px; }
         th, td { padding: 12px 10px; text-align: left; border: 1px solid #e1e8ed; white-space: nowrap; }
         th { background: #34495e; color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; }
         th.metric-col { width: 280px; background: #2c3e50; }
