@@ -141,17 +141,17 @@
                 </div>
             </div>
 
-            <!-- Autotask Connection Status -->
-            <div id="autotaskBanner" class="alert-banner" style="display: none;">
+            <!-- HubSpot Connection Status -->
+            <div id="hubspotBanner" class="alert-banner" style="display: none;">
                 <div class="alert-content">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
                         <line x1="12" y1="8" x2="12" y2="12"/>
                         <line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
-                    <span id="autotaskMessage">Connect to Autotask to view real-time sales data</span>
+                    <span id="hubspotMessage">Connect to HubSpot to view real-time sales data</span>
                 </div>
-                <button id="configureAutotaskBtn" class="btn-configure">Configure Autotask</button>
+                <button id="configureHubSpotBtn" class="btn-configure">Configure HubSpot</button>
             </div>
 
             <!-- Date Range Filter -->
@@ -327,35 +327,6 @@
                     <div class="appointments-list" id="appointmentsList">
                         <!-- Will be populated by JavaScript -->
                     </div>
-                </div>
-            </div>
-
-            <!-- Recent Activity Table -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h2>Recent Sales Activity</h2>
-                    <div class="header-actions">
-                        <input type="search" placeholder="Search activities..." class="search-input" id="activitySearch">
-                        <button class="btn-export">Export CSV</button>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date & Time</th>
-                                <th>Activity Type</th>
-                                <th>Contact</th>
-                                <th>Duration</th>
-                                <th>Outcome</th>
-                                <th>Next Steps</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="activityTableBody">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
