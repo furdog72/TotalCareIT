@@ -152,25 +152,67 @@
                     const qData = metric.quarters[q];
 
                     if (isExpanded) {
-                        // Show all week values
+                        // Show all week values with formatting
                         qData.values.forEach(val => {
                             const cssClass = metric.is_section ? 'section-header' : getValueClass(val);
-                            bodyHTML += `<td class="${cssClass}">${val}</td>`;
+                            const formattedVal = metric.is_section ? val : formatValue(val, metric.format);
+                            bodyHTML += `<td class="${cssClass}">${formattedVal}</td>`;
                         });
                     }
 
-                    // Quarter summary
+                    // Quarter summary with formatting
                     const summaryClass = metric.is_section ? 'section-header' : 'quarter-summary';
-                    bodyHTML += `<td class="${summaryClass}">${qData.summary}</td>`;
+                    const formattedSummary = metric.is_section ? qData.summary : formatValue(qData.summary, metric.format);
+                    bodyHTML += `<td class="${summaryClass}">${formattedSummary}</td>`;
                 });
 
-                // Year total
+                // Year total with formatting
                 const yearClass = metric.is_section ? 'section-header' : 'year-total';
-                bodyHTML += `<td class="${yearClass}">${metric.year_total}</td>`;
+                const formattedYear = metric.is_section ? metric.year_total : formatValue(metric.year_total, metric.format);
+                bodyHTML += `<td class="${yearClass}">${formattedYear}</td>`;
                 bodyHTML += '</tr>';
             });
 
             tbody.innerHTML = bodyHTML;
+        }
+
+        function formatValue(value, format) {
+            // Return as-is for non-numeric values
+            if (value === '-' || value === 'nan' || value === null || value === undefined) {
+                return '-';
+            }
+
+            // Try to parse as number
+            const num = parseFloat(value);
+            if (isNaN(num)) {
+                return value; // Return original if not a number
+            }
+
+            // Apply formatting based on Excel number format
+            if (format === '0') {
+                // Whole number
+                return Math.round(num).toString();
+            } else if (format === '0.0%') {
+                // Percentage with 1 decimal (value is already decimal, e.g., 0.697 = 69.7%)
+                return (num * 100).toFixed(1) + '%';
+            } else if (format === '0.00%' || format === '0%') {
+                // Percentage with 2 decimals or whole percent
+                const decimals = format === '0%' ? 0 : 2;
+                return (num * 100).toFixed(decimals) + '%';
+            } else if (format === '0.00') {
+                // Decimal with 2 places
+                return num.toFixed(2);
+            } else if (format.includes('#,##0')) {
+                // Comma-separated number
+                return Math.round(num).toLocaleString();
+            } else {
+                // Default: try to detect if it's a whole number or decimal
+                if (Number.isInteger(num)) {
+                    return num.toString();
+                } else {
+                    return num.toFixed(2);
+                }
+            }
         }
 
         function getValueClass(value) {
