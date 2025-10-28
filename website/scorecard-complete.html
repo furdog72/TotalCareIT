@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scorecard Q4 2025 - TotalCareIT</title>
+    <title>Scorecard 2025 - TotalCareIT</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
@@ -14,19 +14,30 @@
         .scorecard-header p { margin: 0; font-size: 1.1rem; opacity: 0.95; }
         .table-wrapper { overflow-x: auto; padding: 2rem; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th, td { padding: 12px 10px; text-align: left; border: 1px solid #e1e8ed; }
+        th, td { padding: 12px 10px; text-align: left; border: 1px solid #e1e8ed; white-space: nowrap; }
         th { background: #34495e; color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; }
         th.metric-col { width: 280px; background: #2c3e50; }
         th.owner-col { width: 120px; }
         th.goal-col { width: 90px; }
-        th.week-col { width: 100px; text-align: center; background: #667eea; }
+        th.week-col { min-width: 80px; text-align: center; background: #667eea; }
+        th.quarter-col { min-width: 100px; text-align: center; background: #5a67d8; cursor: pointer; user-select: none; }
+        th.quarter-col:hover { background: #4c51bf; }
+        th.quarter-col.expanded { background: #48bb78; }
+        th.year-col { min-width: 100px; text-align: center; background: #2c3e50; }
+
         td.metric-name { font-weight: 600; background: #f8f9fa; }
         td.section-header { background: #e9ecef; font-weight: 700; font-size: 15px; color: #495057; }
         td.week-value { text-align: center; font-weight: 500; }
+        td.quarter-summary { text-align: center; font-weight: 600; background: #edf2f7; }
+        td.year-total { text-align: center; font-weight: 700; background: #e2e8f0; }
+
         .good { background: #d4edda !important; color: #155724; }
         .warning { background: #fff3cd !important; color: #856404; }
         .bad { background: #f8d7da !important; color: #721c24; }
         .empty { background: #fafafa; color: #999; }
+
+        .quarter-toggle { font-size: 12px; margin-left: 5px; }
+        .hidden-col { display: none; }
     </style>
 </head>
 <body class="dashboard-page">
@@ -54,451 +65,121 @@
             <div class="scorecard-container">
                 <div class="scorecard-header">
                     <h1>🎯 TotalCareIT Scorecard 2025</h1>
-                    <p>Q4 October Performance Dashboard</p>
+                    <p>Full Year Performance Dashboard - Click quarters to expand/collapse</p>
                 </div>
                 <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="metric-col">Metric / KPI</th>
-                                <th class="owner-col">Owner</th>
-                                <th class="goal-col">Goal</th>
-                                <th class="week-col">10/03</th>
-                                <th class="week-col">10/10</th>
-                                <th class="week-col">10/17</th>
-                                <th class="week-col">10/24</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="section-header">Inside Sales Activity</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Inside Sales 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Dials</td>
-                                <td>Jason</td>
-                                <td>125</td>
-                                <td class="week-value">101</td>
-                                <td class="week-value">70</td>
-                                <td class="week-value">102</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Conversations with DM</td>
-                                <td>Jason</td>
-                                <td>13</td>
-                                <td class="week-value">21</td>
-                                <td class="week-value">16</td>
-                                <td class="week-value">13</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">FTA's set</td>
-                                <td>Jason</td>
-                                <td>1</td>
-                                <td class="week-value">0</td>
-                                <td class="week-value">1</td>
-                                <td class="week-value">0</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Outside Sales Activity</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Sales 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">FTA Attended</td>
-                                <td>Jason/Charles</td>
-                                <td>1</td>
-                                <td class="week-value">1</td>
-                                <td class="week-value">1</td>
-                                <td class="week-value">0</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">COI Attended</td>
-                                <td>Jason/Charles</td>
-                                <td>1</td>
-                                <td class="week-value">2</td>
-                                <td class="week-value">3</td>
-                                <td class="week-value">2</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Networking Events</td>
-                                <td>Jason/Charles</td>
-                                <td>1</td>
-                                <td class="week-value">3</td>
-                                <td class="week-value">7</td>
-                                <td class="week-value">2</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">MRR Closed</td>
-                                <td>Jason/Charles</td>
-                                <td>500</td>
-                                <td class="week-value">0</td>
-                                <td class="week-value">0</td>
-                                <td class="week-value">0</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Hybrid Sales Activity</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Hybrid Sales Activity 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">COI Created</td>
-                                <td>Josh</td>
-                                <td>2</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">COI Attended</td>
-                                <td>Josh</td>
-                                <td>2</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Networking Events</td>
-                                <td>Josh</td>
-                                <td>3</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Warm 250 Activity</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Inside Sales Jason/Charles Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">W250 Dials</td>
-                                <td>Charles</td>
-                                <td>25</td>
-                                <td class="week-value">1</td>
-                                <td class="week-value">14</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">W250 Conversations with DM</td>
-                                <td>Charles</td>
-                                <td>6</td>
-                                <td class="week-value">6</td>
-                                <td class="week-value">4</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">W250 FTA's set</td>
-                                <td>Charles</td>
-                                <td>1</td>
-                                <td class="week-value">3</td>
-                                <td class="week-value">1</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Reactive Operations</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Reactive Operations 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Reactive Tickets Opened</td>
-                                <td>Scott</td>
-                                <td> </td>
-                                <td class="week-value">69</td>
-                                <td class="week-value">78</td>
-                                <td class="week-value">75</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Reactive Tickets Closed</td>
-                                <td>Scott</td>
-                                <td> </td>
-                                <td class="week-value">79</td>
-                                <td class="week-value">59</td>
-                                <td class="week-value">93</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Same day Close</td>
-                                <td>Scott</td>
-                                <td>0.7</td>
-                                <td class="week-value">0.53</td>
-                                <td class="week-value">0.49</td>
-                                <td class="week-value">0.733</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Utilization</td>
-                                <td>Scott</td>
-                                <td>0.6</td>
-                                <td class="empty">-</td>
-                                <td class="week-value">1.1771</td>
-                                <td class="week-value">1.0922</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Tickets >7 days old (ROC)</td>
-                                <td>Scott</td>
-                                <td>2</td>
-                                <td class="week-value">38</td>
-                                <td class="week-value"></td>
-                                <td class="week-value">34</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Tickets Opened/IT 360 endpoint/month (Service)</td>
-                                <td>Scott</td>
-                                <td>0.5</td>
-                                <td class="empty">-</td>
-                                <td class="week-value">0.49</td>
-                                <td class="week-value">0.47</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">RHEM (Service Noise)  </td>
-                                <td>Scott</td>
-                                <td>0.25</td>
-                                <td class="empty">-</td>
-                                <td class="week-value">0.29</td>
-                                <td class="week-value">0.386</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Avg Response Time/Ticket (Service)</td>
-                                <td>Scott</td>
-                                <td>0.5</td>
-                                <td class="week-value">2.38</td>
-                                <td class="week-value">1.1</td>
-                                <td class="week-value">1.19</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Avg Resolution Time/Ticket (Service)</td>
-                                <td>Scott</td>
-                                <td>0.5</td>
-                                <td class="week-value">0.72</td>
-                                <td class="week-value">0.49</td>
-                                <td class="week-value">0.76</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Centralized Services</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Centralized Services 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Failed Backups > 48 Hours (50)</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">0.1</td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">0.2</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Failed Backups on Continuity > 7 Days</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">0.2</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Failed Backups on SAAS > 48 Hours</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Missing > 5 Patches</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">0.054</td>
-                                <td class="section-header">0.0509</td>
-                                <td class="section-header">0.0597</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Total Windows 7 Devices</td>
-                                <td>Charles</td>
-                                <td>0</td>
-                                <td class="week-value">2</td>
-                                <td class="week-value">2</td>
-                                <td class="week-value">2</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Total Windows 10 Devices </td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">128</td>
-                                <td class="section-header">127</td>
-                                <td class="section-header">126</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Total Windows 11 EOL Devices </td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">0.0247</td>
-                                <td class="section-header">0.0131</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Missing Hosted AV</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">0.0119</td>
-                                <td class="section-header">0.0133</td>
-                                <td class="section-header">0.0148</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">TotalCareIT Microsoft Security Score</td>
-                                <td>Joe</td>
-                                <td>0.6</td>
-                                <td class="empty">-</td>
-                                <td class="week-value">0.6024</td>
-                                <td class="week-value">0.6009</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Professional Services</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">Professional Services 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Professional Services Tickets Opened</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">4</td>
-                                <td class="section-header">3</td>
-                                <td class="section-header">0</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Professional Services Tickets Closed</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">4</td>
-                                <td class="section-header">2</td>
-                                <td class="section-header">4</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">Tickets Over 30 Days Old</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">12</td>
-                                <td class="section-header">13</td>
-                                <td class="section-header">14</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">TAM</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">TAM 2025 Q4</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name"># of Questions Answered</td>
-                                <td>Joe</td>
-                                <td>-</td>
-                                <td class="week-value">55</td>
-                                <td class="week-value">29</td>
-                                <td class="week-value">131</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">TAM Tickets Opened</td>
-                                <td>Joe</td>
-                                <td>-</td>
-                                <td class="week-value">19</td>
-                                <td class="week-value">10</td>
-                                <td class="week-value">15</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">TAM Tickets Closed</td>
-                                <td>Joe</td>
-                                <td>-</td>
-                                <td class="week-value">23</td>
-                                <td class="week-value">12</td>
-                                <td class="week-value">27</td>
-                                <td class="empty">-</td>
-                            </tr>
-                            <tr>
-                                <td class="section-header">vCIO</td>
-                                <td class="section-header"></td>
-                                <td class="section-header"></td>
-                                <td class="section-header">vCIO 2024 Q1</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                                <td class="section-header">-</td>
-                            </tr>
-                            <tr>
-                                <td class="metric-name">Reviews Complete</td>
-                                <td>Charles</td>
-                                <td>1</td>
-                                <td class="week-value">0</td>
-                                <td class="week-value">0</td>
-                                <td class="empty">-</td>
-                                <td class="empty">-</td>
-                            </tr>
-                        </tbody>
+                    <table id="scorecardTable">
+                        <thead id="tableHeader"></thead>
+                        <tbody id="tableBody"></tbody>
                     </table>
                 </div>
             </div>
         </main>
     </div>
     <script src="js/auth.js"></script>
+    <script>
+        let scorecardData = null;
+        let expandedQuarters = { Q1: false, Q2: false, Q3: false, Q4: true }; // Q4 expanded by default
+
+        async function loadScorecard() {
+            try {
+                const response = await fetch('data/scorecard-2025-full.json');
+                scorecardData = await response.json();
+                renderScorecard();
+            } catch (error) {
+                console.error('Error loading scorecard:', error);
+            }
+        }
+
+        function toggleQuarter(quarter) {
+            expandedQuarters[quarter] = !expandedQuarters[quarter];
+            renderScorecard();
+        }
+
+        function renderScorecard() {
+            if (!scorecardData) return;
+
+            const thead = document.getElementById('tableHeader');
+            const tbody = document.getElementById('tableBody');
+
+            // Build header row
+            let headerHTML = '<tr>';
+            headerHTML += '<th class="metric-col">Metric / KPI</th>';
+            headerHTML += '<th class="owner-col">Owner</th>';
+            headerHTML += '<th class="goal-col">Goal</th>';
+
+            // Add quarter headers
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
+                const isExpanded = expandedQuarters[q];
+                const qData = scorecardData.quarters[q];
+
+                if (isExpanded) {
+                    // Show all weeks for this quarter
+                    qData.week_headers.forEach(week => {
+                        headerHTML += `<th class="week-col quarter-${q}">${week}</th>`;
+                    });
+                }
+
+                // Always show quarter summary column (clickable)
+                const expandedClass = isExpanded ? 'expanded' : '';
+                const arrow = isExpanded ? '▼' : '▶';
+                headerHTML += `<th class="quarter-col ${expandedClass}" onclick="toggleQuarter('${q}')">${q} <span class="quarter-toggle">${arrow}</span></th>`;
+            });
+
+            headerHTML += '<th class="year-col">Year</th>';
+            headerHTML += '</tr>';
+            thead.innerHTML = headerHTML;
+
+            // Build body rows
+            let bodyHTML = '';
+            scorecardData.metrics.forEach(metric => {
+                bodyHTML += '<tr>';
+
+                // KPI name, owner, goal
+                if (metric.is_section) {
+                    bodyHTML += `<td class="section-header">${metric.kpi}</td>`;
+                    bodyHTML += `<td class="section-header">${metric.owner}</td>`;
+                    bodyHTML += `<td class="section-header">${metric.goal}</td>`;
+                } else {
+                    bodyHTML += `<td class="metric-name">${metric.kpi}</td>`;
+                    bodyHTML += `<td>${metric.owner}</td>`;
+                    bodyHTML += `<td>${metric.goal}</td>`;
+                }
+
+                // Quarter data
+                ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
+                    const isExpanded = expandedQuarters[q];
+                    const qData = metric.quarters[q];
+
+                    if (isExpanded) {
+                        // Show all week values
+                        qData.values.forEach(val => {
+                            const cssClass = metric.is_section ? 'section-header' : getValueClass(val);
+                            bodyHTML += `<td class="${cssClass}">${val}</td>`;
+                        });
+                    }
+
+                    // Quarter summary
+                    const summaryClass = metric.is_section ? 'section-header' : 'quarter-summary';
+                    bodyHTML += `<td class="${summaryClass}">${qData.summary}</td>`;
+                });
+
+                // Year total
+                const yearClass = metric.is_section ? 'section-header' : 'year-total';
+                bodyHTML += `<td class="${yearClass}">${metric.year_total}</td>`;
+                bodyHTML += '</tr>';
+            });
+
+            tbody.innerHTML = bodyHTML;
+        }
+
+        function getValueClass(value) {
+            if (value === '-' || value === 'nan') return 'empty';
+            return 'week-value';
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadScorecard);
+    </script>
 </body>
 </html>
