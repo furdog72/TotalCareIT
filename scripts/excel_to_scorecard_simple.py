@@ -71,18 +71,19 @@ for row_idx in range(4, 80):  # Read up to row 80
     owner = ws.cell(row=row_idx, column=2).value
     goal = ws.cell(row=row_idx, column=3).value
 
-    # Check if section header (has background color)
-    cell_a = ws.cell(row=row_idx, column=1)
-    is_section = False
+    # Check if section header (column B is None/empty and column A has text)
+    is_section = metric_str and not owner
     bg_color = None
 
-    if cell_a.fill and cell_a.fill.start_color:
-        color = cell_a.fill.start_color
-        if hasattr(color, 'rgb') and color.rgb:
-            rgb = str(color.rgb)
-            if rgb != '00000000' and len(rgb) >= 6:
-                is_section = True
-                bg_color = f"#{rgb[-6:]}"
+    # Get background color for section headers
+    if is_section:
+        cell_a = ws.cell(row=row_idx, column=1)
+        if cell_a.fill and cell_a.fill.start_color:
+            color = cell_a.fill.start_color
+            if hasattr(color, 'rgb') and color.rgb:
+                rgb = str(color.rgb)
+                if rgb != '00000000' and len(rgb) >= 6:
+                    bg_color = f"#{rgb[-6:]}"
 
     # Read week values (only Q4 October for now)
     week_values = {}
