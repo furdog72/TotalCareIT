@@ -23,8 +23,10 @@ class ConnectWiseCPQ:
         self.private_key = os.getenv('CONNECTWISE_CPQ_PRIVATE_KEY')
         self.access_key = os.getenv('CONNECTWISE_CPQ_ACCESS_KEY')  # subdomain_azure
 
-        # Base URL
-        self.base_url = f"https://{self.access_key}.quosal.com/apiservice"
+        # Base URL - Extract subdomain from access_key (remove _azure)
+        subdomain = self.access_key.replace('_azure', '') if self.access_key else ''
+        # Try the QuosalWeb API service endpoint
+        self.base_url = f"https://{subdomain}.quosalsell.com/QuosalWeb/Service.asmx"
 
         # Headers
         self.headers = {
@@ -308,7 +310,7 @@ def test_cpq_connection():
         print(f"   Won: {pipeline['won_opportunities']} (${pipeline['won_value']:,.2f})")
         print(f"   Lost: {pipeline['lost_opportunities']} (${pipeline['lost_value']:,.2f})")
 
-        if pipeline['opportunities']:
+        if pipeline.get('opportunities'):
             print(f"\n📋 Recent Opportunities:")
             for opp in pipeline['opportunities'][:5]:
                 print(f"   - {opp['name']} ({opp['client']}): ${opp['value']:,.2f} - {opp['status']}")

@@ -431,80 +431,28 @@
         }
 
         function loadSampleData() {
-            allContracts = [
-                {
-                    name: "General Liability Insurance",
-                    type: "insurance",
-                    vendor: "Hartford Insurance",
-                    startDate: "2024-01-01",
-                    endDate: "2025-01-01",
-                    noticePeriod: 60,
-                    annualValue: 15000,
-                    autoRenew: true
-                },
-                {
-                    name: "Professional Liability (E&O)",
-                    type: "insurance",
-                    vendor: "Travelers Insurance",
-                    startDate: "2024-03-15",
-                    endDate: "2025-03-15",
-                    noticePeriod: 30,
-                    annualValue: 8500,
-                    autoRenew: false
-                },
-                {
-                    name: "Microsoft CSP Agreement",
-                    type: "vendor",
-                    vendor: "Microsoft",
-                    startDate: "2023-06-01",
-                    endDate: "2025-06-01",
-                    noticePeriod: 90,
-                    annualValue: 125000,
-                    autoRenew: true
-                },
-                {
-                    name: "Autotask PSA",
-                    type: "service",
-                    vendor: "Datto/Kaseya",
-                    startDate: "2024-01-01",
-                    endDate: "2025-12-31",
-                    noticePeriod: 60,
-                    annualValue: 12000,
-                    autoRenew: true
-                },
-                {
-                    name: "Cybersecurity Insurance",
-                    type: "insurance",
-                    vendor: "Coalition Insurance",
-                    startDate: "2024-11-01",
-                    endDate: "2025-11-01",
-                    noticePeriod: 30,
-                    annualValue: 18000,
-                    autoRenew: false
-                },
-                {
-                    name: "IT Glue Documentation",
-                    type: "service",
-                    vendor: "Kaseya",
-                    startDate: "2024-02-01",
-                    endDate: "2025-02-01",
-                    noticePeriod: 30,
-                    annualValue: 4800,
-                    autoRenew: true
-                },
-                {
-                    name: "Workers Compensation",
-                    type: "insurance",
-                    vendor: "State Fund",
-                    startDate: "2024-01-01",
-                    endDate: "2025-01-01",
-                    noticePeriod: 60,
-                    annualValue: 22000,
-                    autoRenew: true
-                }
-            ];
+            // Sample data removed - awaiting real contract data setup
+            allContracts = [];
             updateStatistics();
             renderContracts(allContracts);
+
+            // Show empty state message
+            const contractsList = document.getElementById('contractsList');
+            if (allContracts.length === 0) {
+                contractsList.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; color: #6b7280;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 1rem; opacity: 0.3;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <line x1="10" y1="9" x2="8" y2="9"/>
+                        </svg>
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.25rem; color: #374151;">No Contracts Found</h3>
+                        <p style="margin: 0; font-size: 0.95rem;">Contract data will appear here once integration is configured.</p>
+                    </div>
+                `;
+            }
         }
 
         function calculateDaysRemaining(endDate) {

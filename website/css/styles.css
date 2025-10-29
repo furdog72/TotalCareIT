@@ -938,6 +938,20 @@ section {
     gap: 1rem;
 }
 
+.logout-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-left-color: var(--error-color);
+}
+
 .user-profile {
     display: flex;
     align-items: center;

@@ -17,17 +17,14 @@
         </a>
 
         <!-- Sales Dropdown -->
-        <div class="nav-item-dropdown">
-            <div class="nav-item nav-toggle">
+        <div class="nav-item-dropdown open">
+            <div class="nav-item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="12" y1="20" x2="12" y2="10"/>
                     <line x1="18" y1="20" x2="18" y2="4"/>
                     <line x1="6" y1="20" x2="6" y2="16"/>
                 </svg>
                 <span>Sales</span>
-                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                </svg>
             </div>
             <div class="nav-submenu">
                 <a href="sales-report.html" class="nav-subitem">
@@ -48,8 +45,8 @@
                 </a>
 
                 <!-- Prospective Business Sub-dropdown -->
-                <div class="nav-subitem-dropdown">
-                    <div class="nav-subitem nav-subtoggle">
+                <div class="nav-subitem-dropdown open">
+                    <div class="nav-subitem">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                             <circle cx="9" cy="7" r="4"/>
@@ -57,9 +54,6 @@
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                         </svg>
                         <span>Prospective Business</span>
-                        <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
                     </div>
                     <div class="nav-sub-submenu">
                         <a href="prospective-business.html?type=managed" class="nav-sub-subitem">
@@ -96,16 +90,13 @@
         </a>
 
         <!-- Finance Dropdown -->
-        <div class="nav-item-dropdown">
-            <div class="nav-item nav-toggle">
+        <div class="nav-item-dropdown open">
+            <div class="nav-item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="12" y1="1" x2="12" y2="23"/>
                     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                 </svg>
                 <span>Finance</span>
-                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                </svg>
             </div>
             <div class="nav-submenu">
                 <a href="quickbooks.html" class="nav-subitem">
@@ -179,35 +170,10 @@
     </div>
 </aside>
 
-<!-- Sidebar Dropdown JavaScript -->
+<!-- Sidebar Navigation JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle main dropdown toggles
-    document.querySelectorAll('.nav-toggle').forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            const dropdown = this.parentElement;
-            const isOpen = dropdown.classList.contains('open');
-
-            // Close all other dropdowns
-            document.querySelectorAll('.nav-item-dropdown').forEach(d => {
-                if (d !== dropdown) d.classList.remove('open');
-            });
-
-            // Toggle this dropdown
-            dropdown.classList.toggle('open', !isOpen);
-        });
-    });
-
-    // Handle sub-dropdown toggles (Prospective Business)
-    document.querySelectorAll('.nav-subtoggle').forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const dropdown = this.parentElement;
-            dropdown.classList.toggle('open');
-        });
-    });
+    // Dropdowns are now always expanded - no toggle needed
 
     // Set active states based on current page
     const currentPage = window.location.pathname.split('/').pop();
