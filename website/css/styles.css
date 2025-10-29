@@ -2859,3 +2859,402 @@ section {
         font-size: 2rem;
     }
 }
+
+/* ===== SALES AI CHAT ASSISTANT ===== */
+
+/* Container with collapsed/expanded states */
+#sales-ai-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 10000;
+    transition: all 0.3s ease;
+}
+
+#sales-ai-container.sales-ai-collapsed .sales-ai-panel {
+    display: none;
+}
+
+/* Floating toggle button */
+.sales-ai-toggle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
+    transition: all 0.3s ease;
+}
+
+.sales-ai-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(79, 70, 229, 0.6);
+}
+
+.sales-ai-toggle svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Chat panel */
+.sales-ai-panel {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 400px;
+    height: 600px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.sales-ai-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.sales-ai-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+}
+
+.sales-ai-header p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.sales-ai-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.sales-ai-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Messages container */
+.sales-ai-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    background: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Custom scrollbar */
+.sales-ai-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sales-ai-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sales-ai-messages::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.sales-ai-messages::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+/* Message bubbles */
+.ai-message,
+.user-message {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.message-content {
+    background: white;
+    padding: 0.875rem 1rem;
+    border-radius: 1rem;
+    max-width: 75%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.ai-message .message-content {
+    border-bottom-left-radius: 0.25rem;
+}
+
+.message-content p {
+    margin: 0 0 0.5rem 0;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+.message-content p:last-child {
+    margin-bottom: 0;
+}
+
+.message-content ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.message-content li {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.message-content strong {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.user-message .message-content strong {
+    color: white;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: flex;
+    gap: 0.375rem;
+    padding: 0.75rem 1rem;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-light);
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* Input container */
+.sales-ai-input-container {
+    padding: 1rem;
+    background: white;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+}
+
+.sales-ai-input {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: none;
+    max-height: 120px;
+    transition: border-color 0.2s;
+}
+
+.sales-ai-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.sales-ai-input:disabled {
+    background: var(--bg-secondary);
+    cursor: not-allowed;
+}
+
+.sales-ai-send {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.sales-ai-send:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.sales-ai-send:active {
+    transform: scale(0.95);
+}
+
+/* Quick actions */
+.sales-ai-quick-actions {
+    padding: 0.75rem 1rem 1rem 1rem;
+    background: white;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    border-top: 1px solid var(--border-color);
+}
+
+.sales-ai-quick-actions::-webkit-scrollbar {
+    height: 4px;
+}
+
+.sales-ai-quick-actions::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sales-ai-quick-actions::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.quick-action {
+    padding: 0.5rem 0.875rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.quick-action:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sales-ai-panel {
+        width: calc(100vw - 2rem);
+        height: calc(100vh - 100px);
+        right: 1rem;
+        bottom: 80px;
+    }
+
+    #sales-ai-container {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    .sales-ai-panel {
+        width: calc(100vw - 1rem);
+        height: calc(100vh - 80px);
+        right: 0.5rem;
+        bottom: 70px;
+        border-radius: 0.75rem;
+    }
+
+    #sales-ai-container {
+        right: 0.5rem;
+    }
+
+    .sales-ai-toggle {
+        width: 56px;
+        height: 56px;
+    }
+}
