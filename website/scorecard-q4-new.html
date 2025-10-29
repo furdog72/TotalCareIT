@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scorecard Q4 2025 - TotalCareIT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- MSAL.js for Authentication -->
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+
+    <style>
+        .scorecard-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin: 20px;
+        }
+
+        .scorecard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .scorecard-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .scorecard-header p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid #e1e8ed;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th.metric-col { width: 280px; background: #2c3e50; }
+        th.owner-col { width: 120px; }
+        th.goal-col { width: 90px; }
+        th.week-col {
+            width: 100px;
+            text-align: center;
+            background: #667eea;
+        }
+
+        td.metric-name {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+
+        td.section-header {
+            background: #e9ecef;
+            font-weight: 700;
+            font-size: 15px;
+            color: #495057;
+            padding: 15px 10px;
+        }
+
+        td.week-value {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .good {
+            background: #d4edda !important;
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: #fff3cd !important;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .bad {
+            background: #f8d7da !important;
+            color: #721c24;
+            font-weight: 600;
+        }
+
+        .empty {
+            background: #fafafa;
+            color: #999;
+        }
+
+        .neutral {
+            background: white;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="sidebar-logo">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="sales-report.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                    <span>Sales Report</span>
+                </a>
+                <a href="linkedin-performance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                    <span>LinkedIn Performance</span>
+                </a>
+                <a href="scorecard-complete.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Scorecard</span>
+                </a>
+                <a href="quickbooks.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>QuickBooks</span>
+                </a>
+                <a href="prospective-business.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>Prospective Business</span>
+                </a>
+                <a href="finance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span>Finance</span>
+                </a>
+                <a href="trumethods-qbr.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>TruMethods QBR</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail"></div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="scorecard-container">
+                <div class="scorecard-header">
+                    <h1>🎯 TotalCareIT Scorecard 2025</h1>
+                    <p>Q4 October Performance Dashboard</p>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="scorecardTable">
+                        <thead>
+                            <tr>
+                                <th class="metric-col">Metric / KPI</th>
+                                <th class="owner-col">Owner</th>
+                                <th class="goal-col">Goal</th>
+                                <th class="week-col">10/03</th>
+                                <th class="week-col">10/10</th>
+                                <th class="week-col">10/17</th>
+                                <th class="week-col">10/24</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scorecardBody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Authentication Script -->
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Load scorecard data
+        async function loadScorecard() {
+            try {
+                const response = await fetch('data/scorecard-q4-2025-structure.json');
+                const data = await response.json();
+                renderScorecard(data);
+            } catch (error) {
+                console.error('Error loading scorecard:', error);
+            }
+        }
+
+        function renderScorecard(data) {
+            const tbody = document.getElementById('scorecardBody');
+            let html = '';
+
+            data.sections.forEach(section => {
+                // Section header row
+                if (section.type === 'header' || section.type === 'calculated') {
+                    html += `<tr>`;
+                    html += `<td class="section-header">${section.name}</td>`;
+                    html += `<td class="section-header">${section.type === 'calculated' ? 'Calculated' : ''}</td>`;
+                    html += `<td class="section-header">-</td>`;
+
+                    // If has header values, show them
+                    if (section.header_values && section.header_values.length > 0) {
+                        section.header_values.forEach(val => {
+                            html += `<td class="section-header empty">${val !== '-' ? val : '-'}</td>`;
+                        });
+                    } else {
+                        for (let i = 0; i < 4; i++) {
+                            html += `<td class="section-header">-</td>`;
+                        }
+                    }
+                    html += `</tr>`;
+                }
+
+                // Metric rows
+                section.metrics.forEach(metric => {
+                    html += `<tr>`;
+                    html += `<td class="metric-name">${metric.name}</td>`;
+                    html += `<td>${metric.owner}</td>`;
+                    html += `<td>${metric.goal}</td>`;
+
+                    metric.values.forEach((value, idx) => {
+                        const cssClass = getValueClass(metric, value, idx);
+                        html += `<td class="week-value ${cssClass}">${value}</td>`;
+                    });
+                    html += `</tr>`;
+                });
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function getValueClass(metric, value, weekIndex) {
+            if (value === '-' || value === 'nan') return 'empty';
+
+            const goal = parseFloat(metric.goal);
+            const val = parseFloat(value);
+
+            if (isNaN(goal) || isNaN(val)) return 'neutral';
+
+            // Determine if meeting goal
+            if (metric.goal.includes('<') || metric.goal.includes('<=')) {
+                // Lower is better
+                if (val <= goal) return 'good';
+                if (val <= goal * 1.2) return 'warning';
+                return 'bad';
+            } else if (metric.goal.includes('>') || metric.goal.includes('>=')) {
+                // Higher is better
+                if (val >= goal) return 'good';
+                if (val >= goal * 0.8) return 'warning';
+                return 'bad';
+            } else {
+                // Standard comparison
+                if (val >= goal) return 'good';
+                if (val >= goal * 0.8) return 'warning';
+                return 'bad';
+            }
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadScorecard);
+    </script>
+</body>
+</html>
