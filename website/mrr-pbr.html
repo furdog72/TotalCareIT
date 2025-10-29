@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRR PBR | TotalCareIT Partner Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Partner Portal Navigation -->
+        <div id="partner-nav-placeholder"></div>
+        <script src="js/load-nav.js"></script>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header matching Excel layout -->
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%); color: white; margin-bottom: 2rem;">
+                <div class="card-content">
+                    <h1 style="margin: 0; font-size: 2rem; color: white;">TotalCareIT PBR</h1>
+                </div>
+            </div>
+
+            <!-- Quarterly Goals Table (matching Excel) -->
+            <div class="dashboard-card" style="margin-bottom: 2rem;">
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table" style="width: 100%;">
+                            <thead>
+                                <tr style="background: #f3f4f6;">
+                                    <th style="width: 20%; text-align: left;"></th>
+                                    <th style="width: 16%; text-align: center; background: #e5e7eb;">Q1</th>
+                                    <th style="width: 16%; text-align: center; background: #e5e7eb;">Q2</th>
+                                    <th style="width: 16%; text-align: center; background: #e5e7eb;">Q3</th>
+                                    <th style="width: 16%; text-align: center; background: #e5e7eb;">Q4</th>
+                                    <th style="width: 16%; text-align: center;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="quarterlyGoalsBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 1rem; display: flex; gap: 2rem; align-items: center;">
+                        <div>
+                            <strong>Forecasted for this month (October):</strong> <span id="forecastedThisMonth">$0.00</span>
+                        </div>
+                        <div>
+                            <strong>Forecasted for next month (November):</strong> <span id="forecastedNextMonth">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prospects (30 Days) -->
+            <div class="dashboard-card" id="prospectsCard">
+                <div class="card-header">
+                    <h2>Prospects (30 Days)</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Near-term opportunities</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Sales Rep</th>
+                                    <th>Product</th>
+                                    <th>Seats</th>
+                                    <th>MRR</th>
+                                    <th>ARR</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prospectsBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suspects (60-90 Days) -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Purgatory (60-90 Days)</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Mid-term pipeline</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Sales Rep</th>
+                                    <th>Product</th>
+                                    <th>Seats</th>
+                                    <th>MRR</th>
+                                    <th>ARR</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suspectsBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Closed Sales -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Closed Sales</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Won deals</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Sales Rep</th>
+                                    <th>Product</th>
+                                    <th>Seats</th>
+                                    <th>MRR</th>
+                                    <th>ARR</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody id="closedSalesBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nurture -->
+            <div class="dashboard-card" id="nurtureCard">
+                <div class="card-header">
+                    <h2>Nurture</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Long-term opportunities</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Sales Rep</th>
+                                    <th>Product</th>
+                                    <th>Seats</th>
+                                    <th>MRR</th>
+                                    <th>ARR</th>
+                                </tr>
+                            </thead>
+                            <tbody id="nurtureBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Win Probability Legend -->
+            <div class="dashboard-card" style="margin-top: 3rem;">
+                <div class="card-header">
+                    <h2>Win Probability Reference</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Understanding probability percentages in pipeline</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Win Probability</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background-color: #fee2e2;">
+                                    <td><strong style="color: #991b1b;">10%</strong></td>
+                                    <td>FTA not held yet</td>
+                                </tr>
+                                <tr style="background-color: #fed7aa;">
+                                    <td><strong style="color: #9a3412;">20%</strong></td>
+                                    <td>Moved to Next Up, but too early to predict outcome</td>
+                                </tr>
+                                <tr style="background-color: #fef08a;">
+                                    <td><strong style="color: #854d0e;">30%</strong></td>
+                                    <td>Early and promising, could easily go back to Warm 250</td>
+                                </tr>
+                                <tr style="background-color: #fef9c3;">
+                                    <td><strong style="color: #713f12;">40%</strong></td>
+                                    <td>Deal looks promising for close in the next 90 days</td>
+                                </tr>
+                                <tr style="background-color: #fef3c7;">
+                                    <td><strong style="color: #92400e;">50%</strong></td>
+                                    <td>Deal looks good, getting buying signs. Decision maker involved</td>
+                                </tr>
+                                <tr style="background-color: #d9f99d;">
+                                    <td><strong style="color: #365314;">60%</strong></td>
+                                    <td>Deal coming in during the next 30 days with 50% certainty</td>
+                                </tr>
+                                <tr style="background-color: #bef264;">
+                                    <td><strong style="color: #365314;">70%</strong></td>
+                                    <td>Deal coming in during the next 30 days with 70% certainty</td>
+                                </tr>
+                                <tr style="background-color: #a3e635;">
+                                    <td><strong style="color: #1a2e05;">80%</strong></td>
+                                    <td>Deal coming in during the next 30 days with near certainty</td>
+                                </tr>
+                                <tr style="background-color: #84cc16;">
+                                    <td><strong style="color: #1a2e05;">90%</strong></td>
+                                    <td>Deal coming in during this month with certainty</td>
+                                </tr>
+                                <tr style="background-color: #22c55e;">
+                                    <td><strong style="color: #14532d;">100%</strong></td>
+                                    <td>Closed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/mrr-pbr.js"></script>
+    <script>
+        // Authentication check
+        if (typeof isAuthenticated !== 'undefined' && !isAuthenticated()) {
+            window.location.href = 'partner-login.html';
+        }
+    </script>
+</body>
+</html>

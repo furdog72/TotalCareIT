@@ -14,18 +14,74 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-from api.autotask_service import (
-    get_autotask_client,
-    get_reporting_service,
-    AutotaskClient,
-    AutotaskReportingService
-)
-from api.hubspot_service import (
-    get_hubspot_client,
-    get_hubspot_reporting_service,
-    HubSpotClient,
-    HubSpotReportingService
-)
+try:
+    # Try relative imports first (when running via uvicorn api.main:app)
+    from api.autotask_service import (
+        get_autotask_client,
+        get_reporting_service,
+        AutotaskClient,
+        AutotaskReportingService
+    )
+    from api.hubspot_service import (
+        get_hubspot_client,
+        get_hubspot_reporting_service,
+        HubSpotClient,
+        HubSpotReportingService
+    )
+    from api.datto_service import (
+        get_datto_commerce_client,
+        get_datto_rmm_client,
+        get_datto_reporting_service,
+        DattoCommerceClient,
+        DattoRMMClient,
+        DattoReportingService
+    )
+    from api.connectwise_service import (
+        get_connectwise_client,
+        get_connectwise_reporting_service,
+        ConnectWiseManageClient,
+        ConnectWiseReportingService
+    )
+    from api.microsoft365_service import (
+        get_microsoft365_client,
+        get_microsoft365_reporting_service,
+        Microsoft365Client,
+        Microsoft365ReportingService
+    )
+except ModuleNotFoundError:
+    # Fall back to direct imports (when running python3 api/main.py directly)
+    from autotask_service import (
+        get_autotask_client,
+        get_reporting_service,
+        AutotaskClient,
+        AutotaskReportingService
+    )
+    from hubspot_service import (
+        get_hubspot_client,
+        get_hubspot_reporting_service,
+        HubSpotClient,
+        HubSpotReportingService
+    )
+    from datto_service import (
+        get_datto_commerce_client,
+        get_datto_rmm_client,
+        get_datto_reporting_service,
+        DattoCommerceClient,
+        DattoRMMClient,
+        DattoReportingService
+    )
+    from connectwise_service import (
+        get_connectwise_client,
+        get_connectwise_reporting_service,
+        ConnectWiseManageClient,
+        ConnectWiseReportingService
+    )
+    from microsoft365_service import (
+        get_microsoft365_client,
+        get_microsoft365_reporting_service,
+        Microsoft365Client,
+        Microsoft365ReportingService
+    )
 
 # Configure logging
 logging.basicConfig(
@@ -37,8 +93,8 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(
     title="TotalCare AI Partner Portal API",
-    description="Backend API for Autotask and HubSpot integration",
-    version="1.0.0"
+    description="Backend API for HubSpot, Autotask, Datto, ConnectWise, and Microsoft 365 integration",
+    version="2.0.0"
 )
 
 # Configure CORS for frontend
@@ -70,15 +126,18 @@ async def health_check():
         "status": "healthy",
         "checks": {
             "autotask": "unchecked",
-            "hubspot": "unchecked"
+            "hubspot": "unchecked",
+            "datto_commerce": "unchecked",
+            "datto_rmm": "unchecked",
+            "connectwise": "unchecked",
+            "microsoft365": "unchecked"
         }
     }
 
     # Check Autotask connection
     try:
         client = get_autotask_client()
-        # Just check if credentials are configured
-        if client.config.username and client.config.secret:
+        if client.is_configured():
             health_status["checks"]["autotask"] = "configured"
         else:
             health_status["checks"]["autotask"] = "not_configured"
@@ -89,13 +148,57 @@ async def health_check():
     # Check HubSpot configuration
     try:
         client = get_hubspot_client()
-        if client.config.api_key:
+        if client.is_configured():
             health_status["checks"]["hubspot"] = "configured"
         else:
             health_status["checks"]["hubspot"] = "not_configured"
     except Exception as e:
         logger.error(f"HubSpot health check failed: {e}")
         health_status["checks"]["hubspot"] = "error"
+
+    # Check Datto Commerce
+    try:
+        client = get_datto_commerce_client()
+        if client.is_configured():
+            health_status["checks"]["datto_commerce"] = "configured"
+        else:
+            health_status["checks"]["datto_commerce"] = "not_configured"
+    except Exception as e:
+        logger.error(f"Datto Commerce health check failed: {e}")
+        health_status["checks"]["datto_commerce"] = "error"
+
+    # Check Datto RMM
+    try:
+        client = get_datto_rmm_client()
+        if client.is_configured():
+            health_status["checks"]["datto_rmm"] = "configured"
+        else:
+            health_status["checks"]["datto_rmm"] = "not_configured"
+    except Exception as e:
+        logger.error(f"Datto RMM health check failed: {e}")
+        health_status["checks"]["datto_rmm"] = "error"
+
+    # Check ConnectWise
+    try:
+        client = get_connectwise_client()
+        if client.is_configured():
+            health_status["checks"]["connectwise"] = "configured"
+        else:
+            health_status["checks"]["connectwise"] = "not_configured"
+    except Exception as e:
+        logger.error(f"ConnectWise health check failed: {e}")
+        health_status["checks"]["connectwise"] = "error"
+
+    # Check Microsoft 365
+    try:
+        client = get_microsoft365_client()
+        if client.is_configured():
+            health_status["checks"]["microsoft365"] = "configured"
+        else:
+            health_status["checks"]["microsoft365"] = "not_configured"
+    except Exception as e:
+        logger.error(f"Microsoft 365 health check failed: {e}")
+        health_status["checks"]["microsoft365"] = "error"
 
     return health_status
 
@@ -366,6 +469,28 @@ async def get_forms_stats(
         raise HTTPException(status_code=500, detail=f"Failed to fetch forms: {str(e)}")
 
 
+@app.get("/api/hubspot/sales-metrics")
+async def get_sales_metrics(
+    service: HubSpotReportingService = Depends(get_hubspot_reporting_service)
+):
+    """
+    Get sales metrics for sales report dashboard
+
+    Returns calls, meetings, and pipeline metrics formatted for sales report.
+    """
+    try:
+        metrics = service.get_sales_metrics()
+
+        return JSONResponse(content={
+            "success": True,
+            "data": metrics,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch sales metrics: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch metrics: {str(e)}")
+
+
 # ===== SCORECARD ENDPOINTS =====
 
 @app.get("/api/scorecard/weekly")
@@ -380,7 +505,10 @@ async def get_weekly_scorecard(
     """
     try:
         from datetime import datetime, timedelta
-        from api.autotask_service import get_autotask_client
+        try:
+            from api.autotask_service import get_autotask_client
+        except ModuleNotFoundError:
+            from autotask_service import get_autotask_client
 
         # Parse dates
         start_date = datetime.fromisoformat(week_start)
@@ -483,6 +611,138 @@ async def get_weekly_scorecard(
     except Exception as e:
         logger.error(f"Failed to get weekly scorecard: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get scorecard: {str(e)}")
+
+
+# ===== DATTO ENDPOINTS =====
+
+@app.get("/api/datto/commerce/summary")
+async def get_datto_commerce_summary(
+    service: DattoReportingService = Depends(get_datto_reporting_service)
+):
+    """Get sales summary from Datto Commerce (quotes/opportunities)"""
+    try:
+        summary = service.get_sales_summary()
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch Datto Commerce summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/datto/rmm/summary")
+async def get_datto_rmm_summary(
+    service: DattoReportingService = Depends(get_datto_reporting_service)
+):
+    """Get RMM summary from Datto RMM (devices/alerts)"""
+    try:
+        summary = service.get_rmm_summary()
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch Datto RMM summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ===== CONNECTWISE ENDPOINTS =====
+
+@app.get("/api/connectwise/sales/summary")
+async def get_connectwise_sales_summary(
+    service: ConnectWiseReportingService = Depends(get_connectwise_reporting_service)
+):
+    """Get sales summary from ConnectWise (opportunities)"""
+    try:
+        summary = service.get_sales_summary()
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch ConnectWise sales summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/connectwise/service/summary")
+async def get_connectwise_service_summary(
+    service: ConnectWiseReportingService = Depends(get_connectwise_reporting_service)
+):
+    """Get service ticket summary from ConnectWise"""
+    try:
+        summary = service.get_service_summary()
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch ConnectWise service summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/connectwise/time/summary")
+async def get_connectwise_time_summary(
+    start_date: Optional[str] = Query(None, description="Start date (ISO format)"),
+    end_date: Optional[str] = Query(None, description="End date (ISO format)"),
+    service: ConnectWiseReportingService = Depends(get_connectwise_reporting_service)
+):
+    """Get time entry summary from ConnectWise"""
+    try:
+        start = datetime.fromisoformat(start_date) if start_date else None
+        end = datetime.fromisoformat(end_date) if end_date else None
+
+        summary = service.get_time_summary(start, end)
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid date format: {str(e)}")
+    except Exception as e:
+        logger.error(f"Failed to fetch ConnectWise time summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ===== MICROSOFT 365 ENDPOINTS =====
+
+@app.get("/api/microsoft365/tenant/summary")
+async def get_m365_tenant_summary(
+    service: Microsoft365ReportingService = Depends(get_microsoft365_reporting_service)
+):
+    """Get Microsoft 365 tenant summary (users/groups/licenses)"""
+    try:
+        summary = service.get_tenant_summary()
+        return JSONResponse(content={
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch Microsoft 365 tenant summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/microsoft365/licenses")
+async def get_m365_licenses(
+    service: Microsoft365ReportingService = Depends(get_microsoft365_reporting_service)
+):
+    """Get Microsoft 365 license details"""
+    try:
+        licenses = service.get_license_details()
+        return JSONResponse(content={
+            "success": True,
+            "data": licenses,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to fetch Microsoft 365 licenses: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Error handlers

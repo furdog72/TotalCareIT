@@ -169,6 +169,13 @@ class BackendAPIClient {
     async getHubSpotFormStats() {
         return this.get('/api/hubspot/forms');
     }
+
+    /**
+     * Get HubSpot sales metrics (for sales report dashboard)
+     */
+    async getHubSpotSalesMetrics() {
+        return this.get('/api/hubspot/sales-metrics');
+    }
 }
 
 /**
@@ -185,15 +192,63 @@ class SalesReportAdapter {
      */
     async isAvailable() {
         const health = await this.api.healthCheck();
-        return health && health.checks && health.checks.autotask === 'configured';
+        return health && health.checks && (health.checks.hubspot === 'configured' || health.checks.autotask === 'configured');
     }
 
     /**
+     * Get sales report data from HubSpot via backend API
+     */
+    async getSalesData(startDate = null, endDate = null) {
+        console.log('📊 Getting sales data from HubSpot backend API...');
+
+        try {
+            // Get sales metrics from HubSpot
+            const response = await this.api.getHubSpotSalesMetrics();
+
+            if (!response.success) {
+                throw new Error(response.error || 'Failed to fetch sales metrics');
+            }
+
+            const metrics = response.data;
+
+            // Return data in sales report format
+            return {
+                thisMonth: {
+                    callsMade: metrics.callsMade || 0,
+                    conversationsHad: metrics.conversationsHad || 0,
+                    appointmentsScheduled: metrics.appointmentsScheduled || 0,
+                    outboundCalls: metrics.outboundCalls || 0,
+                    inboundCalls: metrics.inboundCalls || 0,
+                    emailConversations: metrics.emailConversations || 0,
+                    meetingConversations: metrics.meetingConversations || 0,
+                    prospects: metrics.prospects || 0,
+                    contacted: metrics.contacted || 0,
+                    qualified: metrics.qualified || 0,
+                    proposal: metrics.proposal || 0,
+                    closedWon: metrics.closedWon || 0
+                },
+                lastMonth: {
+                    callsMade: 0,
+                    conversationsHad: 0,
+                    appointmentsScheduled: 0
+                },
+                upcomingAppointments: [],
+                recentActivity: []
+            };
+
+        } catch (error) {
+            console.error('❌ Failed to get sales data from HubSpot:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * DEPRECATED - Old method for ticket-based data
      * Get sales report data for date range
      * Transforms ticket data into sales metrics format
      */
-    async getSalesData(startDate, endDate) {
-        console.log('📊 Getting sales data from backend API...');
+    async getSalesDataFromTickets(startDate, endDate) {
+        console.log('📊 Getting sales data from Autotask backend API...');
 
         try {
             // Get ticket metrics and activity from backend
@@ -215,7 +270,7 @@ class SalesReportAdapter {
     }
 
     /**
-     * Transform ticket data to sales report format
+     * DEPRECATED - Transform ticket data to sales report format
      */
     transformToSalesReport(tickets, activity) {
         // Map ticket metrics to sales report metrics
@@ -254,7 +309,7 @@ class SalesReportAdapter {
     }
 
     /**
-     * Transform tickets to activity format for display
+     * DEPRECATED - Transform tickets to activity format for display
      */
     transformTicketsToActivity(tickets) {
         return tickets.slice(0, 10).map(ticket => ({

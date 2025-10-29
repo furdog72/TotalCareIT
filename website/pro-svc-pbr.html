@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Services PBR | TotalCareIT Partner Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Partner Portal Navigation -->
+        <div id="partner-nav-placeholder"></div>
+        <script src="js/load-nav.js"></script>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header matching Excel layout -->
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; margin-bottom: 2rem;">
+                <div class="card-content">
+                    <h1 style="margin: 0; font-size: 2rem; color: white;">TotalCareIT Professional Services PBR 2025</h1>
+                </div>
+            </div>
+
+            <!-- Quarterly selector -->
+            <div class="dashboard-card" style="margin-bottom: 2rem;">
+                <div class="card-content" style="display: flex; align-items: center; gap: 2rem;">
+                    <label for="quarterSelector" style="font-weight: 600;">Select Quarter:</label>
+                    <select id="quarterSelector" class="dashboard-select">
+                        <option value="Q1-2025">Q1 2025</option>
+                        <option value="Q2-2025">Q2 2025</option>
+                        <option value="Q3-2025" selected>Q3 2025</option>
+                        <option value="Q4-2025">Q4 2025</option>
+                    </select>
+                    <button id="refreshBtn" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <polyline points="1 20 1 14 7 14"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Goals Table (matching Excel) -->
+            <div class="dashboard-card" style="margin-bottom: 2rem;">
+                <div class="card-content">
+                    <table class="data-table" style="width: 100%;">
+                        <thead>
+                            <tr style="background: #f3f4f6;">
+                                <th style="width: 20%; text-align: left;">Goal</th>
+                                <th style="width: 20%; text-align: center; background: #e5e7eb;">2024</th>
+                                <th style="width: 15%; text-align: center; background: #e5e7eb;">Q1</th>
+                                <th style="width: 15%; text-align: center; background: #e5e7eb;">Q2</th>
+                                <th style="width: 15%; text-align: center; background: #e5e7eb;">Q3</th>
+                                <th style="width: 15%; text-align: center; background: #e5e7eb;">Q4</th>
+                            </tr>
+                        </thead>
+                        <tbody id="goalsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 1rem;">
+                        <strong>Pipeline Coverage Ratio:</strong> <span id="pipelineCoverage">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Quotes (Being Scoped) -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Pending Quotes</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Projects Currently Being Scoped</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Project Type</th>
+                                    <th>Notes</th>
+                                    <th>Margin $</th>
+                                    <th>Quote #</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingQuotesBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Quotes -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Active Quotes</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Quotes with Margin Dollars</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Account Name</th>
+                                    <th>Quote Name</th>
+                                    <th>Create Date</th>
+                                    <th>Gross Margin</th>
+                                    <th>Quote #</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeQuotesBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Won Quotes -->
+            <div class="dashboard-card" id="wonQuotesCard">
+                <div class="card-header">
+                    <h2>Won Quotes</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Closed Deals</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Account Name</th>
+                                    <th>Quote Name</th>
+                                    <th>Create Date</th>
+                                    <th>Gross Margin</th>
+                                    <th>Invoice #</th>
+                                    <th>Invoice Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wonQuotesBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Quotes Summary -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>All Quotes</h2>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Complete Quote List</p>
+                </div>
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Quote Name</th>
+                                    <th>Account</th>
+                                    <th>Status</th>
+                                    <th>Quote Total</th>
+                                    <th>Margin</th>
+                                    <th>Inside Rep</th>
+                                    <th>Create Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allQuotesBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/pro-svc-pbr.js"></script>
+    <script>
+        // Authentication check
+        if (typeof isAuthenticated !== 'undefined' && !isAuthenticated()) {
+            window.location.href = 'partner-login.html';
+        }
+    </script>
+</body>
+</html>

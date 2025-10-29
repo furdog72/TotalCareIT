@@ -1,0 +1,18 @@
+# FastAPI (for main.py, app.py)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Flask (for pbr_api.py)
+flask==3.0.0
+flask-cors==4.0.0
+
+# Core dependencies
+python-dotenv==1.0.0
+requests==2.31.0
+pydantic==2.5.0
+
+# Excel processing (for PBR/QBR data extractors)
+openpyxl==3.1.2
+
+# Security
+python-multipart==0.0.6

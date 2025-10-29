@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - IT & Security Services | TotalCareIT</title>
+    <meta name="description" content="Calculate costs for MSP, MSSP, Device as a Service, and compliance services. Transparent pricing for managed IT and cybersecurity solutions.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .pricing-hero {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .pricing-hero h1 {
+            font-size: 3rem;
+            margin: 0 0 1rem 0;
+        }
+
+        .pricing-hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .calculators-horizontal {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .calculator-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 450px;
+        }
+
+        .calculator-section h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1.5rem 0;
+            color: #1f2937;
+            border-bottom: 3px solid #4F46E5;
+            padding-bottom: 0.5rem;
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .device-row {
+            display: contents;
+        }
+
+        .device-label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .device-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4F46E5;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .tier-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-btn {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .tier-btn:hover {
+            border-color: #4F46E5;
+        }
+
+        .tier-btn.active {
+            background: #4F46E5;
+            color: white;
+            border-color: #4F46E5;
+        }
+
+        .tier-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .calculator-result {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            border: 2px solid #4F46E5;
+        }
+
+        .calculator-result .label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .calculator-result .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-top: 0.5rem;
+        }
+
+        .note-text {
+            font-style: italic;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 4px;
+        }
+
+        .combined-quote {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .combined-quote h2 {
+            font-size: 2rem;
+            margin: 0 0 2rem 0;
+        }
+
+        .quote-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quote-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .quote-item .label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-item .amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .total-quote {
+            background: white;
+            color: #4F46E5;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .total-quote .label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-quote .amount {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            background: white;
+            color: #4F46E5;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-cta:hover {
+            background: transparent;
+            color: white;
+        }
+
+        @media (max-width: 1400px) {
+            .calculators-horizontal {
+                flex-direction: column;
+            }
+
+            .calculator-section {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="TotalCare IT Logo" class="logo-img">
+            </div>
+            <div class="nav-links">
+                <a href="index.html#home" class="nav-link">Home</a>
+                <a href="index.html#services" class="nav-link">AI Services</a>
+                <a href="index.html#automation" class="nav-link">Automation</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <a href="client-portal.html" class="nav-link">Client Portal</a>
+                <a href="partner-login.html" class="btn-login">Partner Portal</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="pricing-hero">
+        <h1>Comprehensive IT Services Pricing</h1>
+        <p>Calculate your complete IT solution cost including managed services, security, and devices</p>
+    </div>
+
+    <div class="pricing-container">
+        <div class="calculators-horizontal">
+            <!-- Managed IT Services Calculator -->
+            <div class="calculator-section">
+                <h2>Managed IT Services</h2>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="onsite-it" onchange="toggleOnsiteIT()">
+                    <label for="onsite-it">We have onsite IT staff</label>
+                </div>
+
+                <div class="tier-selector">
+                    <button class="tier-btn" id="tier-essentials" onclick="selectMSPTier('essentials')">IT Essentials<br>$75/user</button>
+                    <button class="tier-btn" id="tier-assist" onclick="selectMSPTier('assist')">IT Assist<br>$115/user</button>
+                    <button class="tier-btn active" id="tier-it360" onclick="selectMSPTier('it360')">IT360<br>$165/user</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="msp-users">Number of Users</label>
+                    <input type="number" id="msp-users" value="25" min="1" onchange="calculateAll()">
+                </div>
+
+                <div class="form-group">
+                    <label for="msp-servers">Servers</label>
+                    <input type="number" id="msp-servers" value="2" min="0" onchange="calculateAll()">
+                </div>
+
+                <div class="form-group">
+                    <label for="msp-locations">Locations</label>
+                    <input type="number" id="msp-locations" value="1" min="1" onchange="calculateAll()">
+                </div>
+
+                <div class="form-group">
+                    <label for="msp-backup">Backup Storage (TB)</label>
+                    <input type="number" id="msp-backup" value="1" min="0" step="0.5" onchange="calculateAll()">
+                </div>
+
+                <div class="calculator-result">
+                    <div class="label">Monthly MSP Cost</div>
+                    <div class="value" id="msp-total">$0</div>
+                </div>
+            </div>
+
+            <!-- Device as a Service Calculator -->
+            <div class="calculator-section">
+                <h2>Device as a Service</h2>
+
+                <div style="margin-bottom: 1rem;">
+                    <strong style="font-size: 0.875rem; color: #374151;">Windows Devices</strong>
+                </div>
+
+                <div class="device-grid">
+                    <div class="device-label">Windows Laptops</div>
+                    <div class="device-inputs">
+                        <input type="number" id="win-laptop-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="win-laptop-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Windows Pro Laptop</div>
+                    <div class="device-inputs">
+                        <input type="number" id="win-pro-laptop-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="win-pro-laptop-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Windows Desktop</div>
+                    <div class="device-inputs">
+                        <input type="number" id="win-desktop-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="win-desktop-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Windows Pro Desktop</div>
+                    <div class="device-inputs">
+                        <input type="number" id="win-pro-desktop-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="win-pro-desktop-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Windows Tablet</div>
+                    <div class="device-inputs">
+                        <input type="number" id="win-tablet-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="win-tablet-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin: 1.5rem 0 1rem 0;">
+                    <strong style="font-size: 0.875rem; color: #374151;">Apple Devices</strong>
+                </div>
+
+                <div class="device-grid">
+                    <div class="device-label">Apple MacBook Air</div>
+                    <div class="device-inputs">
+                        <input type="number" id="mac-air-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="mac-air-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple MacBook Pro</div>
+                    <div class="device-inputs">
+                        <input type="number" id="mac-pro-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="mac-pro-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple Mac Mini</div>
+                    <div class="device-inputs">
+                        <input type="number" id="mac-mini-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="mac-mini-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple Mac Studio</div>
+                    <div class="device-inputs">
+                        <input type="number" id="mac-studio-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="mac-studio-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple Mac Pro</div>
+                    <div class="device-inputs">
+                        <input type="number" id="mac-pro-desktop-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="mac-pro-desktop-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple iPad Air</div>
+                    <div class="device-inputs">
+                        <input type="number" id="ipad-air-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="ipad-air-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="device-label">Apple iPad Pro</div>
+                    <div class="device-inputs">
+                        <input type="number" id="ipad-pro-qty" value="0" min="0" placeholder="Qty" onchange="calculateAll()">
+                        <select id="ipad-pro-cycle" onchange="calculateAll()">
+                            <option value="3">3 Year</option>
+                            <option value="4">4 Year</option>
+                            <option value="5">5 Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="note-text">
+                    * Pro designation is for AutoCAD, SolidWorks, Revit, Adobe or other processor and memory intensive applications and can be specific to Windows or Apple.
+                </div>
+
+                <div class="calculator-result">
+                    <div class="label">Monthly Device Cost</div>
+                    <div class="value" id="daas-total">$0</div>
+                </div>
+            </div>
+
+            <!-- MSSP Calculator -->
+            <div class="calculator-section">
+                <h2>Managed Security (MSSP)</h2>
+
+                <div class="form-group">
+                    <label for="mssp-endpoints">Total Endpoints</label>
+                    <input type="number" id="mssp-endpoints" value="0" min="0" onchange="calculateAll()">
+                </div>
+
+                <div class="form-group">
+                    <label for="mssp-sensitivity">Data Sensitivity</label>
+                    <select id="mssp-sensitivity" onchange="calculateAll()">
+                        <option value="1.0">Standard Business Data</option>
+                        <option value="1.3">Sensitive Data (PII)</option>
+                        <option value="1.6">CUI/Government</option>
+                        <option value="1.5">Healthcare (PHI)</option>
+                    </select>
+                </div>
+
+                <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin: 1rem 0 0.5rem 0; display: block;">Compliance Requirements</label>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="cmmc" onchange="calculateAll()">
+                    <label for="cmmc">CMMC (+$2,500/mo)</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="nist" onchange="calculateAll()">
+                    <label for="nist">NIST 800-171 (+$1,800/mo)</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="hipaa" onchange="calculateAll()">
+                    <label for="hipaa">HIPAA (+$1,500/mo)</label>
+                </div>
+
+                <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin: 1rem 0 0.5rem 0; display: block;">Security Services</label>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="siem" checked onchange="calculateAll()">
+                    <label for="siem">SIEM Monitoring (+$1,500/mo)</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="mdr" checked onchange="calculateAll()">
+                    <label for="mdr">24/7 MDR/SOC (+$3,500/mo)</label>
+                </div>
+
+                <div class="calculator-result">
+                    <div class="label">Monthly MSSP Cost</div>
+                    <div class="value" id="mssp-total">$0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Combined Quote Section -->
+        <div class="combined-quote">
+            <h2>Your Complete IT Solution</h2>
+
+            <div class="quote-breakdown">
+                <div class="quote-item">
+                    <div class="label">Managed IT Services</div>
+                    <div class="amount" id="quote-msp">$0</div>
+                </div>
+                <div class="quote-item">
+                    <div class="label">Device as a Service</div>
+                    <div class="amount" id="quote-daas">$0</div>
+                </div>
+                <div class="quote-item">
+                    <div class="label">Security & Compliance</div>
+                    <div class="amount" id="quote-mssp">$0</div>
+                </div>
+            </div>
+
+            <div class="total-quote">
+                <div class="label">Total Monthly Investment</div>
+                <div class="amount" id="quote-total">$0</div>
+                <div style="margin-top: 1rem; font-size: 1.125rem; font-weight: 600;">
+                    Annual: <span id="quote-annual">$0</span>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="index.html#contact" class="btn-cta">Request Custom Quote</a>
+                <a href="tel:+13212595500" class="btn-cta">Call (321) 259-5500</a>
+                <a href="mailto:sales@totalcareit.com" class="btn-cta">Email Sales</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mspTier = 'it360';
+        let hasOnsiteIT = false;
+
+        // Device pricing (monthly cost as % of device cost + management fee)
+        const devicePricing = {
+            'win-laptop': 1200,
+            'win-pro-laptop': 1800,
+            'win-desktop': 800,
+            'win-pro-desktop': 1400,
+            'win-tablet': 600,
+            'mac-air': 1200,
+            'mac-pro': 2000,
+            'mac-mini': 700,
+            'mac-studio': 2500,
+            'mac-pro-desktop': 7000,
+            'ipad-air': 600,
+            'ipad-pro': 1000
+        };
+
+        function toggleOnsiteIT() {
+            hasOnsiteIT = document.getElementById('onsite-it').checked;
+
+            const essentialsBtn = document.getElementById('tier-essentials');
+            const assistBtn = document.getElementById('tier-assist');
+            const it360Btn = document.getElementById('tier-it360');
+
+            if (hasOnsiteIT) {
+                // Enable Essentials and Assist
+                essentialsBtn.disabled = false;
+                assistBtn.disabled = false;
+                it360Btn.disabled = true;
+
+                // Default to Essentials
+                selectMSPTier('essentials');
+            } else {
+                // Only IT360 available
+                essentialsBtn.disabled = true;
+                assistBtn.disabled = true;
+                it360Btn.disabled = false;
+
+                // Force IT360
+                selectMSPTier('it360');
+            }
+        }
+
+        function selectMSPTier(tier) {
+            mspTier = tier;
+            document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tier-' + tier).classList.add('active');
+            calculateAll();
+        }
+
+        function calculateAll() {
+            const mspCost = calculateMSP();
+            const daasCost = calculateDaaS();
+            const msspCost = calculateMSSP();
+
+            const total = mspCost + daasCost + msspCost;
+            const annual = total * 12;
+
+            document.getElementById('msp-total').textContent = '$' + mspCost.toLocaleString();
+            document.getElementById('daas-total').textContent = '$' + daasCost.toLocaleString();
+            document.getElementById('mssp-total').textContent = '$' + msspCost.toLocaleString();
+
+            document.getElementById('quote-msp').textContent = '$' + mspCost.toLocaleString();
+            document.getElementById('quote-daas').textContent = '$' + daasCost.toLocaleString();
+            document.getElementById('quote-mssp').textContent = '$' + msspCost.toLocaleString();
+            document.getElementById('quote-total').textContent = '$' + total.toLocaleString();
+            document.getElementById('quote-annual').textContent = '$' + annual.toLocaleString();
+        }
+
+        function calculateMSP() {
+            const users = parseInt(document.getElementById('msp-users').value) || 0;
+            const servers = parseInt(document.getElementById('msp-servers').value) || 0;
+            const locations = parseInt(document.getElementById('msp-locations').value) || 0;
+            const backup = parseFloat(document.getElementById('msp-backup').value) || 0;
+
+            const tierRates = {
+                'essentials': { user: 75, server: 200, network: 125, backup: 150 },
+                'assist': { user: 115, server: 275, network: 175, backup: 200 },
+                'it360': { user: 165, server: 350, network: 225, backup: 250 }
+            };
+
+            const rates = tierRates[mspTier];
+            const userCost = users * rates.user;
+            const serverCost = servers * rates.server;
+            const networkCost = locations * rates.network;
+            const backupCost = Math.ceil(backup) * rates.backup;
+
+            return Math.round(userCost + serverCost + networkCost + backupCost);
+        }
+
+        function calculateDaaS() {
+            const devices = [
+                { id: 'win-laptop', qty: 'win-laptop-qty', cycle: 'win-laptop-cycle' },
+                { id: 'win-pro-laptop', qty: 'win-pro-laptop-qty', cycle: 'win-pro-laptop-cycle' },
+                { id: 'win-desktop', qty: 'win-desktop-qty', cycle: 'win-desktop-cycle' },
+                { id: 'win-pro-desktop', qty: 'win-pro-desktop-qty', cycle: 'win-pro-desktop-cycle' },
+                { id: 'win-tablet', qty: 'win-tablet-qty', cycle: 'win-tablet-cycle' },
+                { id: 'mac-air', qty: 'mac-air-qty', cycle: 'mac-air-cycle' },
+                { id: 'mac-pro', qty: 'mac-pro-qty', cycle: 'mac-pro-cycle' },
+                { id: 'mac-mini', qty: 'mac-mini-qty', cycle: 'mac-mini-cycle' },
+                { id: 'mac-studio', qty: 'mac-studio-qty', cycle: 'mac-studio-cycle' },
+                { id: 'mac-pro-desktop', qty: 'mac-pro-desktop-qty', cycle: 'mac-pro-desktop-cycle' },
+                { id: 'ipad-air', qty: 'ipad-air-qty', cycle: 'ipad-air-cycle' },
+                { id: 'ipad-pro', qty: 'ipad-pro-qty', cycle: 'ipad-pro-cycle' }
+            ];
+
+            let totalMonthlyCost = 0;
+
+            devices.forEach(device => {
+                const qty = parseInt(document.getElementById(device.qty).value) || 0;
+                const cycle = parseInt(document.getElementById(device.cycle).value) || 3;
+                const deviceCost = devicePricing[device.id];
+
+                if (qty > 0) {
+                    // Monthly cost: (device cost / cycle years / 12 months) + $25 management per device
+                    const monthlyDeviceCost = (deviceCost / (cycle * 12)) + 25;
+                    totalMonthlyCost += qty * monthlyDeviceCost;
+                }
+            });
+
+            return Math.round(totalMonthlyCost);
+        }
+
+        function calculateMSSP() {
+            const endpoints = parseInt(document.getElementById('mssp-endpoints').value) || 0;
+            const sensitivity = parseFloat(document.getElementById('mssp-sensitivity').value) || 1.0;
+
+            if (endpoints === 0) return 0;
+
+            const endpointCost = 15; // Per endpoint EDR
+            let baseCost = endpoints * endpointCost * sensitivity;
+
+            // Compliance costs
+            let complianceCost = 0;
+            if (document.getElementById('cmmc').checked) complianceCost += 2500;
+            if (document.getElementById('nist').checked) complianceCost += 1800;
+            if (document.getElementById('hipaa').checked) complianceCost += 1500;
+
+            // Monitoring costs
+            let monitoringCost = 0;
+            if (document.getElementById('siem').checked) monitoringCost += 1500;
+            if (document.getElementById('mdr').checked) monitoringCost += 3500;
+
+            return Math.round(baseCost + complianceCost + monitoringCost);
+        }
+
+        // Initialize on page load
+        toggleOnsiteIT();
+        calculateAll();
+    </script>
+</body>
+</html>

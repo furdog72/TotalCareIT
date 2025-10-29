@@ -77,3 +77,21 @@ qbo-ai-key.pem
 # Deployment artifacts
 deploy.tar.gz
 qbo-ai-agent*.zip
+
+# TotalCareIT API specific
+api/legacy/
+Reference/
+website/data/*.json
+!website/data/.gitkeep
+
+# OneDrive files (don't commit synced files)
+**/OneDrive*/**
+*.xlsx
+*.xls
+~$*.xlsx
+~$*.xls
+
+# Temporary API files
+tmp/
+temp/
+*.tmp

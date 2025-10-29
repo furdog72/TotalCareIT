@@ -1,11 +1,37 @@
 console.log('📊 Sales Report.js loaded');
 
-// Initialize Autotask client and adapter
+// Initialize Backend API client
+let backendAPIClient = null;
+let salesReportAdapter = null;
+let useBackendAPI = false;
+
+// Initialize Autotask client and adapter (Legacy)
 let autotaskClient = null;
 let autotaskAdapter = null;
 let useAutotaskData = false;
 
-// Try to initialize Autotask integration
+// Try to initialize Backend API integration (preferred)
+try {
+    backendAPIClient = new BackendAPIClient();
+    salesReportAdapter = new SalesReportAdapter(backendAPIClient);
+    console.log('🔧 Backend API client initialized');
+
+    // Check if backend API is available
+    backendAPIClient.healthCheck().then(health => {
+        if (health && health.checks && health.checks.hubspot === 'configured') {
+            useBackendAPI = true;
+            console.log('✅ Backend API configured with HubSpot');
+        } else {
+            console.log('⚠️ Backend API not configured');
+        }
+    }).catch(err => {
+        console.log('⚠️ Backend API health check failed:', err.message);
+    });
+} catch (error) {
+    console.log('⚠️ Backend API client not available:', error.message);
+}
+
+// Try to initialize Autotask integration (Legacy fallback)
 try {
     autotaskClient = new AutotaskClient();
     autotaskAdapter = new AutotaskSalesAdapter(autotaskClient);
@@ -175,9 +201,36 @@ async function loadSalesData() {
     let data, lastMonthData;
     let dataSource = 'sample';
 
-    // Try to load data from Autotask if configured
-    if (useAutotaskData && autotaskAdapter) {
+    // Try to load data from Backend API first (preferred)
+    if (useBackendAPI && salesReportAdapter) {
         try {
+            console.log('🔄 Attempting to load data from Backend API (HubSpot)...');
+            const backendData = await salesReportAdapter.getSalesData();
+
+            if (backendData && backendData.thisMonth) {
+                data = backendData.thisMonth;
+                lastMonthData = backendData.lastMonth;
+                dataSource = 'hubspot';
+                console.log('✅ Using HubSpot data from Backend API');
+
+                // Update appointments and activity if available
+                if (backendData.upcomingAppointments) {
+                    sampleData.upcomingAppointments = backendData.upcomingAppointments;
+                }
+                if (backendData.recentActivity) {
+                    sampleData.recentActivity = backendData.recentActivity;
+                }
+            }
+        } catch (error) {
+            console.error('❌ Failed to load Backend API data:', error);
+            showAPIError('Failed to load data from HubSpot API. Trying fallback options...');
+        }
+    }
+
+    // Try to load data from Autotask if Backend API failed and Autotask is configured
+    if (!data && useAutotaskData && autotaskAdapter) {
+        try {
+            console.log('🔄 Attempting to load data from Autotask...');
             const dateRange = autotaskAdapter.getDateRange('thisMonth');
             const autotaskData = await autotaskAdapter.getSalesData(dateRange.start, dateRange.end);
 
@@ -636,6 +689,20 @@ function showAutotaskError(message) {
     banner.style.background = 'linear-gradient(135deg, #fee2e2, #fecaca)';
     banner.style.borderColor = '#ef4444';
     messageEl.textContent = message;
+}
+
+function showAPIError(message) {
+    // Show error in the HubSpot or Autotask banner
+    const banner = document.getElementById('hubspotBanner') || document.getElementById('autotaskBanner');
+    if (banner) {
+        const messageEl = banner.querySelector('#hubspotMessage') || banner.querySelector('#autotaskMessage');
+        if (messageEl) {
+            banner.style.display = 'flex';
+            banner.style.background = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+            banner.style.borderColor = '#ef4444';
+            messageEl.textContent = message;
+        }
+    }
 }
 
 console.log('✅ Sales Report.js fully loaded');

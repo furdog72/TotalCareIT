@@ -64,9 +64,9 @@
         .scorecard-header h1 { margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; }
         .scorecard-header p { margin: 0; font-size: 1.1rem; opacity: 0.95; }
         .table-wrapper { overflow-x: auto; overflow-y: visible; padding: 2rem; max-width: 100%; }
-        table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 14px; }
-        th, td { padding: 12px 10px; text-align: left; border: 1px solid #e1e8ed; white-space: nowrap; }
-        th { background: #34495e; color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 14px; table-layout: auto; }
+        th, td { padding: 8px 12px; text-align: left; border: 1px solid #e1e8ed; white-space: nowrap; vertical-align: middle; }
+        th { background: #34495e; color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; line-height: 1.4; }
         th.metric-col { width: 280px; background: #2c3e50; }
         th.owner-col { width: 120px; }
         th.goal-col { width: 90px; }
@@ -212,15 +212,24 @@
         }
 
         function formatValue(value, format) {
-            // Return as-is for non-numeric values
-            if (value === '-' || value === 'nan' || value === null || value === undefined) {
+            // Handle empty, null, undefined values
+            if (value === '-' || value === 'nan' || value === null || value === undefined || value === '') {
                 return '-';
+            }
+
+            // Handle string values that might be empty or whitespace
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (trimmed === '' || trimmed === 'nan' || trimmed === 'NaN') {
+                    return '-';
+                }
             }
 
             // Try to parse as number
             const num = parseFloat(value);
             if (isNaN(num)) {
-                return value; // Return original if not a number
+                // Return trimmed string if not a number
+                return typeof value === 'string' ? value.trim() : String(value);
             }
 
             // Apply formatting based on Excel number format
