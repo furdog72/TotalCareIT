@@ -3,116 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance - TotalCareIT</title>
+    <title>Finance Dashboard - TotalCareIT Partner Portal</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .report-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-        .report-header {
+    <style>
+        .finance-header {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 40px;
+            padding: 2rem;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
-        .report-header h1 {
-            margin: 0 0 10px 0;
-            font-size: 32px;
+        .finance-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        .report-header p {
+        .finance-header p {
             margin: 0;
-            opacity: 0.9;
+            opacity: 0.95;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #6b7280;
+        }
+
+        .tab-button:hover {
+            background: #f3f4f6;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .metric-card {
             background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid;
+        }
+
+        .metric-card.revenue {
+            border-left-color: #10b981;
+        }
+
+        .metric-card.mrr {
+            border-left-color: #3b82f6;
+        }
+
+        .metric-card.arr {
+            border-left-color: #8b5cf6;
+        }
+
+        .metric-card.growth {
+            border-left-color: #f59e0b;
         }
 
         .metric-card h3 {
-            margin: 0 0 10px 0;
-            color: #666;
-            font-size: 14px;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0.5rem 0;
+        }
+
+        .metric-card .change {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .metric-card .change.positive {
+            color: #10b981;
+        }
+
+        .metric-card .change.negative {
+            color: #ef4444;
+        }
+
+        .chart-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .chart-section h2 {
+            margin: 0 0 1.5rem 0;
+            color: #1f2937;
+        }
+
+        .revenue-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .breakdown-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .breakdown-card h3 {
+            margin: 0 0 1rem 0;
+            color: #1f2937;
+            font-size: 1.125rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .breakdown-value {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .client-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .client-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .client-list th {
+            background: #f9fafb;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .client-list td {
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.875rem;
+        }
+
+        .client-list tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
         }
 
-        .metric-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin: 10px 0;
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
         }
 
-        .metric-value.currency::before {
-            content: '$';
-            font-size: 24px;
-            vertical-align: super;
-            margin-right: 4px;
+        .status-badge.trial {
+            background: #fef3c7;
+            color: #92400e;
         }
 
-        .metric-change {
-            font-size: 14px;
-            font-weight: 600;
+        .status-badge.pending {
+            background: #dbeafe;
+            color: #1e40af;
         }
 
-        .metric-change.positive {
-            color: #10b981;
-        }
-
-        .metric-change.negative {
-            color: #ef4444;
-        }
-
-        .coming-soon {
-            text-align: center;
-            padding: 60px 20px;
+        .aws-billing-card {
             background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .billing-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .billing-amount-large {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .billing-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .billing-detail-item {
+            padding: 1rem;
+            background: #f9fafb;
             border-radius: 8px;
-            margin-top: 30px;
         }
 
-        .coming-soon svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            color: #9ca3af;
+        .billing-detail-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
         }
 
-        .coming-soon h2 {
-            color: #2c3e50;
-            margin-bottom: 10px;
+        .billing-detail-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
         }
 
-        .coming-soon p {
-            color: #666;
-            font-size: 16px;
+        .service-breakdown {
+            margin-top: 1.5rem;
+        }
+
+        .service-breakdown h4 {
+            margin: 0 0 1rem 0;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body class="dashboard-page">
     <div class="dashboard-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-White-1024x189.png" alt="TotalCare IT Logo" class="sidebar-logo">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="Logo" class="sidebar-logo">
             </div>
-
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -147,7 +346,7 @@
                     </svg>
                     <span>Scorecard</span>
                 </a>
-                                <a href="contract-monitor.html" class="nav-item">
+                <a href="contract-monitor.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                         <polyline points="14 2 14 8 20 8"/>
@@ -157,19 +356,18 @@
                     </svg>
                     <span>Contract Monitor</span>
                 </a>
-<a href="quickbooks.html" class="nav-item">
+                <a href="quickbooks.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
                         <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                     </svg>
-                    <span>QuickBooks (CLU)</span>
+                    <span>QuickBooks</span>
                 </a>
                 <a href="prospective-business.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
                     </svg>
                     <span>Prospective Business</span>
                 </a>
@@ -186,166 +384,503 @@
                         <polyline points="14 2 14 8 20 8"/>
                         <line x1="16" y1="13" x2="8" y2="13"/>
                         <line x1="16" y1="17" x2="8" y2="17"/>
-                        <polyline points="10 9 9 9 8 9"/>
                     </svg>
                     <span>TruMethods QBR</span>
                 </a>
             </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="dashboard-main">
-            <header class="dashboard-header">
-                <div class="header-content">
-                    <h1>Finance</h1>
-                    <p class="header-subtitle">Financial metrics and reporting for TotalCare AI operations</p>
-                </div>
-                <div class="user-profile">
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
                     <div class="user-avatar" id="userAvatar"></div>
-                    <div class="user-info">
+                    <div class="user-details">
                         <div class="user-name" id="userName">Loading...</div>
                         <div class="user-email" id="userEmail"></div>
                     </div>
                 </div>
-                <button id="logoutBtn" class="btn-logout">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <button class="btn-logout" id="logoutBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                         <polyline points="16 17 21 12 16 7"/>
                         <line x1="21" y1="12" x2="9" y2="12"/>
                     </svg>
+                    Logout
                 </button>
-            </header>
+            </div>
+        </aside>
 
-            <div class="dashboard-content">
-                <!-- AWS Billing Section -->
-                <div class="content-card" style="margin-bottom: 2rem;" data-permission="aws-billing">
-                    <div class="card-header">
-                        <h2>AWS Billing</h2>
-                        <span class="badge-count" id="awsUpdateTime">Updated Weekly</span>
+        <main class="dashboard-main">
+            <div class="finance-header">
+                <h1>💰 Finance Dashboard</h1>
+                <p>Comprehensive financial tracking for MSP, DaaS, and operational expenses</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('overview')">📊 Overview</button>
+                <button class="tab-button" onclick="switchTab('msp')">🔧 MSP Revenue</button>
+                <button class="tab-button" onclick="switchTab('daas')">💻 DaaS Revenue</button>
+                <button class="tab-button" onclick="switchTab('expenses')">📉 Expenses</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview-tab" class="tab-content active">
+                <!-- Key Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card revenue">
+                        <h3>Total Monthly Revenue</h3>
+                        <div class="value" id="total-revenue">$0</div>
+                        <div class="change positive" id="revenue-change">↑ 12.5% vs last month</div>
                     </div>
-                    <div class="billing-grid" style="grid-template-columns: 1fr;">
-                        <!-- Current Month (Updated Weekly) -->
-                        <div class="billing-card current-month" style="max-width: 500px;">
-                            <div class="billing-header">
-                                <h3>October 2025</h3>
-                                <span class="real-time-badge">Real-Time</span>
-                            </div>
-                            <div class="billing-amount" id="currentMonthBilling">
-                                <span class="currency">$</span><span class="amount">5.80</span>
-                            </div>
-                            <div class="billing-details">
-                                <div class="billing-detail">
-                                    <span class="detail-label">Days Elapsed:</span>
-                                    <span class="detail-value" id="daysElapsed">27 of 31 days</span>
-                                </div>
-                                <div class="billing-detail">
-                                    <span class="detail-label">Daily Avg:</span>
-                                    <span class="detail-value" id="dailyAvg">$0.21</span>
-                                </div>
-                                <div class="billing-detail">
-                                    <span class="detail-label">Projected Total:</span>
-                                    <span class="detail-value" id="projectedTotal">$6.67</span>
-                                </div>
-                            </div>
-                            <div class="billing-services" id="currentServices">
-                                <div class="service-item">
-                                    <span class="service-name">EC2 (Elastic Compute)</span>
-                                    <span class="service-cost">$4.29</span>
-                                </div>
-                                <div class="service-item">
-                                    <span class="service-name">VPC (Virtual Private Cloud)</span>
-                                    <span class="service-cost">$0.90</span>
-                                </div>
-                                <div class="service-item">
-                                    <span class="service-name">Route 53</span>
-                                    <span class="service-cost">$0.50</span>
-                                </div>
-                                <div class="service-item">
-                                    <span class="service-name">Secrets Manager</span>
-                                    <span class="service-cost">$0.10</span>
-                                </div>
-                                <div class="service-item">
-                                    <span class="service-name">S3 (Simple Storage)</span>
-                                    <span class="service-cost">$0.01</span>
-                                </div>
-                            </div>
-                            <div class="billing-note" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e1e4e8; font-size: 0.85rem; color: #586069;">
-                                <strong>Note:</strong> This AWS account was created in October 2025. Historical billing data will appear as additional months become available.
-                            </div>
+                    <div class="metric-card mrr">
+                        <h3>Monthly Recurring Revenue</h3>
+                        <div class="value" id="total-mrr">$0</div>
+                        <div class="change positive" id="mrr-change">↑ 8.3% growth</div>
+                    </div>
+                    <div class="metric-card arr">
+                        <h3>Annual Recurring Revenue</h3>
+                        <div class="value" id="total-arr">$0</div>
+                        <div class="change positive">Projected ARR</div>
+                    </div>
+                    <div class="metric-card growth">
+                        <h3>Net Profit Margin</h3>
+                        <div class="value" id="profit-margin">0%</div>
+                        <div class="change positive" id="margin-change">↑ 3.2 points</div>
+                    </div>
+                </div>
+
+                <!-- Revenue Breakdown -->
+                <div class="revenue-breakdown">
+                    <div class="breakdown-card">
+                        <h3>Revenue by Service Type</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">MSP Services</span>
+                            <span class="breakdown-value" id="overview-msp-revenue">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">DaaS Subscriptions</span>
+                            <span class="breakdown-value" id="overview-daas-revenue">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Project Work</span>
+                            <span class="breakdown-value">$12,500</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Support Contracts</span>
+                            <span class="breakdown-value">$8,400</span>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-card">
+                        <h3>Client Distribution</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">IT Essentials</span>
+                            <span class="breakdown-value">18 clients</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">IT Assist</span>
+                            <span class="breakdown-value">12 clients</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">IT360</span>
+                            <span class="breakdown-value">5 clients</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">DaaS Only</span>
+                            <span class="breakdown-value">8 clients</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Metrics Overview -->
-                <div class="content-card" data-permission="aws-billing">
-                    <div class="card-header">
-                        <h2>QuickBooks Financial Metrics</h2>
-                        <span class="badge-count">Coming Soon</span>
+                <!-- Charts -->
+                <div class="chart-section">
+                    <h2>Revenue Trend (Last 12 Months)</h2>
+                    <canvas id="revenueChart" height="80"></canvas>
+                </div>
+            </div>
+
+            <!-- MSP Revenue Tab -->
+            <div id="msp-tab" class="tab-content">
+                <div class="metrics-grid">
+                    <div class="metric-card revenue">
+                        <h3>MSP Monthly Revenue</h3>
+                        <div class="value" id="msp-monthly">$0</div>
+                        <div class="change positive">From managed services</div>
                     </div>
-                    <div class="metrics-grid">
-                    <div class="metric-card">
-                        <h3>Monthly Revenue</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change positive">Coming soon</div>
+                    <div class="metric-card mrr">
+                        <h3>Active Contracts</h3>
+                        <div class="value" id="msp-contracts">35</div>
+                        <div class="change positive">↑ 3 new this month</div>
                     </div>
-                    <div class="metric-card">
-                        <h3>MRR (Recurring)</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change positive">Coming soon</div>
+                    <div class="metric-card arr">
+                        <h3>Average Contract Value</h3>
+                        <div class="value" id="msp-acv">$0</div>
+                        <div class="change positive">Per client/month</div>
                     </div>
-                    <div class="metric-card">
-                        <h3>Expenses (MTD)</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change">Coming soon</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Net Profit</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change positive">Coming soon</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Accounts Receivable</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change">Coming soon</div>
-                    </div>
-                    <div class="metric-card">
-                        <h3>Cash on Hand</h3>
-                        <div class="metric-value currency">--</div>
-                        <div class="metric-change positive">Coming soon</div>
+                    <div class="metric-card growth">
+                        <h3>Managed Endpoints</h3>
+                        <div class="value" id="msp-endpoints">892</div>
+                        <div class="change positive">Total devices</div>
                     </div>
                 </div>
 
+                <div class="chart-section">
+                    <h2>MSP Revenue by Service Tier</h2>
+                    <canvas id="mspTierChart" height="80"></canvas>
+                </div>
+
+                <div class="client-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Service Tier</th>
+                                <th>Users</th>
+                                <th>Servers</th>
+                                <th>Monthly Value</th>
+                                <th>Status</th>
+                                <th>Contract End</th>
+                            </tr>
+                        </thead>
+                        <tbody id="msp-clients">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- DaaS Revenue Tab -->
+            <div id="daas-tab" class="tab-content">
+                <div class="metrics-grid">
+                    <div class="metric-card revenue">
+                        <h3>DaaS Monthly Revenue</h3>
+                        <div class="value" id="daas-monthly">$0</div>
+                        <div class="change positive">Device subscriptions</div>
+                    </div>
+                    <div class="metric-card mrr">
+                        <h3>Active Devices</h3>
+                        <div class="value" id="daas-devices">324</div>
+                        <div class="change positive">↑ 28 added this month</div>
+                    </div>
+                    <div class="metric-card arr">
+                        <h3>Average Per Device</h3>
+                        <div class="value" id="daas-per-device">$0</div>
+                        <div class="change positive">Monthly average</div>
+                    </div>
+                    <div class="metric-card growth">
+                        <h3>DaaS Clients</h3>
+                        <div class="value" id="daas-clients">23</div>
+                        <div class="change positive">Total subscribers</div>
                     </div>
                 </div>
 
-                <!-- Coming Soon Message -->
-                <div class="content-card" data-permission="aws-billing">
-                    <div class="coming-soon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="1" x2="12" y2="23"/>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                        </svg>
-                        <h2>Finance Report</h2>
-                        <p>This report will integrate with QuickBooks Online to show:</p>
-                        <ul style="list-style: none; padding: 0; margin: 20px 0; color: #666;">
-                            <li>✓ Revenue and profit trends</li>
-                            <li>✓ Monthly recurring revenue (MRR)</li>
-                            <li>✓ Expense breakdown by category</li>
-                            <li>✓ Cash flow analysis</li>
-                            <li>✓ Accounts receivable aging</li>
-                            <li>✓ Budget vs actuals</li>
-                            <li>✓ Key financial ratios</li>
-                        </ul>
-                        <p style="color: #9ca3af; font-size: 14px;">QuickBooks integration active - report coming soon...</p>
+                <div class="revenue-breakdown">
+                    <div class="breakdown-card">
+                        <h3>Device Type Distribution</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Business Laptops</span>
+                            <span class="breakdown-value">186 devices</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Premium Laptops</span>
+                            <span class="breakdown-value">94 devices</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Desktops</span>
+                            <span class="breakdown-value">32 devices</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Tablets</span>
+                            <span class="breakdown-value">12 devices</span>
+                        </div>
                     </div>
+
+                    <div class="breakdown-card">
+                        <h3>DaaS Revenue Breakdown</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Device Subscriptions</span>
+                            <span class="breakdown-value" id="daas-device-rev">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Management Fees</span>
+                            <span class="breakdown-value">$8,100</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Support Services</span>
+                            <span class="breakdown-value">$3,240</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Refresh Credits</span>
+                            <span class="breakdown-value" style="color: #ef4444;">-$2,100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h2>DaaS Growth Trend</h2>
+                    <canvas id="daasGrowthChart" height="80"></canvas>
+                </div>
+            </div>
+
+            <!-- Expenses Tab -->
+            <div id="expenses-tab" class="tab-content">
+                <div class="metrics-grid">
+                    <div class="metric-card revenue">
+                        <h3>Total Monthly Expenses</h3>
+                        <div class="value">$24,580</div>
+                        <div class="change negative">↑ 5.2% vs last month</div>
+                    </div>
+                    <div class="metric-card mrr">
+                        <h3>Operating Expenses</h3>
+                        <div class="value">$18,240</div>
+                        <div class="change positive">Operational costs</div>
+                    </div>
+                    <div class="metric-card arr">
+                        <h3>Cost of Goods Sold</h3>
+                        <div class="value">$6,340</div>
+                        <div class="change positive">Hardware & licenses</div>
+                    </div>
+                    <div class="metric-card growth">
+                        <h3>Profit Margin</h3>
+                        <div class="value">68.2%</div>
+                        <div class="change positive">After all expenses</div>
+                    </div>
+                </div>
+
+                <!-- AWS Billing -->
+                <div class="aws-billing-card">
+                    <div class="billing-header-row">
+                        <div>
+                            <h2 style="margin: 0 0 0.5rem 0;">AWS Infrastructure Costs</h2>
+                            <p style="margin: 0; color: #6b7280;">October 2025 - Updated in Real-Time</p>
+                        </div>
+                        <span style="background: #dbeafe; color: #1e40af; padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">LIVE</span>
+                    </div>
+
+                    <div class="billing-amount-large">
+                        $5.80
+                    </div>
+
+                    <div class="billing-details-grid">
+                        <div class="billing-detail-item">
+                            <div class="billing-detail-label">Days Elapsed</div>
+                            <div class="billing-detail-value">27 / 31</div>
+                        </div>
+                        <div class="billing-detail-item">
+                            <div class="billing-detail-label">Daily Average</div>
+                            <div class="billing-detail-value">$0.21</div>
+                        </div>
+                        <div class="billing-detail-item">
+                            <div class="billing-detail-label">Projected Total</div>
+                            <div class="billing-detail-value">$6.67</div>
+                        </div>
+                        <div class="billing-detail-item">
+                            <div class="billing-detail-label">Budget Status</div>
+                            <div class="billing-detail-value" style="color: #10b981;">Under</div>
+                        </div>
+                    </div>
+
+                    <div class="service-breakdown">
+                        <h4>Service Breakdown</h4>
+                        <div class="service-item">
+                            <span>EC2 (Elastic Compute Cloud)</span>
+                            <span style="font-weight: 700;">$4.29</span>
+                        </div>
+                        <div class="service-item">
+                            <span>VPC (Virtual Private Cloud)</span>
+                            <span style="font-weight: 700;">$0.90</span>
+                        </div>
+                        <div class="service-item">
+                            <span>Route 53 (DNS)</span>
+                            <span style="font-weight: 700;">$0.50</span>
+                        </div>
+                        <div class="service-item">
+                            <span>Secrets Manager</span>
+                            <span style="font-weight: 700;">$0.10</span>
+                        </div>
+                        <div class="service-item">
+                            <span>S3 (Simple Storage)</span>
+                            <span style="font-weight: 700;">$0.01</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 8px; font-size: 0.875rem; color: #92400e;">
+                        <strong>Note:</strong> This AWS account was created in October 2025. Historical billing data will appear as additional months become available.
+                    </div>
+                </div>
+
+                <div class="chart-section" style="margin-top: 2rem;">
+                    <h2>Expense Categories</h2>
+                    <canvas id="expensesChart" height="80"></canvas>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/permissions.js"></script>
-    <script src="js/billing.js"></script>
+    <script>
+        // Sample data
+        const financialData = {
+            msp: {
+                monthlyRevenue: 85400,
+                contracts: 35,
+                endpoints: 892,
+                clients: [
+                    { name: 'Acme Corp', tier: 'IT360', users: 85, servers: 4, monthly: 18250, status: 'active', contractEnd: '2026-03-15' },
+                    { name: 'TechStart Inc', tier: 'IT Assist', users: 42, servers: 2, monthly: 6430, status: 'active', contractEnd: '2025-12-31' },
+                    { name: 'Global Solutions', tier: 'IT360', users: 125, servers: 8, monthly: 28650, status: 'active', contractEnd: '2026-06-30' },
+                    { name: 'SmartBiz LLC', tier: 'IT Essentials', users: 18, servers: 1, monthly: 1950, status: 'active', contractEnd: '2025-11-15' },
+                    { name: 'Innovate Co', tier: 'IT Assist', users: 65, servers: 3, monthly: 10350, status: 'active', contractEnd: '2026-01-31' }
+                ]
+            },
+            daas: {
+                monthlyRevenue: 28440,
+                devices: 324,
+                clients: 23
+            }
+        };
+
+        function switchTab(tab) {
+            // Update buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        function formatCurrency(value) {
+            return '$' + value.toLocaleString();
+        }
+
+        function loadFinancialData() {
+            // Calculate totals
+            const totalRevenue = financialData.msp.monthlyRevenue + financialData.daas.monthlyRevenue;
+            const totalMRR = totalRevenue;
+            const totalARR = totalRevenue * 12;
+            const avgContractValue = financialData.msp.monthlyRevenue / financialData.msp.contracts;
+            const avgPerDevice = financialData.daas.monthlyRevenue / financialData.daas.devices;
+
+            // Update overview metrics
+            document.getElementById('total-revenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('total-mrr').textContent = formatCurrency(totalMRR);
+            document.getElementById('total-arr').textContent = formatCurrency(totalARR);
+            document.getElementById('profit-margin').textContent = '68.2%';
+
+            document.getElementById('overview-msp-revenue').textContent = formatCurrency(financialData.msp.monthlyRevenue);
+            document.getElementById('overview-daas-revenue').textContent = formatCurrency(financialData.daas.monthlyRevenue);
+
+            // Update MSP metrics
+            document.getElementById('msp-monthly').textContent = formatCurrency(financialData.msp.monthlyRevenue);
+            document.getElementById('msp-contracts').textContent = financialData.msp.contracts;
+            document.getElementById('msp-acv').textContent = formatCurrency(Math.round(avgContractValue));
+            document.getElementById('msp-endpoints').textContent = financialData.msp.endpoints;
+
+            // Update DaaS metrics
+            document.getElementById('daas-monthly').textContent = formatCurrency(financialData.daas.monthlyRevenue);
+            document.getElementById('daas-devices').textContent = financialData.daas.devices;
+            document.getElementById('daas-per-device').textContent = formatCurrency(Math.round(avgPerDevice));
+            document.getElementById('daas-clients').textContent = financialData.daas.clients;
+            document.getElementById('daas-device-rev').textContent = formatCurrency(financialData.daas.monthlyRevenue - 8100 - 3240 + 2100);
+
+            // Load MSP clients table
+            const tbody = document.getElementById('msp-clients');
+            tbody.innerHTML = financialData.msp.clients.map(client => `
+                <tr>
+                    <td><strong>${client.name}</strong></td>
+                    <td>${client.tier}</td>
+                    <td>${client.users}</td>
+                    <td>${client.servers}</td>
+                    <td><strong>${formatCurrency(client.monthly)}</strong></td>
+                    <td><span class="status-badge ${client.status}">${client.status}</span></td>
+                    <td>${new Date(client.contractEnd).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function createCharts() {
+            // Revenue Trend Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [{
+                        label: 'Total Revenue',
+                        data: [95000, 98000, 102000, 105000, 108000, 107000, 110000, 111000, 112000, 113000, 112000, 113840],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // MSP Tier Chart
+            const mspTierCtx = document.getElementById('mspTierChart').getContext('2d');
+            new Chart(mspTierCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['IT Essentials', 'IT Assist', 'IT360'],
+                    datasets: [{
+                        label: 'Monthly Revenue',
+                        data: [24300, 28400, 32700],
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+
+            // DaaS Growth Chart
+            const daasGrowthCtx = document.getElementById('daasGrowthChart').getContext('2d');
+            new Chart(daasGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [{
+                        label: 'Active Devices',
+                        data: [180, 195, 210, 225, 238, 252, 265, 278, 289, 298, 310, 324],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Expenses Chart
+            const expensesCtx = document.getElementById('expensesChart').getContext('2d');
+            new Chart(expensesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Salaries', 'Software & Licenses', 'Hardware', 'Office & Overhead', 'Marketing', 'AWS/Cloud'],
+                    datasets: [{
+                        data: [12000, 4200, 3500, 2800, 1500, 580],
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFinancialData();
+            createCharts();
+        });
+    </script>
 </body>
 </html>
