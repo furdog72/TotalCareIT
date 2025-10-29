@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaaS & IT Cost Calculator - TotalCareIT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/8752461.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            margin: 0 0 1rem 0;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            margin: 0;
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .calculator-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+
+        .tab-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .calculator-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-section h2 {
+            margin: 0 0 1.5rem 0;
+            color: #1f2937;
+            font-size: 1.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group .helper-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .result-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .result-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .result-card .subtext {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .benefits-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .benefit-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .benefit-card .icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .benefit-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1f2937;
+            font-size: 1.125rem;
+        }
+
+        .benefit-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .service-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tier-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tier-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .tier-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+        }
+
+        .tier-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+
+        .tier-card .subtitle {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .tier-card .features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tier-card .features li {
+            padding: 0.5rem 0;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-card .features li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        .comparison-table h3 {
+            margin: 0 0 1.5rem 0;
+            color: #1f2937;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .comparison-table .traditional {
+            color: #dc2626;
+        }
+
+        .comparison-table .daas {
+            color: #10b981;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .cta-section h2 {
+            margin: 0 0 1rem 0;
+            font-size: 2rem;
+        }
+
+        .cta-section p {
+            margin: 0 0 2rem 0;
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-cta:hover {
+            background: transparent;
+            color: white;
+        }
+
+        .btn-cta.secondary {
+            background: transparent;
+            color: white;
+        }
+
+        .btn-cta.secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-tabs {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>💻 Device as a Service & IT Cost Calculator</h1>
+        <p>Discover your potential savings with modern IT service models. Calculate your total cost of ownership and explore flexible payment structures.</p>
+    </div>
+
+    <div class="container">
+        <div class="calculator-tabs">
+            <button class="tab-button active" onclick="switchTab('daas')">
+                📱 DaaS Calculator
+            </button>
+            <button class="tab-button" onclick="switchTab('it-cost')">
+                💰 IT Cost Calculator
+            </button>
+        </div>
+
+        <!-- DaaS Calculator Tab -->
+        <div id="daas-tab" class="tab-content active">
+            <div class="calculator-section">
+                <h2>Device as a Service Cost Calculator</h2>
+                <p style="color: #6b7280; margin-bottom: 2rem;">
+                    Compare traditional device procurement versus Device as a Service (DaaS).
+                    DaaS offers predictable monthly costs, lifecycle management, and reduced capital expenditure.
+                </p>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="daas-devices">Number of Devices</label>
+                        <input type="number" id="daas-devices" value="50" min="1">
+                        <span class="helper-text">Laptops, desktops, or mobile devices</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daas-device-type">Device Type</label>
+                        <select id="daas-device-type">
+                            <option value="1200">Business Laptop ($1,200)</option>
+                            <option value="1500">Premium Laptop ($1,500)</option>
+                            <option value="800">Desktop ($800)</option>
+                            <option value="600">Tablet ($600)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daas-refresh">Refresh Cycle</label>
+                        <select id="daas-refresh">
+                            <option value="3">3 Years (Standard)</option>
+                            <option value="4">4 Years</option>
+                            <option value="5">5 Years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daas-it-hours">IT Hours per Device/Year</label>
+                        <input type="number" id="daas-it-hours" value="4" min="0" step="0.5">
+                        <span class="helper-text">Setup, support, maintenance</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daas-it-rate">IT Hourly Rate</label>
+                        <input type="number" id="daas-it-rate" value="75" min="0">
+                        <span class="helper-text">Average IT labor cost</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daas-warranty">Extended Warranty</label>
+                        <select id="daas-warranty">
+                            <option value="0">No Extended Warranty</option>
+                            <option value="150">Standard ($150/device)</option>
+                            <option value="250">Premium ($250/device)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="calculateDaaS()">Calculate DaaS Savings</button>
+
+                <div id="daas-results" class="results-section">
+                    <h2>Your DaaS Analysis</h2>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h3>Traditional Ownership</h3>
+                            <div class="value" id="daas-traditional-cost">$0</div>
+                            <div class="subtext">Total 3-year cost</div>
+                        </div>
+                        <div class="result-card">
+                            <h3>DaaS Model</h3>
+                            <div class="value" id="daas-service-cost">$0</div>
+                            <div class="subtext">Total 3-year cost</div>
+                        </div>
+                        <div class="result-card" style="border-left-color: #10b981;">
+                            <h3>Your Savings</h3>
+                            <div class="value" id="daas-savings" style="color: #10b981;">$0</div>
+                            <div class="subtext" id="daas-savings-percent">0% reduction</div>
+                        </div>
+                        <div class="result-card" style="border-left-color: #f59e0b;">
+                            <h3>Monthly DaaS Cost</h3>
+                            <div class="value" id="daas-monthly">$0</div>
+                            <div class="subtext">Predictable monthly payment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benefits-section">
+                <h2>Benefits of Device as a Service</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="icon">📊</div>
+                        <h3>Predictable Costs</h3>
+                        <p>Fixed monthly payments make budgeting easier and eliminate large capital expenditures.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">🔄</div>
+                        <h3>Always Current</h3>
+                        <p>Regular device refresh cycles ensure your team has modern, secure, and reliable equipment.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">⚡</div>
+                        <h3>Reduced IT Burden</h3>
+                        <p>Lifecycle management, deployment, and support are handled for you, freeing up IT resources.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">🛡️</div>
+                        <h3>Enhanced Security</h3>
+                        <p>Managed updates, patches, and security configurations protect your business data.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">♻️</div>
+                        <h3>Sustainable</h3>
+                        <p>Professional device retirement and recycling reduces environmental impact.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">📈</div>
+                        <h3>Scalable</h3>
+                        <p>Easily scale up or down as your business needs change without large investments.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-table">
+                <h3>Traditional vs. DaaS Comparison</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Traditional Procurement</th>
+                            <th>Device as a Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Upfront Cost</strong></td>
+                            <td class="traditional">High capital expenditure</td>
+                            <td class="daas">Low to zero</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Payment Structure</strong></td>
+                            <td class="traditional">Lump sum + ongoing costs</td>
+                            <td class="daas">Predictable monthly fee</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Device Refresh</strong></td>
+                            <td class="traditional">Manual process, additional cost</td>
+                            <td class="daas">Automatic on schedule</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IT Management</strong></td>
+                            <td class="traditional">Full internal responsibility</td>
+                            <td class="daas">Shared or fully managed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support & Warranty</strong></td>
+                            <td class="traditional">Separate purchase, limited</td>
+                            <td class="daas">Included in service</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Technology Currency</strong></td>
+                            <td class="traditional">Devices age over time</td>
+                            <td class="daas">Always modern equipment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td class="traditional">Requires new purchases</td>
+                            <td class="daas">Add/remove as needed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>End of Life</strong></td>
+                            <td class="traditional">Disposal burden on you</td>
+                            <td class="daas">Professional recycling included</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- IT Cost Calculator Tab -->
+        <div id="it-cost-tab" class="tab-content">
+            <div class="calculator-section">
+                <h2>Managed IT Services Cost Calculator</h2>
+                <p style="color: #6b7280; margin-bottom: 2rem;">
+                    Calculate your estimated monthly IT costs based on your infrastructure size and service needs.
+                    Choose from three service tiers designed for different business requirements.
+                </p>
+
+                <h3 style="margin-bottom: 1.5rem;">Select Your Service Tier</h3>
+                <div class="service-tiers">
+                    <div class="tier-card selected" onclick="selectTier('essentials')" id="tier-essentials">
+                        <h3>IT Essentials</h3>
+                        <p class="subtitle">Foundation security and support</p>
+                        <ul class="features">
+                            <li>Endpoint Detection & Response</li>
+                            <li>Multi-Factor Authentication</li>
+                            <li>Email Anti-Spoofing</li>
+                            <li>Basic Help Desk Support</li>
+                            <li>Patch Management</li>
+                            <li>Antivirus Protection</li>
+                        </ul>
+                    </div>
+
+                    <div class="tier-card" onclick="selectTier('assist')" id="tier-assist">
+                        <h3>IT Assist</h3>
+                        <p class="subtitle">Enhanced monitoring & defense</p>
+                        <ul class="features">
+                            <li>Everything in IT Essentials</li>
+                            <li>24/7 Network Monitoring</li>
+                            <li>Multi-Layered Security</li>
+                            <li>Cyber Insurance Support</li>
+                            <li>Advanced Threat Detection</li>
+                            <li>Priority Support Response</li>
+                        </ul>
+                    </div>
+
+                    <div class="tier-card" onclick="selectTier('it360')" id="tier-it360">
+                        <h3>IT360</h3>
+                        <p class="subtitle">Enterprise-grade full stack</p>
+                        <ul class="features">
+                            <li>Everything in IT Assist</li>
+                            <li>Full Compliance Support</li>
+                            <li>Advanced Security Operations</li>
+                            <li>Strategic IT Planning</li>
+                            <li>Executive Reporting</li>
+                            <li>Dedicated vCIO</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-top: 2rem;">
+                    <div class="form-group">
+                        <label for="it-users">Number of Users</label>
+                        <input type="number" id="it-users" value="25" min="1">
+                        <span class="helper-text">Employees needing IT support</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="it-servers">Number of Servers</label>
+                        <input type="number" id="it-servers" value="2" min="0">
+                        <span class="helper-text">Physical or virtual servers</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="it-locations">Business Locations</label>
+                        <input type="number" id="it-locations" value="1" min="1">
+                        <span class="helper-text">Physical office sites</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="it-backup">Data Backup (TB)</label>
+                        <input type="number" id="it-backup" value="1" min="0" step="0.5">
+                        <span class="helper-text">Storage capacity needed</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="it-staff">Existing IT Staff</label>
+                        <select id="it-staff">
+                            <option value="none">No IT Staff</option>
+                            <option value="partial">Part-Time/Contractor</option>
+                            <option value="full">Full-Time IT Team</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="it-compliance">Compliance Requirements</label>
+                        <select id="it-compliance">
+                            <option value="none">None</option>
+                            <option value="basic">Basic (GDPR, etc.)</option>
+                            <option value="hipaa">HIPAA</option>
+                            <option value="pci">PCI-DSS</option>
+                            <option value="multiple">Multiple Standards</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="calculateITCost()">Calculate IT Costs</button>
+
+                <div id="it-results" class="results-section">
+                    <h2>Your Estimated IT Costs</h2>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h3>Monthly Cost</h3>
+                            <div class="value" id="it-monthly-cost">$0</div>
+                            <div class="subtext">Based on <span id="it-selected-tier">IT Essentials</span></div>
+                        </div>
+                        <div class="result-card">
+                            <h3>Annual Cost</h3>
+                            <div class="value" id="it-annual-cost">$0</div>
+                            <div class="subtext">12-month estimate</div>
+                        </div>
+                        <div class="result-card" style="border-left-color: #10b981;">
+                            <h3>Cost Per User</h3>
+                            <div class="value" id="it-per-user">$0</div>
+                            <div class="subtext">Monthly per employee</div>
+                        </div>
+                        <div class="result-card" style="border-left-color: #f59e0b;">
+                            <h3>Service Level</h3>
+                            <div class="value" style="font-size: 1.5rem;" id="it-service-level">Core</div>
+                            <div class="subtext">Recommended tier</div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 2rem; margin-top: 2rem;">
+                        <h3>Cost Breakdown</h3>
+                        <table style="width: 100%; margin-top: 1rem;">
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 0.75rem;">Managed Users (<span id="breakdown-users">0</span>)</td>
+                                <td style="padding: 0.75rem; text-align: right; font-weight: 600;" id="breakdown-users-cost">$0</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 0.75rem;">Managed Servers (<span id="breakdown-servers">0</span>)</td>
+                                <td style="padding: 0.75rem; text-align: right; font-weight: 600;" id="breakdown-servers-cost">$0</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 0.75rem;">Network Management (<span id="breakdown-locations">0</span> locations)</td>
+                                <td style="padding: 0.75rem; text-align: right; font-weight: 600;" id="breakdown-network-cost">$0</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 0.75rem;">Backup & DR (<span id="breakdown-backup">0</span> TB)</td>
+                                <td style="padding: 0.75rem; text-align: right; font-weight: 600;" id="breakdown-backup-cost">$0</td>
+                            </tr>
+                            <tr style="border-bottom: 2px solid #1f2937;">
+                                <td style="padding: 0.75rem;"><strong>Total Monthly Cost</strong></td>
+                                <td style="padding: 0.75rem; text-align: right; font-weight: 700; font-size: 1.25rem; color: #667eea;" id="breakdown-total">$0</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Transform Your IT?</h2>
+            <p>Let TotalCareIT help you modernize your technology infrastructure with flexible, cost-effective solutions.</p>
+            <div class="cta-buttons">
+                <a href="mailto:sales@totalcareit.com" class="btn-cta">Schedule Consultation</a>
+                <a href="tel:+13212595500" class="btn-cta secondary">Call (321) 259-5500</a>
+                <a href="https://totalcareit.com" class="btn-cta secondary" target="_blank">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTier = 'essentials';
+
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        function selectTier(tier) {
+            selectedTier = tier;
+            document.querySelectorAll('.tier-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('tier-' + tier).classList.add('selected');
+        }
+
+        function calculateDaaS() {
+            const devices = parseInt(document.getElementById('daas-devices').value);
+            const deviceCost = parseInt(document.getElementById('daas-device-type').value);
+            const refreshCycle = parseInt(document.getElementById('daas-refresh').value);
+            const itHours = parseFloat(document.getElementById('daas-it-hours').value);
+            const itRate = parseFloat(document.getElementById('daas-it-rate').value);
+            const warranty = parseInt(document.getElementById('daas-warranty').value);
+
+            // Traditional ownership calculation
+            const purchaseCost = devices * deviceCost;
+            const warrantyyCost = devices * warranty;
+            const itLaborCost = devices * itHours * itRate * refreshCycle;
+            const traditionalTotal = purchaseCost + warrantyCost + itLaborCost;
+
+            // DaaS calculation (typically 20-30% of device cost per month)
+            const daasMonthlyPerDevice = (deviceCost * 0.025) + 25; // 2.5% of device cost + $25 management
+            const daasMonthly = devices * daasMonthlyPerDevice;
+            const daasTotal = daasMonthly * 12 * refreshCycle;
+
+            // Calculate savings
+            const savings = traditionalTotal - daasTotal;
+            const savingsPercent = ((savings / traditionalTotal) * 100).toFixed(1);
+
+            // Display results
+            document.getElementById('daas-traditional-cost').textContent = '$' + traditionalTotal.toLocaleString();
+            document.getElementById('daas-service-cost').textContent = '$' + daasTotal.toLocaleString();
+            document.getElementById('daas-savings').textContent = '$' + Math.abs(savings).toLocaleString();
+            document.getElementById('daas-savings-percent').textContent = Math.abs(savingsPercent) + '% ' + (savings > 0 ? 'reduction' : 'increase');
+            document.getElementById('daas-monthly').textContent = '$' + daasMonthly.toLocaleString();
+
+            document.getElementById('daas-results').classList.add('show');
+
+            // Scroll to results
+            document.getElementById('daas-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function calculateITCost() {
+            const users = parseInt(document.getElementById('it-users').value);
+            const servers = parseInt(document.getElementById('it-servers').value);
+            const locations = parseInt(document.getElementById('it-locations').value);
+            const backup = parseFloat(document.getElementById('it-backup').value);
+            const compliance = document.getElementById('it-compliance').value;
+
+            // Base rates per tier
+            const tierRates = {
+                'essentials': { user: 75, server: 200, network: 125, backup: 150 },
+                'assist': { user: 115, server: 275, network: 175, backup: 200 },
+                'it360': { user: 165, server: 350, network: 225, backup: 250 }
+            };
+
+            const rates = tierRates[selectedTier];
+
+            // Calculate costs
+            const userCost = users * rates.user;
+            const serverCost = servers * rates.server;
+            const networkCost = locations * rates.network;
+            const backupCost = Math.ceil(backup) * rates.backup;
+
+            // Compliance adjustment
+            const complianceMultiplier = {
+                'none': 1.0,
+                'basic': 1.1,
+                'hipaa': 1.25,
+                'pci': 1.2,
+                'multiple': 1.35
+            };
+
+            const totalMonthly = (userCost + serverCost + networkCost + backupCost) * complianceMultiplier[compliance];
+            const totalAnnual = totalMonthly * 12;
+            const perUser = totalMonthly / users;
+
+            // Display results
+            document.getElementById('it-monthly-cost').textContent = '$' + Math.round(totalMonthly).toLocaleString();
+            document.getElementById('it-annual-cost').textContent = '$' + Math.round(totalAnnual).toLocaleString();
+            document.getElementById('it-per-user').textContent = '$' + Math.round(perUser).toLocaleString();
+
+            const tierNames = {
+                'essentials': 'IT Essentials',
+                'assist': 'IT Assist',
+                'it360': 'IT360'
+            };
+            document.getElementById('it-selected-tier').textContent = tierNames[selectedTier];
+            document.getElementById('it-service-level').textContent = tierNames[selectedTier];
+
+            // Breakdown
+            document.getElementById('breakdown-users').textContent = users;
+            document.getElementById('breakdown-users-cost').textContent = '$' + userCost.toLocaleString();
+            document.getElementById('breakdown-servers').textContent = servers;
+            document.getElementById('breakdown-servers-cost').textContent = '$' + serverCost.toLocaleString();
+            document.getElementById('breakdown-locations').textContent = locations;
+            document.getElementById('breakdown-network-cost').textContent = '$' + networkCost.toLocaleString();
+            document.getElementById('breakdown-backup').textContent = backup;
+            document.getElementById('breakdown-backup-cost').textContent = '$' + backupCost.toLocaleString();
+            document.getElementById('breakdown-total').textContent = '$' + Math.round(totalMonthly).toLocaleString();
+
+            document.getElementById('it-results').classList.add('show');
+
+            // Scroll to results
+            document.getElementById('it-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
