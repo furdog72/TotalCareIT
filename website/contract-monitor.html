@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Monitor - TotalCareIT Partner Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+
+    <style>
+        .contract-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .contract-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .contract-header p {
+            margin: 0;
+            opacity: 0.95;
+        }
+
+        .filter-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid;
+        }
+
+        .stat-card.critical {
+            border-left-color: #ef4444;
+        }
+
+        .stat-card.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .stat-card.success {
+            border-left-color: #10b981;
+        }
+
+        .stat-card.info {
+            border-left-color: #3b82f6;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .contracts-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .contracts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .contracts-table thead {
+            background: #f8fafc;
+        }
+
+        .contracts-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.875rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .contracts-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+
+        .contracts-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.upcoming {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .btn-view:hover {
+            background: #dbeafe;
+        }
+
+        .btn-edit {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .btn-edit:hover {
+            background: #dcfce7;
+        }
+
+        .btn-add {
+            background: #667eea;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .btn-add:hover {
+            background: #5568d3;
+        }
+
+        .days-remaining {
+            font-weight: 600;
+        }
+
+        .days-remaining.critical {
+            color: #dc2626;
+        }
+
+        .days-remaining.warning {
+            color: #ea580c;
+        }
+
+        .days-remaining.safe {
+            color: #059669;
+        }
+
+        .contract-type-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .type-insurance {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .type-vendor {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+
+        .type-service {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://totalcareit.com/wp-content/uploads/2024/11/TotalCareIT-Registered-Logo-Full-Color.webp" alt="Logo" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="sales-report.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                    <span>Sales Report</span>
+                </a>
+                <a href="linkedin-performance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                    <span>LinkedIn Performance</span>
+                </a>
+                <a href="scorecard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>Scorecard</span>
+                </a>
+                <a href="contract-monitor.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <line x1="10" y1="9" x2="8" y2="9"/>
+                    </svg>
+                    <span>Contract Monitor</span>
+                </a>
+                <a href="quickbooks.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>QuickBooks</span>
+                </a>
+                <a href="prospective-business.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    <span>Prospective Business</span>
+                </a>
+                <a href="finance.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Finance</span>
+                </a>
+                <a href="trumethods-qbr.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <span>TruMethods QBR</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail"></div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <div class="contract-header">
+                <h1>📋 Contract Monitor</h1>
+                <p>Track insurance and vendor contracts, renewal dates, and notice periods</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card critical">
+                    <h3>Expiring Soon (30 days)</h3>
+                    <div class="value" id="stat-expiring">0</div>
+                </div>
+                <div class="stat-card warning">
+                    <h3>Notice Required (60 days)</h3>
+                    <div class="value" id="stat-notice">0</div>
+                </div>
+                <div class="stat-card success">
+                    <h3>Active Contracts</h3>
+                    <div class="value" id="stat-active">0</div>
+                </div>
+                <div class="stat-card info">
+                    <h3>Total Annual Value</h3>
+                    <div class="value" id="stat-value">$0</div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="filter-type">Contract Type</label>
+                    <select id="filter-type">
+                        <option value="all">All Types</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="vendor">Vendor</option>
+                        <option value="service">Service Provider</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">Status</label>
+                    <select id="filter-status">
+                        <option value="all">All Status</option>
+                        <option value="critical">Expiring Soon</option>
+                        <option value="warning">Notice Required</option>
+                        <option value="active">Active</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-search">Search</label>
+                    <input type="text" id="filter-search" placeholder="Search contracts...">
+                </div>
+                <button class="btn-add" onclick="alert('Add new contract feature coming soon!')">
+                    + Add Contract
+                </button>
+            </div>
+
+            <!-- Contracts Table -->
+            <div class="contracts-table-container">
+                <table class="contracts-table">
+                    <thead>
+                        <tr>
+                            <th>Contract Name</th>
+                            <th>Type</th>
+                            <th>Vendor/Provider</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Notice Period</th>
+                            <th>Notice Due Date</th>
+                            <th>Days Remaining</th>
+                            <th>Annual Value</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contracts-tbody">
+                        <!-- Contracts will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        let allContracts = [];
+
+        // Load contract data
+        async function loadContracts() {
+            try {
+                const response = await fetch('data/contracts.json');
+                allContracts = await response.json();
+                updateStatistics();
+                renderContracts(allContracts);
+            } catch (error) {
+                console.error('Error loading contracts:', error);
+                // Load sample data if file doesn't exist
+                loadSampleData();
+            }
+        }
+
+        function loadSampleData() {
+            allContracts = [
+                {
+                    name: "General Liability Insurance",
+                    type: "insurance",
+                    vendor: "Hartford Insurance",
+                    startDate: "2024-01-01",
+                    endDate: "2025-01-01",
+                    noticePeriod: 60,
+                    annualValue: 15000,
+                    autoRenew: true
+                },
+                {
+                    name: "Professional Liability (E&O)",
+                    type: "insurance",
+                    vendor: "Travelers Insurance",
+                    startDate: "2024-03-15",
+                    endDate: "2025-03-15",
+                    noticePeriod: 30,
+                    annualValue: 8500,
+                    autoRenew: false
+                },
+                {
+                    name: "Microsoft CSP Agreement",
+                    type: "vendor",
+                    vendor: "Microsoft",
+                    startDate: "2023-06-01",
+                    endDate: "2025-06-01",
+                    noticePeriod: 90,
+                    annualValue: 125000,
+                    autoRenew: true
+                },
+                {
+                    name: "Autotask PSA",
+                    type: "service",
+                    vendor: "Datto/Kaseya",
+                    startDate: "2024-01-01",
+                    endDate: "2025-12-31",
+                    noticePeriod: 60,
+                    annualValue: 12000,
+                    autoRenew: true
+                },
+                {
+                    name: "Cybersecurity Insurance",
+                    type: "insurance",
+                    vendor: "Coalition Insurance",
+                    startDate: "2024-11-01",
+                    endDate: "2025-11-01",
+                    noticePeriod: 30,
+                    annualValue: 18000,
+                    autoRenew: false
+                },
+                {
+                    name: "IT Glue Documentation",
+                    type: "service",
+                    vendor: "Kaseya",
+                    startDate: "2024-02-01",
+                    endDate: "2025-02-01",
+                    noticePeriod: 30,
+                    annualValue: 4800,
+                    autoRenew: true
+                },
+                {
+                    name: "Workers Compensation",
+                    type: "insurance",
+                    vendor: "State Fund",
+                    startDate: "2024-01-01",
+                    endDate: "2025-01-01",
+                    noticePeriod: 60,
+                    annualValue: 22000,
+                    autoRenew: true
+                }
+            ];
+            updateStatistics();
+            renderContracts(allContracts);
+        }
+
+        function calculateDaysRemaining(endDate) {
+            const today = new Date();
+            const end = new Date(endDate);
+            const diffTime = end - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        function getNoticeDueDate(endDate, noticePeriod) {
+            const end = new Date(endDate);
+            const noticeDate = new Date(end);
+            noticeDate.setDate(noticeDate.getDate() - noticePeriod);
+            return noticeDate;
+        }
+
+        function getStatus(daysRemaining, noticeDueDate) {
+            const today = new Date();
+            const notice = new Date(noticeDueDate);
+            const daysToNotice = Math.ceil((notice - today) / (1000 * 60 * 60 * 24));
+
+            if (daysRemaining <= 30) {
+                return { badge: 'critical', label: 'Expiring Soon' };
+            } else if (daysToNotice <= 0 && daysRemaining > 30) {
+                return { badge: 'warning', label: 'Notice Due' };
+            } else if (daysToNotice <= 30) {
+                return { badge: 'warning', label: 'Notice Upcoming' };
+            } else {
+                return { badge: 'active', label: 'Active' };
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            }).format(value);
+        }
+
+        function updateStatistics() {
+            let expiring = 0, notice = 0, active = 0, totalValue = 0;
+
+            allContracts.forEach(contract => {
+                const daysRemaining = calculateDaysRemaining(contract.endDate);
+                const noticeDueDate = getNoticeDueDate(contract.endDate, contract.noticePeriod);
+                const daysToNotice = Math.ceil((noticeDueDate - new Date()) / (1000 * 60 * 60 * 24));
+
+                if (daysRemaining <= 30) expiring++;
+                if (daysToNotice <= 60 && daysToNotice > 0) notice++;
+                if (daysRemaining > 0) active++;
+                totalValue += contract.annualValue;
+            });
+
+            document.getElementById('stat-expiring').textContent = expiring;
+            document.getElementById('stat-notice').textContent = notice;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-value').textContent = formatCurrency(totalValue);
+        }
+
+        function renderContracts(contracts) {
+            const tbody = document.getElementById('contracts-tbody');
+
+            if (contracts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" style="text-align: center; padding: 3rem;">
+                            <div class="empty-state">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                                <h3>No contracts found</h3>
+                                <p>Try adjusting your filters or add a new contract</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = contracts.map(contract => {
+                const daysRemaining = calculateDaysRemaining(contract.endDate);
+                const noticeDueDate = getNoticeDueDate(contract.endDate, contract.noticePeriod);
+                const status = getStatus(daysRemaining, noticeDueDate);
+
+                const daysClass = daysRemaining <= 30 ? 'critical' :
+                                 daysRemaining <= 90 ? 'warning' : 'safe';
+
+                const typeClass = `type-${contract.type}`;
+                const typeIcon = contract.type === 'insurance' ? 'I' :
+                                contract.type === 'vendor' ? 'V' : 'S';
+
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div class="contract-type-icon ${typeClass}">${typeIcon}</div>
+                                <strong>${contract.name}</strong>
+                            </div>
+                        </td>
+                        <td style="text-transform: capitalize;">${contract.type}</td>
+                        <td>${contract.vendor}</td>
+                        <td>${formatDate(contract.startDate)}</td>
+                        <td>${formatDate(contract.endDate)}</td>
+                        <td>${contract.noticePeriod} days</td>
+                        <td>${formatDate(noticeDueDate)}</td>
+                        <td><span class="days-remaining ${daysClass}">${daysRemaining} days</span></td>
+                        <td>${formatCurrency(contract.annualValue)}</td>
+                        <td><span class="status-badge ${status.badge}">${status.label}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action btn-view" onclick="viewContract('${contract.name}')">View</button>
+                                <button class="btn-action btn-edit" onclick="editContract('${contract.name}')">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function applyFilters() {
+            const typeFilter = document.getElementById('filter-type').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            const searchFilter = document.getElementById('filter-search').value.toLowerCase();
+
+            let filtered = allContracts.filter(contract => {
+                // Type filter
+                if (typeFilter !== 'all' && contract.type !== typeFilter) return false;
+
+                // Status filter
+                if (statusFilter !== 'all') {
+                    const daysRemaining = calculateDaysRemaining(contract.endDate);
+                    const noticeDueDate = getNoticeDueDate(contract.endDate, contract.noticePeriod);
+                    const status = getStatus(daysRemaining, noticeDueDate);
+
+                    if (statusFilter === 'critical' && status.badge !== 'critical') return false;
+                    if (statusFilter === 'warning' && status.badge !== 'warning') return false;
+                    if (statusFilter === 'active' && status.badge !== 'active') return false;
+                }
+
+                // Search filter
+                if (searchFilter &&
+                    !contract.name.toLowerCase().includes(searchFilter) &&
+                    !contract.vendor.toLowerCase().includes(searchFilter)) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            renderContracts(filtered);
+        }
+
+        function viewContract(name) {
+            alert(`View contract: ${name}\n\nFull contract details feature coming soon!`);
+        }
+
+        function editContract(name) {
+            alert(`Edit contract: ${name}\n\nContract editing feature coming soon!`);
+        }
+
+        // Event listeners
+        document.getElementById('filter-type').addEventListener('change', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+        document.getElementById('filter-search').addEventListener('input', applyFilters);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContracts();
+        });
+    </script>
+</body>
+</html>
