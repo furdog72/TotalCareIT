@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Data Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .metric {
+            display: inline-block;
+            padding: 20px;
+            margin: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            min-width: 200px;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+        .log {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-left: 4px solid #2196F3;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success { border-color: #4CAF50; background: #f1f8f4; }
+        .error { border-color: #f44336; background: #ffebee; }
+    </style>
+</head>
+<body>
+    <h1>Sales Report Data Test</h1>
+    <p>Testing backend API integration for sales report data</p>
+
+    <div id="logs"></div>
+
+    <h2>Metrics:</h2>
+    <div id="metrics"></div>
+
+    <script>
+        const logs = document.getElementById('logs');
+        const metrics = document.getElementById('metrics');
+
+        function log(message, isError = false) {
+            const div = document.createElement('div');
+            div.className = `log ${isError ? 'error' : 'success'}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.appendChild(div);
+            console.log(message);
+        }
+
+        function showMetric(label, value) {
+            const div = document.createElement('div');
+            div.className = 'metric';
+            div.innerHTML = `
+                <div class="metric-label">${label}</div>
+                <div class="metric-value">${value}</div>
+            `;
+            metrics.appendChild(div);
+        }
+
+        async function testSalesData() {
+            log('🚀 Starting sales data test...');
+
+            try {
+                // Test 1: Health Check
+                log('1️⃣ Testing health check...');
+                const healthResponse = await fetch('https://api.totalcareit.ai/api/health');
+                const health = await healthResponse.json();
+                log(`✅ Health check: ${JSON.stringify(health)}`);
+
+                if (health.checks && health.checks.hubspot === 'configured') {
+                    log('✅ HubSpot is configured');
+                } else {
+                    log('⚠️ HubSpot not configured', true);
+                    return;
+                }
+
+                // Test 2: Get Sales Metrics
+                log('2️⃣ Fetching sales metrics...');
+                const salesResponse = await fetch('https://api.totalcareit.ai/api/hubspot/sales-metrics');
+                const salesData = await salesResponse.json();
+                log(`✅ Sales data received: ${JSON.stringify(salesData).substring(0, 100)}...`);
+
+                if (salesData.success && salesData.data) {
+                    const data = salesData.data;
+                    log(`✅ Parsed data - Calls: ${data.callsMade}, Conversations: ${data.conversationsHad}`);
+
+                    // Display metrics
+                    showMetric('Calls Made', data.callsMade);
+                    showMetric('Conversations', data.conversationsHad);
+                    showMetric('Appointments', data.appointmentsScheduled);
+                    showMetric('Prospects', data.prospects);
+                    showMetric('Contacted', data.contacted);
+                    showMetric('Qualified', data.qualified);
+                    showMetric('Proposals', data.proposal);
+                    showMetric('Closed Won', data.closedWon);
+
+                    log(`✅ SUCCESS: All ${Object.keys(data).length} metrics loaded!`);
+                } else {
+                    log('❌ Failed to parse sales data', true);
+                }
+
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, true);
+                console.error('Full error:', error);
+            }
+        }
+
+        // Run test on page load
+        window.addEventListener('DOMContentLoaded', testSalesData);
+    </script>
+</body>
+</html>
