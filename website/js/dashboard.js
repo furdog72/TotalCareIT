@@ -1,6 +1,43 @@
 // Dashboard functionality for TotalCare AI
 
+// Backend API client
+const backendAPIClient = {
+    baseURL: 'https://api.totalcareit.ai/api',
+
+    async healthCheck() {
+        try {
+            const response = await fetch(`${this.baseURL}/health`);
+            return await response.json();
+        } catch (error) {
+            console.error('Health check failed:', error);
+            return null;
+        }
+    },
+
+    async getHubSpotMetrics() {
+        try {
+            const response = await fetch(`${this.baseURL}/hubspot/sales-metrics`);
+            const data = await response.json();
+            if (data.success) {
+                return data.data;
+            }
+            return null;
+        } catch (error) {
+            console.error('Failed to fetch HubSpot metrics:', error);
+            return null;
+        }
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📊 Dashboard initializing...');
+
+    // Check backend API health
+    checkAPIHealth();
+
+    // Load real dashboard data
+    loadDashboardData();
+
     // Sidebar navigation
     const navItems = document.querySelectorAll('.nav-item');
 
@@ -53,11 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simulate loading data
-    setTimeout(() => {
-        loadDashboardData();
-    }, 1000);
-
     // Add search functionality
     const searchBtn = document.querySelector('.header-actions .btn');
     if (searchBtn) {
@@ -85,23 +117,131 @@ function showPlaceholder(section) {
     // For now, we'll just log to console
 }
 
-// Simulate loading dashboard data
-function loadDashboardData() {
-    // In a real application, this would fetch data from an API
-    console.log('Loading dashboard data...');
+// Check API health and update integration status
+async function checkAPIHealth() {
+    console.log('🔍 Checking API health...');
 
-    // Simulate some stats
-    const stats = {
-        activeAutomations: Math.floor(Math.random() * 20),
-        aiModels: Math.floor(Math.random() * 10),
-        tasksAutomated: Math.floor(Math.random() * 1000),
-        timeSaved: Math.floor(Math.random() * 100)
-    };
+    try {
+        const health = await backendAPIClient.healthCheck();
 
-    console.log('Dashboard Stats:', stats);
+        if (health && health.status === 'healthy') {
+            console.log('✅ Backend API is healthy');
 
-    // Update activity list with sample data
+            // Update HubSpot integration status based on health check
+            if (health.checks && health.checks.hubspot === 'configured') {
+                console.log('✅ HubSpot is configured');
+                updateIntegrationStatus('hubspot', 'working', 'Active');
+            } else {
+                console.log('⚠️ HubSpot not configured');
+                updateIntegrationStatus('hubspot', 'error', 'Not Configured');
+            }
+        } else {
+            console.error('❌ Backend API is unhealthy');
+            updateIntegrationStatus('hubspot', 'error', 'API Offline');
+        }
+    } catch (error) {
+        console.error('❌ Health check failed:', error);
+        updateIntegrationStatus('hubspot', 'error', 'Connection Failed');
+    }
+}
+
+// Update integration status in UI
+function updateIntegrationStatus(integration, status, text) {
+    // Find the integration card (case-insensitive)
+    const integrationCards = document.querySelectorAll('.integration-item');
+
+    integrationCards.forEach(card => {
+        const titleElement = card.querySelector('.integration-info h4');
+        if (titleElement && titleElement.textContent.toLowerCase().includes(integration.toLowerCase())) {
+            const statusDot = card.querySelector('.status-dot');
+            const statusText = card.querySelector('.integration-status span:last-child');
+
+            if (statusDot && statusText) {
+                // Remove existing status classes
+                statusDot.classList.remove('success', 'warning', 'error');
+
+                // Add new status class
+                if (status === 'working') {
+                    statusDot.classList.add('success');
+                } else if (status === 'warning') {
+                    statusDot.classList.add('warning');
+                } else {
+                    statusDot.classList.add('error');
+                }
+
+                statusText.textContent = text;
+            }
+        }
+    });
+}
+
+// Load dashboard data from HubSpot API
+async function loadDashboardData() {
+    console.log('📊 Loading dashboard data from HubSpot API...');
+
+    try {
+        const hubspotData = await backendAPIClient.getHubSpotMetrics();
+
+        if (hubspotData) {
+            console.log('✅ HubSpot data loaded:', hubspotData);
+
+            // Update dashboard with real data
+            updateDashboardStats(hubspotData);
+
+            // Mark HubSpot as working
+            updateIntegrationStatus('hubspot', 'working', 'Active');
+        } else {
+            console.error('❌ Failed to load HubSpot data');
+
+            // Show default values
+            showDefaultStats();
+
+            // Mark HubSpot as error
+            updateIntegrationStatus('hubspot', 'error', 'Data Load Failed');
+        }
+    } catch (error) {
+        console.error('❌ Error loading dashboard data:', error);
+
+        // Show default values
+        showDefaultStats();
+
+        // Mark HubSpot as error
+        updateIntegrationStatus('hubspot', 'error', 'Error');
+    }
+
+    // Update activity list
     updateActivityList();
+}
+
+// Update dashboard stats with real HubSpot data
+function updateDashboardStats(data) {
+    // Map HubSpot data to dashboard elements
+    // For now, use the data we have
+    const activeAutomations = data.callsMade || 0;
+    const aiModels = Math.ceil(data.conversationsHad / 10) || 0;
+    const tasksAutomated = data.prospects || 0;
+    const timeSaved = data.closedWon || 0;
+
+    // Update stat cards if they exist
+    updateStatValue('activeAutomations', activeAutomations);
+    updateStatValue('aiModelsDeployed', aiModels);
+
+    console.log('✅ Dashboard stats updated with HubSpot data');
+}
+
+// Helper function to update stat values
+function updateStatValue(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = value;
+        console.log(`Updated ${elementId} to ${value}`);
+    }
+}
+
+// Show default stats if API fails
+function showDefaultStats() {
+    updateStatValue('activeAutomations', '--');
+    updateStatValue('aiModelsDeployed', '--');
 }
 
 // Update activity list

@@ -1318,6 +1318,14 @@ section {
     background: var(--success-color);
 }
 
+.status-dot.warning {
+    background: #FFA726;
+}
+
+.status-dot.error {
+    background: #EF5350;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
     .hero-content {
