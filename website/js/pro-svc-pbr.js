@@ -8,28 +8,53 @@ const API_BASE_URL = window.location.hostname === 'localhost' ? 'data' : '/data'
 let currentQuarter = 'Q3';
 let currentYear = 2025;
 
+// Historical data range - goes back as far as data exists
+const EARLIEST_YEAR = 2024;
+const CURRENT_YEAR = new Date().getFullYear();
+
 /**
  * Initialize the dashboard
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Set up quarter selector
+    // Populate year selector with historical data
+    populateYearSelector();
+
+    // Set up quarter selector - auto-refresh on change
     const quarterSelector = document.getElementById('quarterSelector');
     quarterSelector.addEventListener('change', (e) => {
-        const [quarter, year] = e.target.value.split('-');
-        currentQuarter = quarter;
-        currentYear = parseInt(year);
+        currentQuarter = e.target.value;
+        console.log(`📊 Quarter changed to ${currentQuarter}, auto-refreshing...`);
         loadPBRData();
     });
 
-    // Set up refresh button
-    const refreshBtn = document.getElementById('refreshBtn');
-    refreshBtn.addEventListener('click', () => {
+    // Set up year selector - auto-refresh on change
+    const yearSelector = document.getElementById('yearSelector');
+    yearSelector.addEventListener('change', (e) => {
+        currentYear = parseInt(e.target.value);
+        console.log(`📅 Year changed to ${currentYear}, auto-refreshing...`);
         loadPBRData();
     });
 
     // Initial load
     loadPBRData();
 });
+
+/**
+ * Populate year selector with historical data range
+ */
+function populateYearSelector() {
+    const yearSelector = document.getElementById('yearSelector');
+
+    // Generate years from current year back to earliest
+    const years = [];
+    for (let year = CURRENT_YEAR; year >= EARLIEST_YEAR; year--) {
+        years.push(year);
+    }
+
+    yearSelector.innerHTML = years.map(year =>
+        `<option value="${year}" ${year === currentYear ? 'selected' : ''}>${year}</option>`
+    ).join('');
+}
 
 /**
  * Load PBR data from JSON file
@@ -207,30 +232,33 @@ function renderWonQuotes(data) {
 }
 
 /**
- * Render all quotes table
+ * Render all quotes table - ONLY ACTIVE QUOTES (inactive removed per user request)
  */
 function renderAllQuotes(data) {
     const tbody = document.getElementById('allQuotesBody');
 
-    if (data.all_quotes.length === 0) {
+    // Filter to only show active quotes (remove all inactive)
+    const activeQuotesOnly = data.all_quotes.filter(quote =>
+        quote.quote_status && quote.quote_status.toLowerCase() === 'active'
+    );
+
+    if (activeQuotesOnly.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="7" style="text-align: center; padding: 2rem; color: #6b7280;">
-                    No quotes available
+                    No active quotes available
                 </td>
             </tr>
         `;
         return;
     }
 
-    tbody.innerHTML = data.all_quotes.map(quote => {
-        const statusClass = quote.quote_status === 'Active' ? 'status-active' : 'status-inactive';
-
+    tbody.innerHTML = activeQuotesOnly.map(quote => {
         return `
             <tr>
                 <td class="metric-name">${quote.quote_name || '-'}</td>
                 <td>${quote.account_name || '-'}</td>
-                <td><span class="${statusClass}">${quote.quote_status || '-'}</span></td>
+                <td><span class="status-active">${quote.quote_status || '-'}</span></td>
                 <td>${quote.quote_total ? formatCurrency(quote.quote_total) : '-'}</td>
                 <td><strong>${quote.gross_margin_amount ? formatCurrency(quote.gross_margin_amount) : '-'}</strong></td>
                 <td>${quote.inside_rep || '-'}</td>
