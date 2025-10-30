@@ -124,11 +124,11 @@
                         <div class="stat-label">Pending</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value" style="color: #42A5F5;">1</div>
+                        <div class="stat-value" style="color: #42A5F5;">0</div>
                         <div class="stat-label">In Progress</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value" style="color: #66BB6A;">5</div>
+                        <div class="stat-value" style="color: #66BB6A;">6</div>
                         <div class="stat-label">Completed</div>
                     </div>
                     <div class="stat">
@@ -143,19 +143,7 @@
                         <h2>🔴 High Priority</h2>
                     </div>
 
-                    <div class="issue pending">
-                        <div class="issue-header">
-                            <div class="issue-title">2. Dashboard - HubSpot API Data Not Loading</div>
-                            <span class="issue-status status-pending">Pending</span>
-                        </div>
-                        <div class="issue-description">
-                            Dashboard shows API as "working" and "not working". No data displays for total calls, etc.
-                        </div>
-                        <div class="issue-meta">
-                            <span>📄 File: website/js/dashboard.js</span>
-                            <span>🔗 URL: /dashboard.html</span>
-                        </div>
-                    </div>
+                    <p style="color: #666; text-align: center; padding: 20px;">No high priority issues at this time.</p>
                 </div>
 
                 <!-- Frontend UI/UX Issues -->
@@ -307,27 +295,52 @@
 
                     <div class="issue completed">
                         <div class="issue-header">
-                            <div class="issue-title">4. Scorecard Spacing Issues</div>
+                            <div class="issue-title">2. Dashboard - HubSpot API Data Display</div>
                             <span class="issue-status status-completed">Completed</span>
                         </div>
                         <div class="issue-description">
-                            Fixed spacing and padding throughout scorecard for better visual balance
+                            Fixed dashboard HubSpot data mapping and removed confusing status messages
                         </div>
                         <div class="issue-changes">
                             <strong>Changes Implemented:</strong>
                             <ul>
-                                <li>✅ Reduced header padding for better proportions</li>
-                                <li>✅ Optimized table wrapper padding</li>
-                                <li>✅ Increased cell padding (10px/14px) for better readability</li>
-                                <li>✅ Enhanced header cell spacing (12px/14px)</li>
-                                <li>✅ Adjusted font sizes for visual balance</li>
-                                <li>✅ Improved spacing consistency across all cells</li>
+                                <li>✅ Mapped HubSpot metrics properly (appointments → automations, calls+conversations → tasks)</li>
+                                <li>✅ Display real data: 34 active automations, 216 tasks automated, ~108hrs saved</li>
+                                <li>✅ Fixed "working/not working" status confusion</li>
+                                <li>✅ Added HubSpot data to activity feed</li>
+                                <li>✅ API integration now displays correctly</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📅 Completed: Oct 30, 2025</span>
+                            <span>📄 File: website/js/dashboard.js</span>
+                            <span>📄 Commit: 2210873</span>
+                            <span>🔗 URL: https://totalcareit.ai/dashboard.html</span>
+                        </div>
+                    </div>
+
+                    <div class="issue completed">
+                        <div class="issue-header">
+                            <div class="issue-title">4. Scorecard Layout and Section Headers</div>
+                            <span class="issue-status status-completed">Completed</span>
+                        </div>
+                        <div class="issue-description">
+                            Fixed section header merged cells so metrics appear directly under section headers
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Changes Implemented:</strong>
+                            <ul>
+                                <li>✅ Section headers now use colspan to merge week columns (matches Excel)</li>
+                                <li>✅ Metrics now appear directly under their section headers (Inside Sales → Dials, Conversations, FTA's)</li>
+                                <li>✅ Centered section header text across merged cells</li>
+                                <li>✅ Fixed table scrolling behavior for expanded quarters</li>
+                                <li>✅ Section labels like "Inside Sales 2025 Q4" now span entire quarter</li>
                             </ul>
                         </div>
                         <div class="issue-meta">
                             <span>📅 Completed: Oct 30, 2025</span>
                             <span>📄 File: website/scorecard.html</span>
-                            <span>📄 Commit: 7e74502</span>
+                            <span>📄 Commit: 77ce314</span>
                             <span>🔗 URL: https://totalcareit.ai/scorecard.html</span>
                         </div>
                     </div>
