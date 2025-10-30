@@ -35,10 +35,10 @@
         }
 
         .calculators-horizontal {
-            display: flex;
-            gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
             margin-bottom: 3rem;
-            flex-wrap: wrap;
         }
 
         .calculator-section {
@@ -46,8 +46,6 @@
             border-radius: 12px;
             padding: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            min-width: 450px;
         }
 
         .calculator-section h2 {
@@ -283,13 +281,20 @@
             color: white;
         }
 
+        .refresh-rate-header {
+            text-align: center;
+            font-weight: 600;
+            color: #4F46E5;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: #EEF2FF;
+            border-radius: 4px;
+        }
+
         @media (max-width: 1400px) {
             .calculators-horizontal {
-                flex-direction: column;
-            }
-
-            .calculator-section {
-                min-width: 100%;
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -331,9 +336,16 @@
 
                 <div class="tier-selector">
                     <button class="tier-btn" id="tier-essentials" onclick="selectMSPTier('essentials')">IT Essentials<br>$75/user</button>
-                    <button class="tier-btn" id="tier-assist" onclick="selectMSPTier('assist')">IT Assist<br>$115/user</button>
-                    <button class="tier-btn active" id="tier-it360" onclick="selectMSPTier('it360')">IT360<br>$165/user</button>
+                    <button class="tier-btn active" id="tier-assist" onclick="selectMSPTier('assist')">IT Assist<br>$115/user</button>
+                    <button class="tier-btn" id="tier-it360" onclick="selectMSPTier('it360')">IT360<br>$165/user</button>
                 </div>
+
+                <div class="form-group">
+                    <label for="msp-locations">Locations</label>
+                    <input type="number" id="msp-locations" value="1" min="1" onchange="updateLocationFields(); calculateAll();">
+                </div>
+
+                <div id="location-zip-codes"></div>
 
                 <div class="form-group">
                     <label for="msp-users">Number of Users</label>
@@ -346,13 +358,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="msp-locations">Locations</label>
-                    <input type="number" id="msp-locations" value="1" min="1" onchange="calculateAll()">
+                    <label for="msp-server-backup">Server Backup Storage (TB)</label>
+                    <input type="number" id="msp-server-backup" value="5" min="0" step="1" onchange="calculateAll()">
                 </div>
 
                 <div class="form-group">
-                    <label for="msp-backup">Backup Storage (TB)</label>
-                    <input type="number" id="msp-backup" value="1" min="0" step="0.5" onchange="calculateAll()">
+                    <label for="msp-device-backup">Device Backup ($5 per device)</label>
+                    <input type="number" id="msp-device-backup" value="0" min="0" onchange="calculateAll()">
                 </div>
 
                 <div class="calculator-result">
@@ -363,7 +375,9 @@
 
             <!-- Device as a Service Calculator -->
             <div class="calculator-section">
-                <h2>Device as a Service</h2>
+                <h2>Device as a Service (DaaS)</h2>
+
+                <div class="refresh-rate-header">Refresh Rate: 3 Years</div>
 
                 <div style="margin-bottom: 1rem;">
                     <strong style="font-size: 0.875rem; color: #374151;">Windows Devices</strong>
@@ -512,8 +526,8 @@
                 <h2>Managed Security (MSSP)</h2>
 
                 <div class="form-group">
-                    <label for="mssp-endpoints">Total Endpoints</label>
-                    <input type="number" id="mssp-endpoints" value="0" min="0" onchange="calculateAll()">
+                    <label for="mssp-endpoints">Total Endpoints (Auto-calculated from MSP + DaaS)</label>
+                    <input type="number" id="mssp-endpoints" value="0" min="0" readonly style="background: #f3f4f6; cursor: not-allowed;">
                 </div>
 
                 <div class="form-group">
@@ -598,7 +612,7 @@
     </div>
 
     <script>
-        let mspTier = 'it360';
+        let mspTier = 'assist';
         let hasOnsiteIT = false;
 
         // Device pricing (monthly cost as % of device cost + management fee)
@@ -617,6 +631,23 @@
             'ipad-pro': 1000
         };
 
+        function updateLocationFields() {
+            const numLocations = parseInt(document.getElementById('msp-locations').value) || 1;
+            const container = document.getElementById('location-zip-codes');
+
+            container.innerHTML = '';
+
+            for (let i = 1; i <= numLocations; i++) {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+                formGroup.innerHTML = `
+                    <label for="location-zip-${i}">Location ${i} Zip Code</label>
+                    <input type="text" id="location-zip-${i}" placeholder="Enter zip code" maxlength="10" style="width: 100%; padding: 0.6rem; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 0.9rem;">
+                `;
+                container.appendChild(formGroup);
+            }
+        }
+
         function toggleOnsiteIT() {
             hasOnsiteIT = document.getElementById('onsite-it').checked;
 
@@ -630,16 +661,16 @@
                 assistBtn.disabled = false;
                 it360Btn.disabled = true;
 
-                // Default to Essentials
-                selectMSPTier('essentials');
+                // Default to IT Assist
+                selectMSPTier('assist');
             } else {
-                // Only IT360 available
-                essentialsBtn.disabled = true;
-                assistBtn.disabled = true;
+                // Default to IT Assist
+                essentialsBtn.disabled = false;
+                assistBtn.disabled = false;
                 it360Btn.disabled = false;
 
-                // Force IT360
-                selectMSPTier('it360');
+                // Default to IT Assist
+                selectMSPTier('assist');
             }
         }
 
@@ -651,6 +682,25 @@
         }
 
         function calculateAll() {
+            // Calculate total endpoints from MSP users + all DaaS devices
+            const mspUsers = parseInt(document.getElementById('msp-users').value) || 0;
+
+            // Count all DaaS devices
+            const daasDevices = [
+                'win-laptop-qty', 'win-pro-laptop-qty', 'win-desktop-qty', 'win-pro-desktop-qty', 'win-tablet-qty',
+                'mac-air-qty', 'mac-pro-qty', 'mac-mini-qty', 'mac-studio-qty', 'mac-pro-desktop-qty',
+                'ipad-air-qty', 'ipad-pro-qty'
+            ];
+
+            let totalDaasDevices = 0;
+            daasDevices.forEach(deviceId => {
+                totalDaasDevices += parseInt(document.getElementById(deviceId).value) || 0;
+            });
+
+            // Auto-set total endpoints
+            const totalEndpoints = mspUsers + totalDaasDevices;
+            document.getElementById('mssp-endpoints').value = totalEndpoints;
+
             const mspCost = calculateMSP();
             const daasCost = calculateDaaS();
             const msspCost = calculateMSSP();
@@ -673,21 +723,23 @@
             const users = parseInt(document.getElementById('msp-users').value) || 0;
             const servers = parseInt(document.getElementById('msp-servers').value) || 0;
             const locations = parseInt(document.getElementById('msp-locations').value) || 0;
-            const backup = parseFloat(document.getElementById('msp-backup').value) || 0;
+            const serverBackup = parseFloat(document.getElementById('msp-server-backup').value) || 0;
+            const deviceBackup = parseInt(document.getElementById('msp-device-backup').value) || 0;
 
             const tierRates = {
-                'essentials': { user: 75, server: 200, network: 125, backup: 150 },
-                'assist': { user: 115, server: 275, network: 175, backup: 200 },
-                'it360': { user: 165, server: 350, network: 225, backup: 250 }
+                'essentials': { user: 75, server: 200, network: 125, serverBackup: 150 },
+                'assist': { user: 115, server: 275, network: 175, serverBackup: 200 },
+                'it360': { user: 165, server: 350, network: 225, serverBackup: 250 }
             };
 
             const rates = tierRates[mspTier];
             const userCost = users * rates.user;
             const serverCost = servers * rates.server;
             const networkCost = locations * rates.network;
-            const backupCost = Math.ceil(backup) * rates.backup;
+            const serverBackupCost = Math.ceil(serverBackup) * rates.serverBackup;
+            const deviceBackupCost = deviceBackup * 5; // $5 per device
 
-            return Math.round(userCost + serverCost + networkCost + backupCost);
+            return Math.round(userCost + serverCost + networkCost + serverBackupCost + deviceBackupCost);
         }
 
         function calculateDaaS() {
@@ -747,6 +799,7 @@
         }
 
         // Initialize on page load
+        updateLocationFields();
         toggleOnsiteIT();
         calculateAll();
     </script>
