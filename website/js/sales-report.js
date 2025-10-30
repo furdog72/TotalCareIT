@@ -11,21 +11,25 @@ let autotaskAdapter = null;
 let useAutotaskData = false;
 
 // Try to initialize Backend API integration (preferred)
+let backendAPIReady = Promise.resolve(false);
 try {
     backendAPIClient = new BackendAPIClient();
     salesReportAdapter = new SalesReportAdapter(backendAPIClient);
     console.log('🔧 Backend API client initialized');
 
     // Check if backend API is available
-    backendAPIClient.healthCheck().then(health => {
+    backendAPIReady = backendAPIClient.healthCheck().then(health => {
         if (health && health.checks && health.checks.hubspot === 'configured') {
             useBackendAPI = true;
             console.log('✅ Backend API configured with HubSpot');
+            return true;
         } else {
             console.log('⚠️ Backend API not configured');
+            return false;
         }
     }).catch(err => {
         console.log('⚠️ Backend API health check failed:', err.message);
+        return false;
     });
 } catch (error) {
     console.log('⚠️ Backend API client not available:', error.message);
@@ -200,6 +204,9 @@ async function loadSalesData() {
 
     let data, lastMonthData;
     let dataSource = 'sample';
+
+    // Wait for backend API health check to complete
+    await backendAPIReady;
 
     // Try to load data from Backend API first (preferred)
     if (useBackendAPI && salesReportAdapter) {
