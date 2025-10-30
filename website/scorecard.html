@@ -63,7 +63,7 @@
         .scorecard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem 2rem; text-align: center; }
         .scorecard-header h1 { margin: 0 0 0.5rem 0; font-size: 2rem; font-weight: 700; }
         .scorecard-header p { margin: 0; font-size: 1rem; opacity: 0.95; }
-        .table-wrapper { overflow-x: auto; overflow-y: visible; padding: 1.5rem; max-width: 100%; }
+        .table-wrapper { overflow-x: auto; overflow-y: visible; padding: 1.5rem; max-width: 100%; position: relative; }
         table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
         th, td { padding: 10px 14px; text-align: left; border: 1px solid #e1e8ed; white-space: nowrap; vertical-align: middle; }
         th { background: #34495e; color: white; font-weight: 600; position: sticky; top: 0; z-index: 10; line-height: 1.4; padding: 12px 14px; }
@@ -77,7 +77,7 @@
         th.year-col { min-width: 100px; text-align: center; background: #2c3e50; }
 
         td.metric-name { font-weight: 600; background: #f8f9fa; padding: 10px 14px; }
-        td.section-header { background: #e9ecef; font-weight: 700; font-size: 14px; color: #495057; padding: 12px 14px; }
+        td.section-header { background: #e9ecef; font-weight: 700; font-size: 14px; color: #495057; padding: 12px 14px; text-align: center; }
         td.week-value { text-align: center; font-weight: 500; }
         td.quarter-summary { text-align: center; font-weight: 600; background: #edf2f7; }
         td.year-total { text-align: center; font-weight: 700; background: #e2e8f0; }
@@ -187,12 +187,20 @@
                     const qData = metric.quarters[q];
 
                     if (isExpanded) {
-                        // Show all week values with formatting
-                        qData.values.forEach(val => {
-                            const cssClass = metric.is_section ? 'section-header' : getValueClass(val);
-                            const formattedVal = metric.is_section ? val : formatValue(val, metric.format);
-                            bodyHTML += `<td class="${cssClass}">${formattedVal}</td>`;
-                        });
+                        // For section headers, show a merged cell with the quarter label
+                        if (metric.is_section) {
+                            // First value contains the quarter label (e.g., "Inside Sales 2025 Q4")
+                            const labelText = qData.values[0];
+                            const numWeeks = qData.values.length;
+                            bodyHTML += `<td class="section-header" colspan="${numWeeks}">${labelText}</td>`;
+                        } else {
+                            // Show all week values with formatting for regular metrics
+                            qData.values.forEach(val => {
+                                const cssClass = getValueClass(val);
+                                const formattedVal = formatValue(val, metric.format);
+                                bodyHTML += `<td class="${cssClass}">${formattedVal}</td>`;
+                            });
+                        }
                     }
 
                     // Quarter summary with formatting
