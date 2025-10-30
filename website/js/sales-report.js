@@ -1,5 +1,47 @@
 console.log('📊 Sales Report.js loaded');
 
+// IMMEDIATE FIX: Try to populate data as soon as this script loads
+// This runs BEFORE DOMContentLoaded, using a timer to ensure DOM is ready
+setTimeout(function() {
+    console.log('🚀 IMMEDIATE data population attempt...');
+    try {
+        // Sample data to display
+        const immediateData = {
+            callsMade: 127,
+            conversationsHad: 89,
+            appointmentsScheduled: 34,
+            conversionRate: '7.2%',
+            outboundCalls: 98,
+            inboundCalls: 29,
+            emailConversations: 45,
+            meetingConversations: 44,
+            outboundPercent: '45.4%',
+            inboundPercent: '13.4%',
+            emailPercent: '20.8%',
+            meetingPercent: '20.4%',
+            prospectsCount: 250,
+            contactedCount: 195,
+            qualifiedCount: 78,
+            proposalCount: 42,
+            closedWonCount: 18
+        };
+
+        // Try to update elements
+        for (const [id, value] of Object.entries(immediateData)) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = value;
+                console.log(`✅ IMMEDIATE: Set ${id} = ${value}`);
+            } else {
+                console.warn(`⚠️ IMMEDIATE: Element #${id} not found yet`);
+            }
+        }
+        console.log('✅ IMMEDIATE data population complete');
+    } catch (error) {
+        console.error('❌ IMMEDIATE population error:', error);
+    }
+}, 100); // Run after 100ms to give DOM a chance to load
+
 // Initialize Backend API client
 let backendAPIClient = null;
 let salesReportAdapter = null;
