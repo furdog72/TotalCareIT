@@ -81,7 +81,7 @@ async function loadPBRData() {
         renderPendingQuotes(data);
         renderActiveQuotes(data);
         renderWonQuotes(data);
-        renderAllQuotes(data);
+        // All Quotes section removed per user request
 
         hideLoading();
     } catch (error) {
