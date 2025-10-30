@@ -93,6 +93,21 @@
                     <h1>Sales Report</h1>
                     <p class="header-subtitle">Track your sales performance and activity metrics</p>
                 </div>
+                <!-- Browser Compatibility Notice -->
+                <div class="browser-notice" style="background: #FFF3E0; border: 1px solid #FFB74D; border-radius: 8px; padding: 12px 16px; margin-top: 12px; display: flex; align-items: center; gap: 12px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F57C00" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <div style="flex: 1;">
+                        <strong style="color: #E65100;">Browser Compatibility Notice:</strong>
+                        <span style="color: #555;">This page works best in Safari (Mac) or Chrome (Windows). If you're using Brave and experiencing issues, please </span>
+                        <a href="#" id="openInSafari" style="color: #1976D2; text-decoration: underline; font-weight: 600;">open in Safari</a>
+                        <span style="color: #555;"> or </span>
+                        <a href="#" id="openInChrome" style="color: #1976D2; text-decoration: underline; font-weight: 600;">open in Chrome</a>
+                    </div>
+                </div>
             </div>
 
             <!-- HubSpot Connection Status -->
@@ -394,5 +409,41 @@
     <script src="js/partner-auth.js"></script>
     <script src="js/sales-report.js"></script>
     <script src="js/sales-ai.js"></script>
+
+    <!-- Browser Compatibility Links -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentUrl = window.location.href;
+
+        // Open in Safari link (Mac)
+        const safariLink = document.getElementById('openInSafari');
+        if (safariLink) {
+            safariLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // On Mac, Safari is the default browser for .safariextz links
+                // We'll just copy the URL to clipboard and show instructions
+                navigator.clipboard.writeText(currentUrl).then(function() {
+                    alert('URL copied to clipboard!\n\nOn Mac:\n1. Open Safari\n2. Press Cmd+L to focus address bar\n3. Press Cmd+V to paste\n4. Press Enter\n\nThe page will work properly in Safari.');
+                }).catch(function() {
+                    alert('Please copy this URL and open it in Safari:\n\n' + currentUrl);
+                });
+            });
+        }
+
+        // Open in Chrome link (Windows/Mac)
+        const chromeLink = document.getElementById('openInChrome');
+        if (chromeLink) {
+            chromeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Copy URL to clipboard
+                navigator.clipboard.writeText(currentUrl).then(function() {
+                    alert('URL copied to clipboard!\n\nOn Windows:\n1. Open Chrome\n2. Press Ctrl+L to focus address bar\n3. Press Ctrl+V to paste\n4. Press Enter\n\nOn Mac:\n1. Open Chrome\n2. Press Cmd+L to focus address bar\n3. Press Cmd+V to paste\n4. Press Enter\n\nThe page will work properly in Chrome.');
+                }).catch(function() {
+                    alert('Please copy this URL and open it in Chrome:\n\n' + currentUrl);
+                });
+            });
+        }
+    });
+    </script>
 </body>
 </html>
