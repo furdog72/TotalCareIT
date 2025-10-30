@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker | TotalCareIT Partner Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .issues-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .issue-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .issue {
+            border-left: 4px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .issue.pending { border-color: #FFA726; background: #FFF3E0; }
+        .issue.in-progress { border-color: #42A5F5; background: #E3F2FD; }
+        .issue.completed { border-color: #66BB6A; background: #E8F5E9; }
+        .issue.blocked { border-color: #EF5350; background: #FFEBEE; }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .issue-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .issue-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-pending { background: #FFA726; color: white; }
+        .status-in-progress { background: #42A5F5; color: white; }
+        .status-completed { background: #66BB6A; color: white; }
+        .status-blocked { background: #EF5350; color: white; }
+
+        .issue-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .issue-changes {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .issue-changes ul {
+            margin: 5px 0 5px 20px;
+            padding: 0;
+        }
+        .issue-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+        .section-header {
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat {
+            padding: 15px 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            flex: 1;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Partner Portal Navigation -->
+        <div id="partner-nav-placeholder"></div>
+        <script src="js/load-nav.js"></script>
+
+        <main class="dashboard-main">
+            <div class="issues-container">
+                <h1>Issue Tracker</h1>
+                <p>Track all pending tasks, fixes, and improvements for the Partner Portal</p>
+
+                <!-- Statistics -->
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" style="color: #FFA726;">6</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" style="color: #42A5F5;">2</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" style="color: #66BB6A;">2</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" style="color: #EF5350;">0</div>
+                        <div class="stat-label">Blocked</div>
+                    </div>
+                </div>
+
+                <!-- High Priority Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>🔴 High Priority</h2>
+                    </div>
+
+                    <div class="issue in-progress">
+                        <div class="issue-header">
+                            <div class="issue-title">1. Sales Report - No Data Displaying</div>
+                            <span class="issue-status status-in-progress">In Progress</span>
+                        </div>
+                        <div class="issue-description">
+                            Sales report page shows no data (not even sample data). Backend API is working correctly and returning data.
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Changes Made:</strong>
+                            <ul>
+                                <li>Fixed race condition in backend API initialization</li>
+                                <li>Added extensive logging to diagnose DOM update issues</li>
+                                <li>Temporarily bypassed authentication for testing</li>
+                                <li>Added try-catch blocks to prevent errors from stopping execution</li>
+                                <li>Created test page: /test-sales-data.html</li>
+                            </ul>
+                            <strong>Next Steps:</strong>
+                            <ul>
+                                <li>Review browser console logs to identify exact failure point</li>
+                                <li>Verify elements exist in DOM when JavaScript runs</li>
+                                <li>Check if data is reaching updateMetric functions</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/js/sales-report.js</span>
+                            <span>🔗 URL: /sales-report.html</span>
+                            <span>📅 Updated: Oct 30, 2025</span>
+                        </div>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">2. Dashboard - HubSpot API Data Not Loading</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Dashboard shows API as "working" and "not working". No data displays for total calls, etc.
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/js/dashboard.js</span>
+                            <span>🔗 URL: /dashboard.html</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frontend UI/UX Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>🎨 Frontend UI/UX</h2>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">3. Pricing Page Layout</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Multiple layout and field changes needed for pricing calculator
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Requirements:</strong>
+                            <ul>
+                                <li>Change "Desktop as a Service" to "Device as a Service (DaaS)"</li>
+                                <li>Make service columns horizontal (left to right) instead of vertical</li>
+                                <li>Add "Refresh rate" title over columns with "3 Years"</li>
+                                <li>Add server backup sub-question (start with 5TB)</li>
+                                <li>Add device backup field ($5 per device)</li>
+                                <li>Add zip code field for each location</li>
+                                <li>Move location field to first position</li>
+                                <li>Default Managed IT Services to "IT Assist" when checked</li>
+                                <li>Calculate total endpoints from Managed Services + DaaS tabs</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/pricing.html</span>
+                            <span>🔗 URL: /pricing.html</span>
+                        </div>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">4. Scorecard Spacing Issues</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Scorecard continues to show spacing issues as previously reported
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/scorecard.html</span>
+                            <span>🔗 URL: /scorecard.html</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Tools Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>💰 Sales Tools</h2>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">5. Pro Svc PBR Page Updates</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Professional Services PBR page needs multiple enhancements
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Requirements:</strong>
+                            <ul>
+                                <li>Add "Won quotes" field to show which were won under active quotes</li>
+                                <li>Remove all inactive quotes</li>
+                                <li>Rename title to "TotalCareIT Professional Services PBR"</li>
+                                <li>Remove refresh button - auto-refresh when quarter is selected</li>
+                                <li>Add dropdown boxes for historical data query (go as far back as data exists)</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/pro-svc-pbr.html</span>
+                            <span>🔗 URL: /pro-svc-pbr.html</span>
+                        </div>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">6. MRR PBR Page Data Issues</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            MRR PBR page needs data restoration and formatting fixes
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Requirements:</strong>
+                            <ul>
+                                <li>Remove close date for all fields</li>
+                                <li>Add back data from last edit that was removed</li>
+                                <li>Make totals at top look like Excel tab (no numbers in titles)</li>
+                                <li>Format top of page to match Excel tab layout</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/mrr-pbr.html</span>
+                            <span>🔗 URL: /mrr-pbr.html</span>
+                        </div>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">7. Contract Monitor Sample Data</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Contract monitor shows sample data. Need to remove or define data source.
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/contract-monitor.html</span>
+                            <span>🔗 URL: /contract-monitor.html</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Tools Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>💵 Financial Tools</h2>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">8. QuickBooks Connection Error</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            QuickBooks integration encounters connection error when asking questions
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/quickbooks.html</span>
+                            <span>🔗 URL: /quickbooks.html</span>
+                        </div>
+                    </div>
+
+                    <div class="issue pending">
+                        <div class="issue-header">
+                            <div class="issue-title">9. TruMethods QBR Data Requirements</div>
+                            <span class="issue-status status-pending">Pending</span>
+                        </div>
+                        <div class="issue-description">
+                            Need to review chat history to find requirements for TruMethods QBR calculator data
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: website/trumethods-qbr.html</span>
+                            <span>🔗 URL: /trumethods-qbr.html</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Integration Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>🔌 API Integrations</h2>
+                    </div>
+
+                    <div class="issue in-progress">
+                        <div class="issue-header">
+                            <div class="issue-title">10. Microsoft 365 API Integration</div>
+                            <span class="issue-status status-in-progress">In Progress</span>
+                        </div>
+                        <div class="issue-description">
+                            Create API to access customer Microsoft 365 information for future customer portal
+                        </div>
+                        <div class="issue-changes">
+                            <strong>Sherweb Credentials:</strong>
+                            <ul>
+                                <li>Application Name: TotalCareIT.ai</li>
+                                <li>Client ID: 5d6212e7-a1ce-49ea-bfbd-482d707a6701</li>
+                                <li>Client Secret: QPafBXCWuZDq9je47H7s5bMx7PQFtVpPgSORu6RJ</li>
+                                <li>Subscription Key: f9c25a7b6e794d4c8e75327e4085b60e</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📄 File: api/m365_service.py (to be created)</span>
+                            <span>🎯 Purpose: Customer portal data access</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Issues -->
+                <div class="issue-section">
+                    <div class="section-header">
+                        <h2>✅ Completed</h2>
+                    </div>
+
+                    <div class="issue completed">
+                        <div class="issue-header">
+                            <div class="issue-title">Backend API Deployment</div>
+                            <span class="issue-status status-completed">Completed</span>
+                        </div>
+                        <div class="issue-description">
+                            Deployed production backend API to AWS EC2 with SSL, monitoring, and frontend integration
+                        </div>
+                        <div class="issue-changes">
+                            <ul>
+                                <li>✅ EC2 instance deployed (t3.small, Ubuntu 22.04)</li>
+                                <li>✅ SSL certificate installed (Let's Encrypt)</li>
+                                <li>✅ API accessible at https://api.totalcareit.ai</li>
+                                <li>✅ Health check and sales metrics endpoints operational</li>
+                                <li>✅ Frontend integrated with backend API</li>
+                                <li>✅ CORS configured for production domain</li>
+                                <li>✅ 14/14 verification tests passing</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📅 Completed: Oct 30, 2025</span>
+                            <span>📄 Docs: DEPLOYMENT.md</span>
+                        </div>
+                    </div>
+
+                    <div class="issue completed">
+                        <div class="issue-header">
+                            <div class="issue-title">Sales Report Race Condition Fix</div>
+                            <span class="issue-status status-completed">Completed</span>
+                        </div>
+                        <div class="issue-description">
+                            Fixed race condition where health check wasn't completing before data load
+                        </div>
+                        <div class="issue-changes">
+                            <ul>
+                                <li>✅ Store health check promise in backendAPIReady variable</li>
+                                <li>✅ Wait for health check before loading data</li>
+                                <li>✅ Ensure useBackendAPI flag is set before proceeding</li>
+                            </ul>
+                        </div>
+                        <div class="issue-meta">
+                            <span>📅 Completed: Oct 30, 2025</span>
+                            <span>📄 Commit: e5d3265</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>
