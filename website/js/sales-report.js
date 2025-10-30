@@ -168,6 +168,47 @@ const sampleData = {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM loaded, initializing sales report...');
 
+    // TEMPORARY FIX: Force display sample data immediately
+    try {
+        console.log('🔧 FORCING sample data display for debugging...');
+        const forceData = sampleData.thisMonth;
+
+        // Directly update the DOM elements
+        const elements = {
+            'callsMade': forceData.callsMade,
+            'conversationsHad': forceData.conversationsHad,
+            'appointmentsScheduled': forceData.appointmentsScheduled,
+            'conversionRate': '7.2%',
+            'outboundCalls': forceData.outboundCalls,
+            'inboundCalls': forceData.inboundCalls,
+            'emailConversations': forceData.emailConversations,
+            'meetingConversations': forceData.meetingConversations,
+            'outboundPercent': '45.4%',
+            'inboundPercent': '13.4%',
+            'emailPercent': '20.8%',
+            'meetingPercent': '20.4%',
+            'prospectsCount': forceData.prospects,
+            'contactedCount': forceData.contacted,
+            'qualifiedCount': forceData.qualified,
+            'proposalCount': forceData.proposal,
+            'closedWonCount': forceData.closedWon
+        };
+
+        for (const [id, value] of Object.entries(elements)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+                console.log(`✅ Set ${id} = ${value}`);
+            } else {
+                console.warn(`⚠️ Element #${id} not found`);
+            }
+        }
+
+        console.log('✅ FORCED sample data display complete');
+    } catch (error) {
+        console.error('❌ Error forcing data display:', error);
+    }
+
     // Check authentication
     checkAuthentication();
 

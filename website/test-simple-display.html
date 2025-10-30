@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Data Display Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .metric { display: inline-block; padding: 20px; margin: 10px; background: #f5f5f5; border-radius: 8px; min-width: 150px; }
+        .label { font-size: 14px; color: #666; margin-bottom: 5px; }
+        .value { font-size: 32px; font-weight: bold; color: #333; }
+        .log { margin: 10px 0; padding: 10px; background: #e3f2fd; border-left: 4px solid #2196F3; font-family: monospace; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Data Display Test</h1>
+    <p>This tests if basic JavaScript DOM updates work</p>
+
+    <div id="logs"></div>
+
+    <h2>Metrics:</h2>
+    <div id="metrics">
+        <div class="metric">
+            <div class="label">Phone Calls Made</div>
+            <div class="value" id="callsMade">--</div>
+        </div>
+        <div class="metric">
+            <div class="label">Conversations Had</div>
+            <div class="value" id="conversationsHad">--</div>
+        </div>
+        <div class="metric">
+            <div class="label">Appointments Scheduled</div>
+            <div class="value" id="appointmentsScheduled">--</div>
+        </div>
+    </div>
+
+    <script>
+        const logs = document.getElementById('logs');
+
+        function log(message) {
+            const div = document.createElement('div');
+            div.className = 'log';
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.appendChild(div);
+            console.log(message);
+        }
+
+        // Sample data
+        const data = {
+            callsMade: 127,
+            conversationsHad: 89,
+            appointmentsScheduled: 34
+        };
+
+        function updateDisplay() {
+            log('🚀 Starting update...');
+            log(`Data: ${JSON.stringify(data)}`);
+
+            // Update each metric
+            const callsElement = document.getElementById('callsMade');
+            const convsElement = document.getElementById('conversationsHad');
+            const apptsElement = document.getElementById('appointmentsScheduled');
+
+            log(`callsMade element found: ${callsElement ? 'YES' : 'NO'}`);
+            log(`conversationsHad element found: ${convsElement ? 'YES' : 'NO'}`);
+            log(`appointmentsScheduled element found: ${apptsElement ? 'YES' : 'NO'}`);
+
+            if (callsElement) {
+                callsElement.textContent = data.callsMade;
+                log(`✅ Set callsMade to ${data.callsMade}`);
+            }
+
+            if (convsElement) {
+                convsElement.textContent = data.conversationsHad;
+                log(`✅ Set conversationsHad to ${data.conversationsHad}`);
+            }
+
+            if (apptsElement) {
+                apptsElement.textContent = data.appointmentsScheduled;
+                log(`✅ Set appointmentsScheduled to ${data.appointmentsScheduled}`);
+            }
+
+            log('✅ Update complete!');
+        }
+
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            log('📄 DOM loaded');
+            setTimeout(updateDisplay, 100); // Small delay to ensure everything is ready
+        });
+    </script>
+</body>
+</html>
