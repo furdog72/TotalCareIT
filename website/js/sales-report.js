@@ -628,27 +628,50 @@ function formatDate(dateString) {
 }
 
 function setupEventListeners() {
-    // Date range filter
+    // Date range filter - auto-refresh when changed
     const dateRangeSelect = document.getElementById('dateRange');
     const customDateGroup = document.getElementById('customDateGroup');
 
     if (dateRangeSelect) {
         dateRangeSelect.addEventListener('change', function() {
+            console.log('📅 Date range changed to:', this.value);
             if (this.value === 'custom') {
                 customDateGroup.style.display = 'flex';
             } else {
                 customDateGroup.style.display = 'none';
-                // Reload data for selected period
+                // Auto-reload data for selected period
+                console.log('🔄 Auto-refreshing data for:', this.value);
                 loadSalesData();
             }
         });
     }
 
-    // Refresh button
+    // Custom date range inputs - auto-refresh when dates change
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    if (startDateInput && endDateInput) {
+        startDateInput.addEventListener('change', function() {
+            if (dateRangeSelect.value === 'custom' && startDateInput.value && endDateInput.value) {
+                console.log('🔄 Auto-refreshing data for custom range');
+                loadSalesData();
+            }
+        });
+
+        endDateInput.addEventListener('change', function() {
+            if (dateRangeSelect.value === 'custom' && startDateInput.value && endDateInput.value) {
+                console.log('🔄 Auto-refreshing data for custom range');
+                loadSalesData();
+            }
+        });
+    }
+
+    // Refresh button (deprecated - keeping for backwards compatibility)
     const refreshBtn = document.getElementById('refreshBtn');
     if (refreshBtn) {
+        // Button removed from HTML, this is just for safety
         refreshBtn.addEventListener('click', function() {
-            console.log('🔄 Refreshing data...');
+            console.log('🔄 Manual refresh button clicked');
             loadSalesData();
         });
     }
