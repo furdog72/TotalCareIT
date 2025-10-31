@@ -185,13 +185,16 @@
                 ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
                     const isExpanded = expandedQuarters[q];
                     const qData = metric.quarters[q];
+                    const qInfo = scorecardData.quarters[q];
 
                     if (isExpanded) {
                         // For section headers, show a merged cell with the quarter label
                         if (metric.is_section) {
                             // First value contains the quarter label (e.g., "Inside Sales 2025 Q4")
                             const labelText = qData.values[0];
-                            const numWeeks = qData.values.length;
+                            // CRITICAL FIX: Use week_headers count, not values.length
+                            // values.length can be wrong (e.g., 14 instead of 13), causing table layout breaks
+                            const numWeeks = qInfo.week_headers.length;
                             bodyHTML += `<td class="section-header" colspan="${numWeeks}">${labelText}</td>`;
                         } else {
                             // Show all week values with formatting for regular metrics
